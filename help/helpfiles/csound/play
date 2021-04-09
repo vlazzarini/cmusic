@@ -1,0 +1,592 @@
+play - play sound file(s) through DACs
+
+SYNOPSIS
+     play [flags1] [filename1] [flags2] [filename2] ... [flagsN] [filenameN]
+
+DESCRIPTION
+This is a quasi-tutorial for using the interactive features of play.
+
+Giving play the -i flag starts up play's interactive mode.
+All files named are then treated interactively.  
+
+
+THE STATUS LINE
+
+After opening all the named files, a status line and a '*' prompt are
+displayed.   Here is an example status line:
+
+    /snd/yourname/test: b=0.000 e=9.500 R=49152.000 r=0 q=0 D=1
+    *
+
+The status line shows the current file, its
+current begin time, end time, sampling rate, repeat count,
+silence count, and converters selected.  These values will be set
+to default values unless overridden by flags when play was started.
+The prompt, '*' is shown below it.
+
+For the rest of this discussion, we will refer to the duration between the
+beginning and ending times shown on the status line as the "window".
+
+
+INTERACTIVE COMMANDS
+
+Most actions of play can be performed from this point.  For instance,
+to simply play the file, type '!' followed by pressing the RETURN key:
+	
+	* !
+
+To end playing at 5.4 seconds:
+
+	* e=5.4
+	* !
+
+As a rule, only one command may be issued at a time.
+The '!' command is the only exception to this, and
+the previous sequence could have been:
+
+	* e=5.4!
+
+which would set the end time, then play the file.  The end time of
+5.4 would show up on the status line printed at completion of the play.
+The begin time can be set by substituting 'b' for 'e' above.
+
+	* b=1.3
+
+Once a command that sets a variable to a number has been issued, 
+subsequent numbers by themselves overwrite that variable.  For instance,
+if we now say:
+
+	* 1.4
+
+the begin time is reset to 1.4 seconds.  All numbers may be expressions
+involving the operators: +-*/, parenthesis, and several
+postoperators.  The postoperator
+K multiplies the result of the rest of the expression by 1024, and S
+treats the result as a quantity of samples.  For instance,
+
+	* b=32KS
+
+sets the begin time to the 32*1024'th sample.  Without the 'S' postop,
+that would have been interpreted as 32*1024 SECONDS, so it's an important
+distinction.  A special character, '$' stands for "the file boundary".
+Thus,
+
+	* e=$
+
+sets the end time to the end of the file,
+
+	* b=$
+
+sets the begin time to 0.  
+
+There is an additional variable, d, which
+specifies the duration of the window.  Setting this modifies the e variable.
+For example, if the value of b is 1,
+
+	* d=5
+
+sets the value of e to 6, to provide a duration of 5 seconds in the
+window.  As a special case, setting
+
+	* d=$
+
+causes d=0, and e=$.
+
+The statement:
+
+	* b=e-1
+
+sets the begin time to one second before the end of the file.
+Expressions of the sort:
+
+	* b=b+1
+
+are fine, but there is a more effective syntax for relative modifications
+of the window with assignment operators '<' and '>'.  Saying:
+
+	* >
+
+adds a value of .1 seconds to the begin and end times, effectively moving
+the window right (later in the file).  
+Using '<' moves the window left (earlier).  You can stack these
+up.
+	
+	* >>>
+
+moves right by .3 seconds.  You can also change the increment:
+
+	* i=1
+
+Subsequent '>' or '<' commands move by one second.  You can also change
+the increment by putting it after '<' or '>' commands:
+
+	* >>.3
+
+moves right .6 secs, and sets the increment to .3.  You can just
+move the begin time or end time separately like this:
+
+	* e>
+
+moves the end time only, and
+
+	* b<<.5
+
+decrements the begin time by 1 sec.  Another example:
+
+	* e>1S
+	
+moves the end time ahead by 1 sample.
+
+You can repeat the last command if you say:
+
+	* !!
+
+(remember that just one "!" plays the file, "!!" redoes the last
+command, which may have included playing the file).
+
+You can change the repeat count, silences and DAC assignments
+with the following, respectively:
+
+	* r=3
+	* q=1
+	* D=1,3,2,4
+
+which will cause the window to be played 3 times after an initial one second
+pause, through 4 dac channels. (If the file is mono, it will be down-sampled
+by a factor of 4).
+
+If you specified a number of files to play, you can go on to the next one
+by saying
+
+	* n
+
+and go back to the previous one with 
+
+	* p
+
+Going off the end of the list in either direction terminates play.
+You can also quit at any time with
+
+	* x
+
+
+INTERACTIVE COMMAND SUMMARY
+
+     [e,b,d]=N - set [end,begin,duration] time to N
+     N   - change last altered parameter to N
+     [e,b,d][>,<][N] - move [e,b,d] [ahead,back] by N
+          or if N is missing, by increment
+     !   - play the file
+     !!  - repeat the last command
+     n   - and go on to next file
+     p   - go back to previous file
+     r=N  - repeat N times
+     [>,<]*[N]   - move [ahead,back] begin/end play times by * increments,
+          increment modified by N
+     i=N  - set increment to N
+     x   - exit play
+     R=N  - set sampling rate to N
+     D=S  - set DAC channels to comma-separated string of numbers
+     I   - begin "fast interactive" mode, see below
+     q=N  - set N seconds of silence preceeding play of the file
+
+Only one command may appear per line , except '!' which may appear
+separately or at the end of any other command.  Only the '!' command
+plays the file.  Time values default to
+seconds.  Expressions are allowed for all instances of N.
+Postoperators allowed include:
+	
+	S  samples
+	ms milliseconds
+	s  seconds
+	m  minutes
+	K  times 1024
+	k  times 1000
+
+N may be the character '$' which
+stands for the boundary time of the file.
+N may include the variables b, e, d, R, q, r.  
+
+
+FAST INTERACTIVE MODE
+
+This mode is useful for quickly fine-tuning the boundaries
+of a particular segment.  It is entered from regular interactive
+mode as follows:
+
+	* I
+
+A different status line showing the current begin and end times and the current
+value of the increment is printed.
+The prompt changes to 'I' to indicate that you are
+in fast interactive mode.  In this mode, EACH CHARACTER you type has
+an immediate effect.  There are only a few, simple commands.
+
+Pressing the '!' key immediately plays the window (do not then press
+the [RETURN] key as you would for normal interactive mode, as it is
+unnecessary).  You can move the window forwards and backwards 
+by the value of the increment with
+'>' and '<' as in regular interactive mode, but fast interactive mode
+immediately moves the window and plays as soon as either key is pressed.
+
+You can set the value of the playing times with normal assignment
+statements.  (Unlike the other commands in fast interactive mode, assignment
+statements do not immediately cause the segment to play).
+"b=1" sets the begin time to 1 sec., "e=$" sets the end
+of the window to the end time of the file, "i=.01" sets the increment
+to step the window by 10 millisecond intervals.
+
+You can cause the '<' and '>' commands to affect only the begin time
+or end time by pressing 'b' or 'e', then either '<' or '>'.
+The selected part of the window is incremented and played.  
+Subsequent '<' or '>'
+commands only affect that window parameter.  To return to moving the
+begin and end times together, press 'w' (for "window").  
+Subsequent '<' or '>' commands will affect the whole window again.
+Note: this is different from regular interactive mode where '<'
+and '>' always move the whole window.
+
+Lastly, to leave fast interactive mode, press the 'x' key, and
+the program reverts to normal interactive mode.
+
+Here is the syntax for fast interactive mode.
+
+!		plays current window
+b or e		subsequent cmds move only begin or end time
+> or <		move forewards/backwards by increment and play
+w		subsequent commands move window
+b=N or e=N	set begin or end time to N
+i=N		set increment to N
+press the 'x' key to quit
+
+
+SEGMENT EDITING
+
+The segment editing feature of play is provided to allow audition of 
+selected portions of a sound file, over and above that provided for
+by the previous commands.  The principal use is for identifying 
+and isolating useful
+portions of recorded material for later manipulation.  
+
+All segmentation commands are preceeded with an 's' character.  The
+various operations possible include making a segment, changing a segment's
+begin/end times, deleting segments, playing segments, reading and writing
+files of segment information.  There are also lists of segments that can
+be constructed, auditioned, saved in special list buffers, etc.
+
+The structures to be manipulated by the following commands are:
+ * the b and e variables which define the window,
+ * the "list buffer" which can store a list of windows, otherwise called
+   a list of segments (this is sometimes called the "unnamed list buffer"),
+ * a set of "named list buffers", given upper case
+   letters [A-Z], which can also store segment lists, and
+ * a "temporary" list buffer".
+
+A series of commands exists to create, modify and delete segments on the 
+various lists, and to change the values of segments on the various lists.
+This latter step can be done either by copying the current values of
+the b and e variables to make a segment on a list, or by setting
+the begin and end times of the segments to values you supply, or the
+values of other segments.
+
+For instance, one way to create a segment
+is to first set the window to the
+times desired using the commands described in the last section;  
+for instance, this:
+
+	* b=3
+	* e=4
+
+The second step is to say:
+
+	* sm
+
+which makes a segment with those begin/end times.  This segment
+is placed at the end of the unnamed list buffer.
+If this is the first
+segment made for this file, it will be called s1.  Subsequent sm
+commands will name successive segments s2 ... sN.
+To print out the list
+of all currently defined segments on the unnamed list buffer, say
+
+	* sp
+
+The segment numbers are printed, followed by their
+respective begin/end times.
+
+There is the notion of a "current segment", which is
+the one last selected or created, in this case, s1.  
+This segment is indicated by an arrow,
+"->" in the left hand column of the printed list.  
+
+The easiest way to modify a segment stored on the unnamed list buffer is
+to change the b and e variables, then say
+	
+	* s=
+
+which assigns the window variables (b and e) to the current segment, i.e.,
+the segment we most recently touched.
+After you have used this method to create a number of segments, you
+may wish to select one particular segment to be played; saying
+
+	* s3
+
+loads segment 3's begin and end times into the window variables.  
+When the segment list is printed with the sp command,
+the arrow will point to s3 now, since it is the last touched.
+Adding an '!' command at the end of the
+above will play s3.  
+
+If you want to assign the current values of the 
+window variables to some other segment than the current segment, 
+for instance, if you have a segment 9, then
+
+	* s9=
+
+will cause s9 to be set to values of b and e.
+Segment 9 must already exist for this operation to succeed.
+To delete a segment say
+
+	* sdN
+
+where N is a segment number.  
+
+
+OTHER ASSIGNMENT STATEMENTS
+
+You can directly set the time values of segments as indicated by the
+following examples:
+
+	* sb1 = 2KS { sets beginning of segment 1 to 2*1024 samples }
+	* se2 = sb3 { sets end of seg. 2 to beginning of seg. 3 }
+	* s1 = s4 { sets seg. 1 equal to seg. 4, copying begin and end times }
+	* se = 5*10 { sets end of current segment to 50 seconds }
+	* se15 = $ { sets end of segment 15 to end of file }
+	* se$ = 3.3 { sets the last segment's end time to 3.3 }
+
+Note the syntax of allowed expressions carefully.  A segment boundary
+may be set to the value of a numeric expression, 
+or to the boundary of another segment.  
+The current implementation does not allow
+segments to appear in numeric expressions (e.g., "se1 = 1+se2"
+is not currently allowed).
+An entire segment may only be assigned the value of another
+entire segment, e.g., "s3 = s5" is legal, "s3 = 5" is ambiguous and
+illegal.  Also, assignment statements of the
+form "e = se1" are not currently implemented.  
+You can only fetch an entire segment into the window.
+
+
+LISTS OF SEGMENTS
+
+To audition several segments one after the other, say
+
+	* sN,N,...N !
+
+where N each N is some segment number.  This uses the temporary
+list buffer.  The segments will be played in order.  
+Leaving off the '!' just sets up
+a temporary list which is imediately discarded.  
+You may save lists in named list buffers, labeled A through Z.  
+For instance,
+
+	* sA=3,2,1,3
+
+copies the segment sequence s3, s2, s1, s3, from the unnamed list buffer 
+to list buffer A.  Note: list buffers must be CAPITALIZED, single letters.  
+The print command will print a particular list.
+
+	* spA
+
+will print list A.  
+
+It is also possible to copy all the segments in the unnamed buffer into
+a named one by saying
+
+	* sA=
+
+which deletes any list in A before copying the unnamed buffer list into A.
+It is possible to copy back a list from a named buffer into the unnamed
+one by saying
+
+	* sA
+
+which deletes the list in the unnamed buffer and copies A into it.
+Also,
+
+	* sB=A
+
+copies list B into A.  You can play a named list buffer by copying it
+into the unnamed buffer with '!' as follows:
+
+	* sA!
+
+which deletes whatever is in the unnamed buffer first, loads
+A, then plays it.
+
+
+READING AND WRITING SEGMENT FILES
+
+A segment file looks vaguely like a cmusic note list.  Here's an
+example.  Begin time is in p2, duration in p4.  (Note, 
+the internal representation of segments in play
+uses begin and end times; the segment file representation uses begin
+and duration times, this for compatability with Music5 format scores).
+P3 is the name of the sound file, p5 is the segment number.
+
+    note 1.000000 haiku1 1.500000 1;
+    note 1.000000 haiku1 2.000000 2;
+    note 1.500000 haiku1 1.850016 3;
+
+To read a segment file, say
+
+	* sr [name]
+
+If the name is missing, the sound file's Include File list is searched
+for the first file ending in ".seg".  If none is found, play tries to
+find sound_file_name.seg.  This failing, it gives up in disgust.
+To write a segment file, say
+
+	* sw [name]
+
+If the name is missing, the whole process for determining
+the file name is invoked again.  That is, if the name is not given,
+first the Include File list is searched for the first file
+ending in ".seg", and if that fails, a name,
+sound_file_name.seg, is invented.  If the name so determined is not
+on the sound file's Include File list, it is added, and the file is
+written in the current directory.
+
+Another syntax for the write command allows you to write just the contents
+of some list buffer.  For instance,
+
+	* sw foo = A
+
+will write seg file foo, which will contain only segments listed in 
+list buffer A.  The segments will be renumbered in a monotonic sequence
+when written.
+
+
+TIMEING MODE
+
+In normal interactive mode (not fast interactive) there is a way to
+play a file (or section of it) and hit a key whenever you want to
+mark a segment boundary on the file.  This is called timeing mode.
+
+To do this, issue the command
+
+	* st
+
+which says to set up the file's default segment
+list buffer to automatically save segments
+that are created every time you hit a certain key.  You then start
+the file playing 
+by giving the usual command:
+
+	* !
+
+(the command can be given at one fell swoop, of course, as "st!").
+While the file is playing, you hit the [CTRL]-\ keys whenever
+you want to mark the end of a segment.  That is, you press the key
+marked [CTRL], (the "control" key)
+and hold it down.  Whenever you want to mark the end
+of a segment you hit the '\' backslash key while continuing to hold down
+the [CTRL] key.  This produces a signal to play which is
+interpreted as a command to mark the end of a segment at that point.
+The current time (measured in seconds 
+from the time in the file where you started playing) is printed at
+that point.  When the file is done playing, do a
+
+	* sp
+
+command to print the list of segments in the file list buffer to see
+what you got.  You can of course play a segment by naming it:
+
+	* s1!
+
+You can use any of the labeled segment list buffers (A - Z, uppercase
+only) to save the automatically created segments by the command:
+
+	* stA
+
+for instance, which will use segment list buffer A instead of the
+file's default segment list buffer.  You then play the file in the
+aforementioned way hitting [CTRL]-\.  The command
+
+	* spA
+
+prints that buffer's list when done playing it.
+
+If the things you want to mark just go by too fast for you to get,
+set the sampling rate to a lower number.  The times of the segments
+will all be adjusted by the ratio of current_rate/actual_rate, so the
+segments will still have the correct times at the actual_rate speed.
+
+This operation also succeeds on playing just a short segment of the
+file.  Set the begin and end times to the desired values, and proceed
+as usual.  The begin time reported for the first segment is the
+time at which playing began.
+
+SEGMENTATION COMMAND SUMMARY
+
+	sr [file] 	- read segment file
+	sw [file][=L]	- write segment file
+			  without [=L], writes out all segments
+			  with [=L], writes only segments on list L.
+	sp[L]		- print segments
+			  without [L], prints all segments
+			  with [L], prints only segments on list L.
+	sN		- set begin/end playing times to segment N
+	sb[N]=[M,S]	- set begin time of segment N to number M or segment S
+			  default for N = current segment
+			  default for M = current begin/end times
+	se[N]=[M,S]	- set end time of segment, etc. as above
+	s[N]=		- set begin/end times of segment to playing times
+	sm		- make new segment using begin/end playing times
+	sd[N]		- delete segment N
+	s=N,N,...N	- make temporary segment list from segment number list N
+	s[A-Z]=N,N,...N - store segment list in named list buffer A - Z.
+	s[A-Z]		- fetch segment list from named list buffer A - Z.
+	st		- time the creation of segments by hitting [CTRL]-\
+
+The '$' when appearing in the context of a segment
+number stands for the highest numbered segment, and when appearing as a
+time stands for the end time of the current file.
+
+
+SEE ALSO
+
+record(1x), sndio(1x).  Sources are in /mnt/dgl/cmd/play.
+
+
+DIAGNOSTICS
+
+If any file is not found, or an illegal flag is encountered,
+the process aborts.  Any DAC errors are reported with a
+quasi-English error message, plus the value of the DAC DMA
+status register and the converter's ASC status register.
+
+In non-interactive use of play, hitting the [DEL] key aborts
+the file in progress and terminates play.
+In interactive mode, hitting the [DEL] key terminates the current
+play and returns you to the prompt.
+
+
+BUGS
+
+The mecanism for silences is to call sleep(), which (for
+some stupid reason or other) only gives time quantization to
+the one second level.  Thus, the period of silence can be
+off by as much as .5 secs in either direction.
+
+There is a silent limit of 64 files that can be played at
+one zip.
+
+The syntax for interactive mode is baroque and nonstandard,
+and incomplete to boot.  It is also extremely arbitrary and rigid.
+Neither does it tell you what you did wrong.
+
+
+AUTHOR 
+
+Gareth Loy

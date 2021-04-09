@@ -1,0 +1,82 @@
+fltdelay -  recirculating delay line with filter in feedback loop
+
+fltdelay out[b] d d d d d d d d d d d d d d d in[bvpn] pitch[bvpn] decay[bvpn] table[vpn] level[vpn] final[vpn] onset[vpn] place[vpn] filtr[vpn] noise[vpn] stiff[vpn];
+
+in[bvpn]	optional input block (for use as resonator)
+pitch[bvpn]	desired fundamental freq (use Hz postop !!)
+decay[bvpn]	duration factor (0 to 1: 1 = full duration)
+table[fvpn]	function to initialize table (e.g. from gen6)
+level[vpn]	amplitude of pluck   (0 to 1:  1  =  loudest)
+final[vpn]	number of db down at p4 (0 to 100: 40 = norm)
+onset[vpn]	attack time for pluck (0 to .1 sec: 0 = fast)
+place[vpn]	pluck point on string  (0 to .5:  0 = normal)
+filtr[vpn]	lowpass prefilter cutoff freq (0 to .5 Srate)
+noise[vpn]	time of initial noise burst  (-1 to +0.1 sec)
+stiff[vpn]	stiffness  (0 to 10:  10 = stiffest/sharpest)
+
+This unit generator implements the Karplus-Strong plucked-string algorithm
+as improved by David Jaffe and Julius Smith (see CMJ Vol. 7 No. 2, pp. 56-69).
+In its simplest form, operation is as follows: gen6 is used to fill a table
+with random numbers. The first N random numbers (where N is approximately 
+sample_rate / pitch) are fed into a delay line of length N. The output of the
+delay line is the output of the u.g.; but the output is also sent to a filter
+which computes a weighted average of the current output sample and the previous
+output sample. The output of this averaging filter is then stuffed back into
+the beginning of the delay line. The result is that every N samples, a given
+sample in the loop will be replaced by an average of that sample and the
+adjacent sample. Hence, the delay line begins with white noise in it and ends
+up with all zeros (or some small DC value) in it. As it happens, the resulting
+sound can be very similar to that of a plucked string.  A simple plucked string
+instrument can be defined by:
+
+#define FLTDELAY(b) fltdelay b d d d d d d d d d d d d d d d
+ins 0 pluck;
+  FLTDELAY(b1) 0 440Hz 1 1 1 40 .001 0 .5 0 0;
+  out b1;
+end;
+
+GEN6(f1) ;
+
+(The #define statement is predefined for you on <carl/cmusic.h>).
+
+A great many options can also be explored: an input can be connected up so
+that the recirculating delay line acts as a resonator (but beware of
+overflow - the input should either be low amplitude or the value of
+"final" should be very large to produce rapid decay). The pitch can be
+allowed to vary (but don't let it drop below sample_rate / funclength).  The
+decay can be made to vary (but note that the effect of the "decay" parameter
+depends upon the pitch - higher pitches are attenuated more rapidly for
+the same value of "decay").  The "final" parameter provides control of
+the decay independently of pitch (the decay is always exponential, and 
+the duration is always p4; "final" specifies whether the note is to be
+40 db down by p4 or perhaps 80 db down - in which case it will sound
+shorter).  The "onset" parameter applies a linear ramp of duration "onset"
+seconds to the output of the fltdelay u.g.; this can used to soften the
+typical pluck attack.  It is also possible to output a noise burst of 
+duration "noise" seconds prior to starting up the recirculating delay
+line.  Conversely, a negative value for "noise" causes the recirculating
+delay line to run for negative "noise" seconds prior to the start of the
+note.  Lastly, a stiffer string can be simulated by specifying sharpened
+partials (but values of "stiff" less than 4 will probably be inaudible).
+
+The remaining options apply only to the numbers in the delay line just prior
+to the start of the note: A function other than gen6 can be used to fill
+the table.  The initial amplitude can be set via "level".  A comb prefilter
+can be applied to the numbers in the table to simulate plucking at a different
+"place" along the string (for example, setting "place" to .5 is like
+plucking the string in the middle in that all even harmonics are eliminated).
+A lowpass prefilter can be applied to the numbers in the table to decrease
+the brightness of the plucked sound (for example, setting "filtr" to .1
+applies a lowpass prefilter with a cutoff frequency of .1 * sample_rate).
+Note: When prefiltering is NOT desired, the value of "filtr" should be .5.
+
+The compute time for the fltdelay u.g. is on the order of three oscs
+provided that the pitch does not change and that the pitch does not
+exceed sampling_rate / 8.  Very high pitches and changing pitches take
+at least twice as long to compute.  The fltdelay u.g. can also be used
+to implement more drumlike sounds by setting "decay" to -1 or letting
+it switch randomly between +1 and -1 (but don't set it to a value other
+than + or - 1 unless you want to affect the rate of decay as well).
+
+AUTHOR:	Mark Dolson
+

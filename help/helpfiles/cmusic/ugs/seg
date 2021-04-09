@@ -1,0 +1,44 @@
+seg - envelope generator with arbitrary number of segments
+
+seg output[b] amplitude[bvpn] table[fvpn] sum[dpv] increment[vpn]* ;
+
+Outputs a multisegment envelope based on the shape of the table, which
+may be either a function (e.g., "f3"), or a function index (e.g., "3").
+The function is divided into N segments, where N is the number of
+increments given in the seg statement (typically 3, corresponding to
+attack, steady state, and decay times).  Increments with zero values
+may be used to signify that the corresponding segment duration is to be
+computed automatically from the duration that remains after all nonzero
+increments have been subtracted from the total note duration.  For
+example, the following instrument plays with 100ms attack and decay
+times, with the steady state adjusted to fill up the note duration:
+	 ins 0 env; 
+	     seg b1 p5 f2 d .1sec 0 .1sec; 
+	     osc b1 b1 p6 f1 d; 
+	     out b1;
+	 end; 
+The following instrument allows attack and decay to be set directly,
+with steady state duration computed automatically:
+	 ins 0 env; 
+	     seg b1 p5 f2 d p7 0 p8; 
+	     osc b1 b1 p6 f1 d; 
+	     out b1; 
+	 end;
+More than one segment may be computed automatically. In the next
+example, a 4-segment envelope would be adjusted over a 1-second note
+duration thus: segment 1 = .1 sec, segment 2 = .4 sec, segment 3 = .4
+sec, segment 4 = .1 sec :
+	 ins 0 env;
+	    seg b1 p5 f2 d p7 0 0 p8; {p7 & p8 control att & dec times}
+	    osc b1 b1 p6 f1 d;
+	    out b1;
+	 end;
+	 gen 0 gen3 f2 0 1 1 .5 0; {4 segment envelope}
+	 gen 0 gen2 f1 1 1;
+	 note 0 env 1 0dB 440Hz .1sec .1sec;
+The seg unit generator assumes that the sum of all nonzero increments
+will be strictly greater than the total duration p4.  If this condition
+is not satisfied, the results may or may not be acceptable.  In 
+particular, if sum of all nonzero increments is exactly equal to the
+total duration p4, a division by zero may result.
+

@@ -1,0 +1,29 @@
+help - a description of the help command
+
+The help command prints online documentation for CARL programs.  This
+documentation is collected in a special directory for help files
+(/usr/local/lib/help/* at CARL).  All users with help-ful information are
+invited to add help files (say `help helper' for a description of how
+to do this).
+
+help 
+    Prints the main list of topics (files) and supertopics (directories).
+help X
+    If X is a topic file, its contents are printed.
+    If X is a supertopic directory, its contents (subtopics) are printed.
+help -1 
+    prints 1-line summary of the main topics and supertopics.
+help -1 X
+    If X is a topic file, its 1-line summary is printed.
+    If X is a supertopic directory, a 1-line summary of each of its
+    subtopics is printed.
+help -a X
+    If X is a supertopic, recursively lists all subtopics under X.
+help -a
+    Recursive lists ALL topics and subtopics.
+help -s WORD
+    Search through all help files and list those which mention "WORD".
+
+NOTE: X may be a simple topic or supertopic name, or several supertopics 
+separated by slashes (/), ending with either a topic or a supertopic name.  
+For example: `help cmusic', `help -1 cmusic/gens', `help cmusic/gens/gen0'.

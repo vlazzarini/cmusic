@@ -1,0 +1,21 @@
+com - the cmusic comment command
+
+The command
+
+    com This is a comment ;
+
+may be used to place comments into a cmusic score (this is for
+backwards compatibility with MUSIC V).
+
+The preferred way to place comments in a cmusic score is between
+curly braces, which may be nested, such as
+
+    {
+	This is 
+	    {really it is} 
+	a comment in a cmusic score
+    }
+
+The advantage is nest-able comments is that it is possible to "comment
+out" a portion of a score for a test run.  The "commented out" portion
+might itself contain comments, so nesting is useful.

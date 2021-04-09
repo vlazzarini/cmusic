@@ -1,0 +1,13 @@
+main(Argc, Argv)
+	char **Argv;
+{
+	printf("before pmain...\n");
+	Pmain(Argc, Argv);
+	printf("after pmain...\n");
+	exit(0);
+}
+
+Player hithere(0,1)
+{
+	printf("hi there\n");
+}

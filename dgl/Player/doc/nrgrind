@@ -1,0 +1,54 @@
+sed -e '1i\
+.DS \
+.ft C'\
+	-e "s/-/\\\\-/g" \
+	-e "s/\(Player\) \(.*\)(\(.*\)/\1 \\\\fI\2\\\\fP(\3/" \
+	-e "s/\(Player\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Keys\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Pitches\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Rhythms\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Strings\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Exprs\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Wait_until\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Wait_for\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Abs_time\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Motive\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(P_start\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Instance\)\([ 	]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(Instances\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Function\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Resting\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Rest\)\([ 	(]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(Read_func\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Func\)(/\\\\fB\1\\\\fP(/g" \
+	-e "s/\(Kill\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Self\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Rel_time\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Rel_func\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Gen\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Hipn\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(P[0-9]\)\([ 	+-/=,;)\n]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(P[0-9][0-9]\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Pi[0-9]\)\([ 	+-/=,;)\n]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(Pi[0-9][0-9]\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Pp[0-9]\)\([ 	+-/=,;)\n]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(Pp[0-9][0-9]\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Ps[0-9]\)\([ 	+-/=,;)\n]\)/\\\\fB\1\\\\fP\2/g" \
+	-e "s/\(Ps[0-9][0-9]\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(M_start\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(M_ter\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Scale\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Read_list\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Argc\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Argv\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(P_READY\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(New_player\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Set_p\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Pexit\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Forever\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Silent\)/\\\\fB\1\\\\fP/g" \
+	-e "s/\(Next_instance\)/\\\\fB\1\\\\fP/g" \
+	-e '$a\
+.ft R \
+.DE'\
+	$*

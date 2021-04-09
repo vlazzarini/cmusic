@@ -1,0 +1,29 @@
+Forever		recpla.P	18 ;" 1 { }	{ }
+M_start		M.P	/^M_start() {$/ ;" 24 { }	{ P P_TRK Pptr busy cur_trk init_trk mpu_trk printit setup_trk }
+M_ter		M.P	/^M_ter()$/ ;" 7 { }	{ }
+P		M.P	11 ;" 1 { M_start }	{ }
+P_STOPPED		recpla.P	18 ;" 1 { }	{ }
+P_TRK		recpla.P	18 ;" 2 { M_start getpfree init_trk }	{ }
+Pptr		M.P	9 ;" 1 { M_start }	{ }
+busy		M.P	12 ;" 1 { M_start getpfree }	{ }
+cur_trk		M.P	16 ;" 1 { M_start }	{ }
+dump_trk		dump_trk.c	/^dump_trk(trkp)$/ ;" 20 { }	{ }
+getpfree		keytest.P	/^getpfree()$/ ;" 10 { }	{ P_TRK busy }
+init_trk		init_trk.c	/^init_trk(mt)$/ ;" 10 { M_start }	{ P_TRK }
+init_trkp		init_trk.c	/^init_trkp(mp, mt)$/ ;" 9 { }	{ }
+key		M.P	13 ;" 1 { keydown }	{ }
+keydown		keytest.P	/^keydown()$/ ;" 11 { }	{ key }
+list_trk		list_trk.c	/^list_trk(trk) $/ ;" 19 { }	{ next_cmd printit rewind_trk u_char }
+min		mpu_play.c	/^# define min(a,b) (((a)<(b))?(a):(b))$/ ;" 1 { mpu_play }	{ }
+mpu_play		mpu_play.c	/^mpu_play(mpu_unit, track, pla_buf, pla_cnt) $/ ;" 30 { }	{ min mpu_start_play_mode }
+mpu_record		mpu_record.c	/^mpu_record(mpu_unit, rbuf, rlen)$/ ;" 37 { }	{ mpu_set_record_mode printit }
+mpu_set_record_mode		mpu_record.c	/^mpu_set_record_mode(mpu_unit)$/ ;" 9 { mpu_record }	{ recmode }
+mpu_start_play_mode		mpu_play.c	/^mpu_start_play_mode(mpu_unit, track)$/ ;" 13 { mpu_play }	{ playmode }
+mpu_trk		M.P	14 ;" 1 { M_start }	{ }
+next_cmd		next_cmd.c	/^next_cmd(trk)$/ ;" 31 { list_trk }	{ printit u_char }
+playmode		mpu_play.c	42 ;" 8 { mpu_start_play_mode }	{ }
+printit		M.P	17 ;" 1 { M_start list_trk mpu_record next_cmd }	{ }
+recmode		mpu_record.c	46 ;" 7 { mpu_set_record_mode }	{ }
+rewind_trk		next_cmd.c	/^rewind_trk(trk)$/ ;" 5 { list_trk }	{ }
+setup_trk		setup_trk.c	/^setup_trk(mt, n, size)$/ ;" 19 { M_start }	{ u_char }
+u_char		next_cmd.c	/^# define u_char	unsigned char$/ ;" 1 { list_trk next_cmd setup_trk }	{ }

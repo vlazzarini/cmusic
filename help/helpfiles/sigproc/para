@@ -1,0 +1,39 @@
+para - parallel connection of several pipes with common input & summed output
+
+DESCRIPTION:
+para provides parallel signal processing by feeding its stdin (through pipes) 
+to each of several monophonic processing pipelines which run in parallel,
+summing the outputs of these processes, and writing the resulting 
+summed data stream on the standard output. A typical command form:
+
+cmusic score.sc | para 2 "reverb .6 1000" "reverb .7 1131" | sndout
+
+applies both "reverb .6 1000" and "reverb .7 1131" to separate copies
+of the output of cmusic, then adds the parallel signals and pipes 
+the sum to sndout.  If only one process is specified for multiple channels, 
+it is applied in parallel to each channel.
+ 
+The above example may be diagramatically shown as the following:
+
+                                       / reverb .6 1000 \
+(monophonic process)  cmusic score.sc |                  |+| sndout
+                                       \ reverb .7 1131 /
+
+If only one process is specified, it is applied in each parallel process.
+
+    cmusic score.sc |  para 4 "comb .6 1000" | sndout
+
+is 
+			 / comb .6 1000 \
+			|/ comb .6 1000 \|   |
+        cmusic score.sc |                | + | sndout
+			|\ comb .6 1000 /|   |
+			 \ comb .6 1000 /
+
+The number of processes must be 2, 3 or 4.  The parallel processes must
+be enclosed in quote (") marks, and may themselves be pipes, such as
+
+  cmusic score.sc | para 4 "reverb .6 2131 | comb .6 1000" | sndout
+
+para reads and writes floatsams only; it will write them in ASCII on your
+terminal or in binary to a pipe.

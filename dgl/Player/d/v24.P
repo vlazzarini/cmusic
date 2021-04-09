@@ -1,0 +1,51 @@
+/*
+ * There is a procedure, Rest(), which when called, has the same effect
+ * as an  r  expression in a notes statement, i.e., it causes the voice
+ * to not print its P fields after computing them.  You could, for instance,
+ * execute Rest() in an if statement to coerce a rest at other times
+ * than as indicated in a notes statement.  
+ * In the usage shown in this
+ * example, the Rest() procedure is called whenever blap detects it is
+ * about to play a d4.
+ * Player bloop executes a call to Silent() in its initialization loop,
+ * so it runs, but never prints anything.  
+ * It can be used e.g. as a controller of other players.
+ * In this example, we have it controlling voice blap.
+ */
+
+typedef Player * Player_ptr;
+
+Player_ptr P_bloop;
+
+Player bloop(0)
+{
+	P_start {
+		P_bloop = Self;
+		Pp5 = "Hz";
+		P4 = 1;
+		Motive("x: c {d e}x2 c");
+		Silent(Self);
+	}
+
+	P5 = Pitches("@x Stop");
+	Wait_until(Now + P4);
+}
+
+Player blap(0)
+{
+	P_start {
+		Pp5 = Pp(P_bloop, 5);
+	}
+	if (Player_status(P_bloop) == P_STOPPED)
+		Stop(Self);
+	P4 = P(P_bloop, 4);
+	P5 = P(P_bloop, 5);
+	P6 = P(P_bloop, 4);
+	P7 = P(P_bloop, 5);
+	P2 = Now;
+	Wait_until(P2 + P4);
+	if (P5 == Pitches("d")) {
+		printf("(rest)\n");
+		Rest(Self);
+	}
+}	

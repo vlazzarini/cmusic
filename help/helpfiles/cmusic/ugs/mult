@@ -1,0 +1,6 @@
+mult - multiplies arbitrary number of signals and constants
+
+mult output[b] input[bvpn]* ;
+
+The (arbitrary number of) inputs are multiplied together and placed in
+the output.

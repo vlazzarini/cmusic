@@ -1,0 +1,157 @@
+.TH SFCODES 3 IRCAM "1st Edition" "IRCAM Soundfile System"
+.SH NAME
+.B sfcodes:
+.PP
+.B getsfcode
+\-searches for a specified "code"
+.br
+.B putsfcode 
+\-adds and deletes coded information from a soundfile header
+.SH SYNOPSIS
+.nf
+ char *getsfcode(hd,code);
+       SFHEADER *hd;
+       int *code;
+.PP
+ putsfcode(hd,data,codeptr)
+      SFHEADER *hd;
+      char *data;
+      SFCODE *codeptr;
+
+
+      # define SF_END 0
+
+      # define sfcodes(x) (x)\->sfinfo.sf_codes
+
+      typedef struct sfcode {
+   	   short	code;
+	   short	bsize;
+      } SFCODE;
+.PP
+.SH DESCRIPTION
+A soundfile header has two parts. The first four items are fixed:
+the magic number, the sample rate, number of channels, 
+and number of bytes per sample.
+The functions
+.BR getsfcode (),
+and
+.BR putsfcode ()
+are used to insert and read soundfile header information beyond these
+four items.
+.PP
+The last item in a soundfile's header structure, sf_codes, is used to 
+point to any further information beyond the fixed header data.
+If more data has been put into the header,
+sf_codes will be the beginning of an SFCODE struct, shown above.
+This SFCODE struct indicates what type of information follows, 
+the "code", and how many bytes it occupies, the "bsize".
+The "bsize" is the size of the added data plus the size of the
+present SFCODE which precedes that data; thus, "bsize" points to
+the next location after the end of the new data.  That location 
+will be the beginning of another SFCODE struct.  SF_END is a special
+"code" for indicating the end of SFCODEs.
+This "chaining" of SFCODES and data structures may continue to the end 
+of the header.
+.PP
+As an example, if the maximum amplitude has been put into the header,
+sf_codes will be the beginning of an SFCODE struct with a "code" of 1,
+indicating that a SFMAXAMP struct follows.  The "bsize"
+will be 40 (bytes) ( sizeof(SFCODE )= 4 bytes, sizeof(SFMAXAMP) = 36 bytes). 
+After those 40 bytes, there will be another SFCODE struct, 
+the "code" indicating what, if any, information follows.
+See the manual page sfheader for the definitions of SF_CODE "codes"
+and data structures. 
+.SH getsfcode
+.BR getsfcode ()
+begins searching at header item sf_codes for an 
+SFCODE having a "code" which matches its argument. 
+If it does not find a matching "code" in the header,
+.BR getsfcode ()
+returns NULL.  If it finds the "code",
+.BR getsfcode ()
+returns a pointer to that location, which is an SFCODE, not the data itself.
+.SH putsfcode
+.BR putsfcode ()
+inserts new data into a header.  It first 
+searches through any existing SFCODEs for a matching "code".
+If
+.BR putsfcode ()
+finds a matching "code", it replaces the old information with its
+new data, making necessary adjustments if the "bsizes" are different.
+If 
+.BR putsfcode ()
+does not find a matching "code", it puts the new information 
+at the end of any existing SFCODEs,
+and then appends an SFCODE struct with a "code" of SF_END.
+.SH EXAMPLES
+Sndpeak and sndnorm both use these subroutines.
+.LP
+This short program puts a one line comment into soundfile headers.
+.lp
+.nf
+# include <stdio.h>
+# include <sys/file.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sfheader.h>
+
+# define SF_COMMENT 2
+
+typedef struct sfcomment {
+	char comment[80];
+} SFCOMMENT;
+
+SFCODE comment = {
+	SF_COMMENT,
+	sizeof(SFCOMMENT) + sizeof(SFCODE)
+};
+
+main(argc,argv)
+	int argc;
+	char argv[];
+{
+	int 	  sfd, result = 0;
+	struct stat  sfst;
+	SFHEADER  sfh;
+	SFCOMMENT *remark;
+	char 	  line[80];
+
+	rdwropensf("/snd/you/soundfile",sfd,sfh,sfst,"test",result);	
+	if(result) 
+		exit(1);
+	if(getsfcode(&sfh,SF_COMMENT) == NULL) {
+		fprintf(stderr,"Type message: 80 char maximum:\n");
+		fgets(line,80,stdin);
+		remark = (SFCOMMENT *)line;
+		putsfcode(&sfh,remark,&comment);
+		lseek(sfd,0,0);     /* reset pointer to top of file */
+		wheader(sfd,&sfh);  /* write in new header */
+	}
+	else
+		fprintf(stderr,"Comment already exists.\n");
+	exit(0);
+}
+.SH FILES
+sfcodes.c.  
+The location of include files 
+.I crack.h
+and
+.I argscan.h
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+.SH LIBS
+In order to use
+.BR getsfcode ()
+or
+.BR putsfcode (),
+you must load 
+.I libbicsf.a 
+with it when you compile your program:
+.RS .5i
+% cc [options]  your_program  \-lbicsf
+.RE

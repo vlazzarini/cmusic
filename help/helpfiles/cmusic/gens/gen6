@@ -1,0 +1,5 @@
+gen6 - random table generator
+
+	gen T gen6 F ;
+
+Gen6 fills the function named with random samples in the range -1 to +1.

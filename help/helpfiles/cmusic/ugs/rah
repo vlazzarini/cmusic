@@ -1,0 +1,7 @@
+rah - random noise signal generator with hold feature
+
+rah output[b] amplitude[bvpn] increment[bvpn] pos[dpv] from[dpv] to[dpv] ;
+
+rah is the same as ran except that instead of moving in straight lines
+between random values, the random values are held steadily until a new
+one is chosen.

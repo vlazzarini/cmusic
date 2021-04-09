@@ -1,0 +1,92 @@
+fastfir - simplified design of FIR filters
+
+DESCRIPTION
+
+	This program designs lowpass, highpass, bandpass, and
+bandstop FIR filters by the classical windowing technique.  It
+is much easier to use than "fir" and produces filters which are
+nearly as good.  The impulse response is written into the 
+specified filter_file in standard format.  The resulting filter
+can be implemented using either "filter" or "convolve", but "convolve"
+is strongly preferred due to its much greater computational
+efficiency.  The impulse response is also available as an
+optional output to stdout.  To see the frequency response, type
+
+	fastfir [flags] [filter_file] | spect -f
+or
+	impulse 1024 512 | convolve filter_file | spect -f
+
+	The basic idea behind the design is that an ideal filter
+has an infinitely sharp transition from passband to stopband.  As
+a consequence, it also has an infinitely long impulse response.
+Simply taking a finite number of samples of the ideal impulse
+response does not produce a very good filter.  But multiplying
+the finite impulse response by a smoothly varying window can
+produce a surprisingly good filter.  Hence, the filter design
+reduces to four simple steps:
+
+    1)	Specify the number of samples in the impulse response via
+the -n flag.  A suggested value is 127.  A larger value will produce
+a better filter (i.e., sharper transitions between passband and
+stopband).  But a smaller value will produce a filter which is
+more economical to employ.  Both even and odd values are legal,
+but highpass and bandpass filters will automatically convert even
+values to odd.  In general, odd values are preferable because then
+the filter delay ( [n+1]/2 ) will be an integral number of samples.
+This enables "convolve" to maintain exact time-alignment between filter
+input and output.
+
+    2)	Specify the filter type (i.e., lowpass, highpass, bandpass, or
+bandstop) via the -x flag.  More complex filter specifications require
+either "fir" or an original program.
+
+    3)	Specify the window type (e.g., hamming, kaiser, etc.) via the
+-w flag.  The effect of the window is to smear the ideal frequency
+response by convolving it with the frequency response of the window.
+The rectangular window introduces the least smearing of the bandedges,
+but it raises the stopband to such a high level as to be of little
+use.  The triangular window is only slightly better.
+
+	The next three windows (hamming, generalized hamming, and hanning)
+are all variants of the simple equation 
+
+		 w(i) = b + (1-b) * cos(2*pi*i/(n-1))
+
+where i ranges between plus and minus n-1.  If b = .54, then the hamming
+window results; b = .5 gives the hanning window; and any other value
+of b between zero and one gives the generalized hamming.  The hamming
+and hanning windows provide a good compromise between smearing the
+bandedges and keeping the stopband low.
+
+	At the other extreme, the kaiser and chebyshev windows introduce
+the most smearing of the bandedges; but their very low stopband and other 
+properties still make them generally the method of choice.  However, 
+they are also a little more complicated to design.  The kaiser window
+requires one additional parameter via the -a flag.  This parameter
+controls the amount of stopband attenuation.  The default value is 70
+which gives a nominal stopband attenuation of 70db.  (Actually the
+attenuation is more than 70db throughout most of the stopband.)  The
+chebyshev window has three parameters which can be traded off.  The
+normal way to design a chebyshev window would be to specify values
+for -n and -c (where -c is roughly equivalent to -a for the kaiser).
+However, it is also possible to specify values only for -c and -d
+(where -d is the fractional width of the transition band); in this
+case, the required value for -n will be calculated by the program.
+
+4) Specify the cutoff frequency(s) via the -f flag.  If the filter
+is a passband or stopband filter, then two -f specifications are
+required: one for the lower edge of the pass(stop) band and one for
+the upper edge.  It is standard to state these values as decimal
+fractions of the sample rate (e.g., .15); but actual frequencies
+can be specified provided that the -R flag gives the correct sample
+rate.
+
+	This program is essentially a translation of the program WINDOW
+in Programs for Digital Signal Processing, published by the IEEE.  A
+more complete reference is Theory and Application of Digital Signal
+Processing by Rabiner and Gold.
+
+SEE ALSO
+
+fir, convolve, libieee
+

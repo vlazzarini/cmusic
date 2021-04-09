@@ -1,0 +1,12 @@
+Player bleep(0)
+{
+	P_start {
+		Pp5 = "Hz";
+		P4 = 1;
+	}
+
+	P5 = Pitches("motive1: a c cs {d e}x2 f");
+	P6 = Pitches("a {as @motive1}x2 b Kill");
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

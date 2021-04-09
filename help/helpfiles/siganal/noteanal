@@ -1,0 +1,22 @@
+noteanal - simple envelope function analizer
+
+usage: noteanal [flags] < floatsams > floatsams
+ Input must be a file or pipe
+ All time values are in seconds.  Use 'S' postop for sample times.
+ flags:
+ -wN = simple average using window size of N (128S)
+ -mN = mean squared using window size of N (128S)
+ -bN = set segment begin threshold to N (.01)
+ -eN = set segment end threshold to N (.005); -eN must be <= -bN
+ -uN = set min. segment duration (1024S)
+ -lF = set log file for segmentation statistics
+ -s =  turn on segmentation (b, e, l and u automatically set this)
+ -uN = set min. interesting utterance size to N (1024S),
+ -x =  skip output by window-size
+ -z =  output the input sample rather than the average
+ -v = verbose: print summary of noteanal on stderr
+
+In the simple case, noteanal produces the mean squared energy level
+corresponding to the input samples on the standard output as floatsams.
+If it is connected to a terminal, it produces sample number, time (re.
+48K if not changed with -R) and envelope value.

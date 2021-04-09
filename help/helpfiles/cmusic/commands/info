@@ -1,0 +1,22 @@
+info - general information about cmusic commands
+
+Cmusic commands generally have the form:
+
+    command time other ;
+
+Only the first 3 characters in the command need be typed, although more
+may be used.  For example, the commands "ter", "term", "terminate", and
+"terpuffery" all mean the same thing to cmusic.
+
+NOTE: Unit generator names in instrument definitions MUST be typed
+exactly.  For example, the name of the oscillator unit generator is
+"osc", and NOT "oscillator". (Unit generator names are NOT commands,
+whereas "ins" is a command).
+
+Action times are given after all commands except for "set" "merge" and
+"comment".  These times specify when the command is to be executed.
+Commands must be given in time order in the cmusic score unless the
+"merge" command is used.
+
+The portion of the cmusic score statement following the action time is
+determined by the requirements of the individual command.

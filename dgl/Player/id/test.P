@@ -1,0 +1,8 @@
+Player test(0, 10000)
+{
+	register long now = Now;
+
+	P4 = now;
+	printf("%d\n", P4);
+	Wait_until(now + 1000);
+}

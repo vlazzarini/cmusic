@@ -1,0 +1,23 @@
+char *M = "1,2,3,4,{10,11,12}x2,5,6,7,8,9";
+
+Player x(0, 50)
+{
+	Instance char *m;
+
+	P_start {
+		int direction;
+
+		P4 = 1;
+		if ((m = (char *) malloc(strlen(M)+1)) == NULL)
+			malerr("x", 1);
+		strcpy(m, M);
+		Motive(m);
+		if (Argc > 1) {
+			direction = expr(Argv[1]);
+			Direction(m, direction);
+		}
+	}
+	P5 = Exprs(m);
+	P2 = Now;
+	Wait_until(Now + P4);
+}

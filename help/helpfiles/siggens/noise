@@ -1,0 +1,46 @@
+noise - random number generator for Brownian, 1/f and white noise
+
+usage: noise [flags]
+ flags:
+ -h = prints this message
+ -l = lower bound (-1.0)
+ -u = upper bound (+1.0)
+ -n = number of samples(16384)
+ -S = seed (0)
+ -w = weighting (w),
+      options are: w = white, f = 1/f, i = rational white
+      b = brownian, m = mixed
+ -s = sequence length(4096) for 1/f
+      low sequence lengths tend towards whiter noise
+ -r = relative distance traveled for brownian (.1)
+      range: 0 (correlated) => 1 (uncorrelated)
+ -m = mixture of noise type for -wm mode:
+      -1 => 0 mix b and f, 0 => +1 mix f and w
+   
+noise either prints random numbers on your terminal or writes floatsams
+on the standard output.  By default, it produces 1 second at 16K Hz
+of white noise in the signed unit interval.  Use the -l and -u flags
+to change this range.
+
+1/f noise is implemented using Voss's algorithm.  The sequence length
+must be a power of 2 (it is truncated to the nearest lower power if you
+miss).  Low sequence lengths tend to whiten the noise.  A sequence length
+of 1 is exactly white noise.
+
+The -r flag for Brownian noise determines the distance that the next point
+can be from the current one, expressed as a fraction of the total range between
+the upper and lower bound.  It thus has meaning only between 0 1.
+Typical values: .25 approximates the spectrum for 1/f noise, .1 gives
+10dB/octave rolloff, 1 gives whiteish noise.
+
+The rational noise mode gives whole numbers only.  These are necessarily
+outside the range of the signed unit interval.  You must 
+always use -l and -u to set an appropriate range for your application.  
+Output is still floating point.
+
+Finally, the spectra can be varied by mixing Brownian, 1/f and white
+noise in varying proportions.  The -m flag acts like a panpot: between
+-1 and 0 it produces a correctly weighted mixture of Brownian and
+1/f noise.  At 0 it is exactly 1/f noise. Between 0 and +1 it goes from
+1/f to white.  For this mode, you may also vary the -s and -r flags
+to tailor things.

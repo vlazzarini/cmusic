@@ -1,0 +1,82 @@
+convolve - convolve stdin with filter impulse response
+
+convolve stdin with a filter impulse response via fast convolution
+
+DESCRIPTION
+
+This program performs filtering by the overlap-add fast
+convolution algorithm.  Fast convolution takes advantage
+of the fact that the Fourier transform of the convolution
+of two functions is the product of their Fourier transforms.
+Mathematically: the FFT of f(n) @ g(n) (where @ denotes
+convolution) is given by F(w) * G(w) (where * denotes
+multiplication, and F(w) and G(w) are the FFT's of f(n)
+and g(n) respectively).
+
+Linear filtering is the operation of convolving a signal x(n)
+with a filter-impulse-response h(n).  Equivalently, we can
+say that the spectrum of the signal is multiplied by the
+frequency-response of the filter.  Thus, if we know the
+impulse response of a filter (and if it is of finite duration),
+then we have a choice in how we actually apply it to a signal.
+
+On the one hand, we can perform the convolution:
+
+	x(n) @ h(n) = sum: x(m) * h(n - m)
+
+where the sum runs from m = -infinity to m = +infinity.
+(But note that h(n - m) is usually only nonzero for m < n
+and for m > n - M where M is some maximum value.  If there
+is no such M, then the impulse response is infinite, and the
+filter must be implemented in some other manner than the
+techniques described here.)  If x(n) is nonzero for L samples,
+and h(n) is nonzero for M samples, then their convolution
+will require L * M multiplications.
+
+On the other hand, we can simply take the FFT of x(n) and
+the FFT of h(n), multiply the FFT's together, and then take
+the inverse FFT of the product.   If the FFT is of size N
+(where N is a power of two which is greater than L + M),
+then this method will require only on the order of 2 * N log2(N)
+multiplications.  So for example, if L = M = 256, then the
+comparison is between 256 * 256 multiplications for direct
+convolution and 2 * 512 * 9 = 36 * 256 multiplications for
+the FFT method.  (Actually, the multiplications in the FFT
+method are complex multiplications and take twice as long, but
+this is a minor point.)  Thus, for filters with finite but
+long impulse responses, the FFT method is considerably more
+efficient.
+
+The one sticky point here is that the signal x(n) usually
+has far more samples than any reasonable-sized FFT could
+contain.  The way to get around this is to only transform
+blocks of L samples at a time, and to set the remaining
+N - L samples in the FFT to zero.  The inverse FFT then
+contains L + M nonzero output samples (because it is the
+convolution of L signal values with M filter-impulse-response
+values).  However, only the first L of these are correct
+as they stand; the remaining M values need to be added to
+the first L values of the next inverse FFT.  Thus, the
+convolution is implemented as a succession of overlapping
+FFT's with the right half of each inverse FFT added in to
+the left half of each succeeding inverse FFT.
+
+The program "convolve" is a straightforward implementation
+of the fast convolution algorithm with one additional feature.
+Rather than allow the output of the program to be M samples
+longer than the input, the first M/2 samples and the last M/2
+samples are thrown away.  This eliminates the delay which is
+inherent in any real filter, but which is generally undesirable
+in digital implementations.
+
+NOTE:  This program is for FIR filters only!  Its virtue
+is that it provides a considerable savings in computation,
+but only when the filter impulse response is greater than,
+say, 20.  For FIR filters shorter than this, and for all
+IIR filters (e.g., filters produced by "lpc") the program
+"filter" should be used instead.
+
+SEE ALSO
+
+convolvesf, fastfir, fir
+

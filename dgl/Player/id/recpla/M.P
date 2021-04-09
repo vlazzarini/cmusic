@@ -1,0 +1,52 @@
+/* %M%	%I%	(CARL)	%G%	%U% */
+
+# include <carl/sa_mpuvar.h>
+# include <sys/types.h>
+# include <carl/midi.h>
+# include <carl/dx7.h>
+# include "medit.h"
+
+typedef Player * Pptr;
+
+Pptr 	P[P_TRK];
+int	busy[P_TRK];
+int	key;
+int	keypressed;
+struct mpu_trk mpu_trk[P_TRK];
+int	cur_trk;
+int	printit;
+int	porta;
+
+M_start() {
+	extern Player *Instances();
+	register int	i;
+	Pptr	p;
+	extern Player track();
+
+	porta = 1;
+	keypressed = 0;
+	if (mpu_open(0, MPU_MFRAME | MPU_CONTEX) != 0)
+		Pexit(1);
+	mpu_reset(0);
+	/* select playback track */
+	if (mpu_set_track(0, MPU_TR_COM) != 0)
+		exit(1);
+	for (i = 0; i < P_TRK; i++)
+		setup_trk(&mpu_trk[i], MPU_TRK_LEN);
+	for (p = Instances(track), i = 0; p != NULL; p = Next_instance(p), i++) {
+		P[i] = p;
+		P[i]->P_pn[0] = i;
+		busy[i] = 0;
+	}
+	cur_trk = 0;
+	printit = 0;
+	Pclock = 5000;		/* MPU-401 default clock rate == 5ms */
+}
+
+M_ter()
+{
+	stop_ptm();
+	if (mpu_close(0))
+		Pexit(5);
+	exit(0);
+}

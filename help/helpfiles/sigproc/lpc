@@ -1,0 +1,69 @@
+lpc - linear predictive coding of a signal spectrum with an allpole filter
+
+linear predictive coding of a signal spectrum with an allpole filter
+
+DESCRIPTION
+
+This program designs an IIR (allpole) filter which matches the spectrum
+of the input signal spectrum as closely as it can.  Typically, the
+goal is to capture the broad resonances in the spectrum (e.g., the
+formants in speech) without including the individual peaks of each
+harmonic.  The resulting filter can be used with the filter program
+to impose the linear prediction spectrum on some completely different
+signal.  For example, the lpc program can be used to obtain a filter
+which matches the spectrum of a vowel sound.  But note that this program
+produces only a single filter;  "talking orchestra" effects can be
+obtained only with time-varying linear prediction.
+
+Unfortunately, the inner workings of this program are rather tricky.
+Linear predictive coding is done on the basis that the spectrum
+matching filter is the inverse of the optimum linear predictor for
+the data.  Another way of looking at this is that the program calculates
+the M weighting coefficients which allow the M'th input sample to be best
+estimated from the previous M values.  However, this procedure
+is sensitive both to the value of M, to the value of N, and to the
+particular input samples available.  For example, too large a value
+of M may result in the fine structure of the spectrum (i.e., individual
+harmonic peaks) being incorporated into the IIR filter.  But this
+effect can be eliminated if N is exactly one period of the input.
+A general rule of thumb is that the order of the filter should be specified
+to be at least twice the number of major resonances present in the input
+spectrum.
+
+There are two variations of lpc available. The covariance method is
+usually more accurate, especially for short data samples, because it
+does not force prediction of zeros outside the finite data sample.
+The autocorrelation method is equivalent for very long data samples
+and is faster than the covariance method.  The methods give very similar
+results for windows of greater than 512 samples.
+
+A convenient feature of the lpc program is that it uses the same flags
+which produce an lpc spectrum in the spect program.  Hence, a typical
+session might proceed as follows:
+
+	1) Find a portion of an input sound whose spectrum you wish to
+model with lpc.  For example,
+
+	sndin -b.136 voice | spect -k16 -w512S
+
+will cause the 16-pole lpc spectrum to be displayed.
+
+	2) Substitute "lpc" for "spect" to write the coefficients to a
+standard-format filter file.  For example,
+
+	sndin -b.136 voice | lpc -k16 -w512S
+
+will write the coefficients of the previously displayed filter to the file
+"tmp.flt".  
+
+	3) Verify that the filter file is correct by feeding an
+impulse through the filter and observing the spectrum of the output.
+
+	impulse 1024 | filter tmp.flt | spect -f -d | btoa -F 
+
+(The -f flag tells spect that the input is a filter impulse response.)
+
+SEE ALSO
+
+filter, libieee
+

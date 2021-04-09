@@ -1,0 +1,13 @@
+/* fixed; resulted from a bug introduced in Wait_until */
+/* ce Player devrait durer 10 secondes, il n'en dure que 6. !! */
+Player p(0,10.)
+{
+	P_start {
+		printf("hello\n");
+	}
+	P4 = 1. ;
+	P2 = Abs_time() ;
+	P5 = Pitches("a") ;
+	Wait_until(P2 + P4) ;
+}
+

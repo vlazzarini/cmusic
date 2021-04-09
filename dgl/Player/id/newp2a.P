@@ -1,0 +1,9 @@
+long	then;
+
+Player note(0)
+{
+	register int now = Now;
+
+	fprintf(1, "note: %d\n", now - then);
+	Wait_until(then = now);
+}

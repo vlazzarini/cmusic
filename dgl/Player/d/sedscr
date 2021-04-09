@@ -1,0 +1,5 @@
+for file in $*
+do
+	sed -e "s/argc/Argc/g" -e "s/argv/Argv/g" $file > /tmp/$$
+	mv /tmp/$$ $file
+done

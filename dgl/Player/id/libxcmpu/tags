@@ -1,0 +1,14 @@
+flag_error		trap_init.c	3 ;" 1 { test_adr trap_init }	{ }
+mpu_cint_dgl		mpu_cint.c	/^mpu_cint_dgl (data)$/ ;" 38 { }	{ watch_pedal }
+mpu_init		mpu_init.c	/^mpu_init()$/ ;" 29 { }	{ mpu_reg test_adr }
+mpu_reg		mpu_init.c	10 ;" 1 { mpu_init }	{ }
+portamento_pedal		watch_pedal.c	19 ;" 1 { start_watch_pedal stop_watch_pedal watch_pedal }	{ }
+rec_buf		watch_pedal.c	16 ;" 1 { watch_pedal }	{ }
+start_watch_pedal		pedal.c	/^start_watch_pedal(mpu_nb) $/ ;" 7 { }	{ portamento_pedal sustain_pedal }
+stat_mem		ckmem.c	/^stat_mem()$/ ;" 9 { }	{ }
+status		watch_pedal.c	14 ;" 1 { watch_pedal }	{ }
+stop_watch_pedal		pedal.c	/^stop_watch_pedal(mpu_nb)$/ ;" 6 { }	{ portamento_pedal sustain_pedal }
+sustain_pedal		watch_pedal.c	18 ;" 1 { start_watch_pedal stop_watch_pedal watch_pedal }	{ }
+test_adr		ckmem.c	/^test_adr(adr)$/ ;" 13 { mpu_init }	{ flag_error }
+trap_init		trap_init.c	/^trap_init()$/ ;" 11 { }	{ flag_error }
+watch_pedal		watch_pedal.c	/^watch_pedal (data)$/ ;" 73 { mpu_cint_dgl }	{ portamento_pedal rec_buf status sustain_pedal }

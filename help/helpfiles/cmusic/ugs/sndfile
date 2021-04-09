@@ -1,0 +1,14 @@
+sndfile - oscillator for disc files (digital recordings)
+
+sndfile output[b] amplitude[bvpn] increment[bvpn] filename[s] channel[vpn] 
+ startframe[bvpn] endframe[bvpn] pos[bvpnd] ptr[d] ;
+
+Repeatedly reads in the specified channel of the file named by the
+filename string variable, starting at sample startframe, ending at
+sample endframe (if endframe = -1 then the end of the file is used).
+The specified increment is applied to the file (this is normally 1.0);
+if the end of the specified segment is reached, sndfile starts reading
+again from the startframe.  The buffer size used by sndfile can be
+controlled with the "set sfbufsize = N;" score statement (the default
+value for N is 16KB, and may cause swapping if many simultaneous read
+operations are used).

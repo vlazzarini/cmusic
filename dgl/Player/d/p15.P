@@ -1,0 +1,16 @@
+x_test()
+{
+	return(TRUE);
+}
+
+Player x(0, 1.0)
+{
+	Instance int first;
+
+	if (first == 0) {
+		first = 1;
+		Wait_for(x_test, CONTINUOUS);
+		Return;
+	}
+	P2 = Now;
+}

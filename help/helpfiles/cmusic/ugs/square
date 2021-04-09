@@ -1,0 +1,6 @@
+square - calculates the square of a signal
+
+square output[b] input[bvpfdn] ;
+
+The output of the square unit generator is equal to the square of its
+input.

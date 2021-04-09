@@ -1,0 +1,8 @@
+Player test(0)
+{
+	char *c = Strings(argv[1]);
+	if (Player_stat & P_WRAP)
+		Pexit(0);
+	printf("%s\n", c);
+	Wait_until(Abs_time());
+}

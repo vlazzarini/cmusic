@@ -1,0 +1,13 @@
+Player x(0)
+{
+	P_start {
+		Pp5 = "Hz";
+		Read_lists("notefile");
+	}
+	P4 = Rhythms("@vln1rhy");
+	P5 = Pitches("@vln1not");
+	P6 = Exprs("@vln1num");
+	Ps7 = Strings("@vln1str");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,8 @@
+test - can shut down notes if certain conditions are met
+
+test condition[vpn] action[vpn] input[bvpdn]* ;
+
+The specified action is taken if the input(s) meet(s) the specified
+condition.  Useful for turning off notes before their termination time
+(such as when reverberation dies below a threshhold) in order to save
+computation time.

@@ -1,0 +1,22 @@
+Player xxx()
+{
+	for (;;) {
+	}
+}
+
+
+Player qop()
+{
+	/* Kill(Self); */
+}
+
+Player blop(0)
+{
+	Player *v;
+	int i;
+
+	v = New_player(qop, Now, 1.0, P_READY);
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

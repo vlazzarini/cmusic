@@ -1,0 +1,12 @@
+Player x(0,10)
+{
+	p4 = 1;
+	ps5 = "hi there";
+	p2 = Now;
+	Wait_until(Now + 1.0);
+}
+
+M_ter()
+{
+	printf("ter;\n");
+}

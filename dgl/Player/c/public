@@ -1,0 +1,158 @@
+
+double 
+Notes(nl)
+	char *nl;
+double
+Pitches(nl)
+	char *nl;
+double 
+Numbers(nl)
+	char *nl;
+double 
+Rhythms(nl)
+	char *nl;
+char *
+Strings(nl)
+	char *nl;
+cmusout(x)
+	Player *x;
+Motive(nl)
+	char *nl;
+/*
+ * Read_func - read named floatsam function file
+ * takes:
+ * 	name - name of file
+ * 	type - sequence type: H_MONO_IN_X, or H_XY_PAIRS,
+ * 		defined in defaults.h
+ * actions:
+ * 	creates and fills a FUNCTION structure with data in file, interpreted
+ * 	according to function header, or in its absence, according
+ * 	to type argument.
+ * returns:
+ * 	pointer to FUNCTION structure.
+ */
+	
+FUNCTION *
+Read_func(name, type)
+	char 	*name, 	/* file name of function */
+		*type;	/* sequence type: H_MONO_IN_X, or H_XY_PAIRS */
+/*
+ * get gen function from pipe, name of function is (currently) taken
+ * as the command that generated it.
+ */
+FUNCTION *
+Gen(cmd)
+	char *cmd;
+/*
+ * return the y-value for the value on the function at x.  If x is
+ * not a whole number, linear interpolation is used to find the value.
+ * If the function is [x,y] pairs, return the corresponding value of y,
+ * again interpolating if x is not found.
+ */
+
+double 
+Func(f, x)
+	FUNCTION *f; 
+	double x;
+/* 
+ * The function is taken to have a range between [0,1), indexed by x 
+ * which can be indexed, e.g., by rel_time to return successive points
+ * from the function.
+ */
+double 
+Rel_func(f, x)
+	FUNCTION *f; double x;
+
+double Now;
+Player *Self;
+int (*Out_proc)();
+int argc;
+char **argv;
+long _Pdebug;
+
+double 
+P(vp, n)
+	Player (*vp)(); 
+	int n;
+char *
+Ps(vp, n)
+	Player (*vp)(); 
+	int n;
+char *
+Pp(vp, n)
+	Player (*vp)(); 
+	int n;
+double 
+Rel_time(x)
+	unsigned x;
+double 
+Beg_time(x)
+	unsigned x;
+double 
+Dur_time(x)
+	Player *x;
+double 
+End_time(x)
+	Player *x;
+Set_beg_time(x, beg)
+	Player *x;
+	double beg;
+Set_dur_time(x, dur)
+	Player *x;
+	double dur;
+Hipn(n)
+	int n;
+Player *
+New_player(proc, beg, dur, stat)
+	Player (*proc)();
+	double beg, dur;
+	int stat;
+/* terminate the named player */
+Stop(x)
+	unsigned x;
+Player_status(x)
+	unsigned x;
+Start(x)
+	unsigned x;
+Rest()
+Unrest()
+Silent(x)
+	unsigned x;
+Not_silent(x)
+	unsigned x;
+/* 
+ * Read_lists - read all notes, rhythms, numbers or strings statements from a 
+ * list file.
+ */
+
+Read_lists(file)
+	char *file;
+/* Getcladdr - take a motive name, return the string form of its list */
+
+char *
+Getcladdr(motivename)
+	char *motivename;
+/* Get_list - return the string form of a labeled cyclic list */
+
+char *
+Get_list(file, label)
+	char *file, *label;
+/* 
+ * Read_list - read notes, rhythms, numbers or strings statements from a 
+ * motive label in a file onto loc. specified by indx.
+ */
+
+Read_list(file, label)
+	char *file, *label;
+double 
+Tempo(tempofun, abstart, absdur, limit)
+	Function *tempofun;
+	double *abstart, absdur, limit;
+Wait_until(time)
+	double time;
+Wait_for(proc, status)
+	int (*proc)();
+	int status;
+
+libran
+libcarl

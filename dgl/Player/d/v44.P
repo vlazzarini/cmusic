@@ -1,0 +1,76 @@
+
+double Tmap(tempofun, time, abs_total_dur)
+	Function *tempofun;
+	double time, abs_total_dur;
+/*
+ * Compute mapped time from tempo function.
+ * .LP
+ * Takes:
+ * .nf
+ * .in +.5
+ * tempofun \- function expressing tempo in beats-per-minute
+ * time \- un-tempo-factored time
+ * abs_total_dur \- un-tempo-factored duration for entire function
+ * .in -.5
+ * .fi
+ * .LP
+ * Returns the apropriate tempo-factored time.
+ */
+{
+	long fl, i;
+	double rtn;
+	register double t1, t2, f;
+
+	if ((fl = Func_length(tempofun)) < 0) {	/* no function? */
+		fprintf(stderr, "Tempo: no function\n");
+		return -1.0;
+	}
+
+	if (time == abs_total_dur)
+		return abs_total_dur;
+	if (time > abs_total_dur)		/* done */
+		return -1.0;			
+
+	if (abs_total_dur <= 0.) {		/* avoid divide by 0 && -dur */
+		fprintf(stderr, "Tmap: invalid abs_total_dur\n");
+		return -1.0;
+	}
+	i = f = time * fl / abs_total_dur; 
+	f -= floor(f);
+	t1 = tempofun->fyval[i];
+	if (i == fl)
+		t2 = t1;
+	else
+		t2 = tempofun->fyval[i + 1];
+	rtn = ((1. - f) * t1) + (f * t2);
+	return rtn;
+}
+
+Player blat(0.0)
+{
+	Instance double utf_begin, f_dur;
+	Instance Function *tempo;
+	Instance char *r;
+	Function *t;
+	double utf_dur, end;
+
+	P_start { 
+		f_dur = atoi(Argv[1]);
+		t = tempo = Gen(Argv[2]);
+		r = Argv[3];
+	}
+	if ((P2 = Tmap(tempo, utf_begin, f_dur)) < 0.0) {
+		printf("p2=%f\n", P2);
+		Kill(Self);
+		Return;
+	}
+	utf_dur = Rhythms(r);
+	if ((end = Tmap(tempo, utf_begin + utf_dur, f_dur)) < 0.0) {
+		printf("p2=%f, p4=%f\n", P2, P4);
+		Kill(Self);
+		Return;
+	}
+	P4 = end - P2;
+	utf_begin += utf_dur;
+	Wait_until(end);
+}

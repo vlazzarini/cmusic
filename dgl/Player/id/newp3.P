@@ -1,0 +1,19 @@
+typedef Player * Pptr;
+Pptr n;
+
+Player stuff(1000)
+{
+	register int	now = Now;
+
+	fprintf(1, "stuff\n");
+	Wait_until(now + 1000);
+}
+
+Player note(500)
+{
+	register int now = Now;
+
+	fprintf(1, "note\n");
+	Wait_until(now + 1000);
+}
+

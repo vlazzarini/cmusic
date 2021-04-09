@@ -1,0 +1,11 @@
+Mtstasw	tstasw.c	/^main() {$/
+_getplace	getplace.c	/^_getplace() {$/
+closeasw	openasw.c	/^closeasw(fd) {$/
+connasw	connasw.c	/^connasw(dev, chans)$/
+disconnasw	disconnasw.c	/^disconnasw() {$/
+initasw	initasw.c	/^initasw() {$/
+mask	tstasw.c	/^# define mask(n)	((1) << ((n) - 1))$/
+openasw	openasw.c	/^openasw() {$/
+remhost	getplace.c	/^remhost() {$/
+resetasw	resetasw.c	/^resetasw() {$/
+strsave	getplace.c	/^strsave(str)$/

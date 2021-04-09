@@ -1,0 +1,36 @@
+/*
+ * Inside a voice block, the block of statements:
+ * 	P_start {
+ * 		Pp5 = "Hz";
+ * 		Ps6 = "f1";
+ * 	}
+ * will only be executed on the first call to the voice, and ignored on
+ * all subsequent calls.
+ * 
+ * Numbered parameters actually consist of three registers, a floating
+ * point number, a string, and a postfix string.  The parameter P4, for
+ * example, refers to the floating point register for P4.  The string
+ * register for parameter 4 is called Ps4.  The postfix string is Pp4.  If
+ * the value of the information being assigned to a numbered parameter
+ * field is to be numeric, use the  P  register.  If it is to be a string,
+ * use the  Ps  register.  If either the numeric or string value for a
+ * parameter is to have a postoperator, that can be placed in the  Pp
+ * register, and it will be concatenated to the P  or  Ps  register.  In
+ * the example below, the frequencies in P5 will have the string "Hz"
+ * concatenated.  The sixth parameter field will be the string "f1".  Note
+ * that if P6 and Ps6 were both used, ccmp would have chosen to use Ps6
+ * over P6.
+ */
+
+
+Player beep(1.5,100)
+{
+	P_start {
+		Pp5 = "Hz";
+		Ps6 = "f1";
+	}
+	P4= Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,9 @@
+Player blat(0)
+{
+	int i;
+
+	for (i = 0; i < Argc; i++)
+		printf("%s ", Argv[i]);
+	printf("\n");
+	Kill(Self);
+}

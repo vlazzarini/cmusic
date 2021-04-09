@@ -1,0 +1,37 @@
+var - the cmusic var command
+
+The cmusic var command has the general format:
+
+       var T NAME LIST ;
+
+where: 
+    T    is an action time, 
+    NAME is the name of the variable to be set, and 
+    LIST is one or more values for the variables.
+
+NAME may be any of:
+
+    pN or p[N] - refers to note parameter N (N may be an expression if 
+		 it is enclosed in square brackets []);
+    vN or v[N] - refers to global numerical variable N (N may be an 
+		 expression if it is enclosed in square brackets []);
+    sN or s[N] - refers to global string variable N (N may be an expression 
+		 if it is enclosed in square brackets []).
+
+LIST values may be either numeric (for "p" or "v" variables), or
+strings enclosed in double quote (") marks.  The first value given
+replaces the value of the variable named.  Succeeding values replace
+successive variables.  Variables may be used in cmusic expressions such
+as global values, or in various special ways, such as to set filenames
+for the sndin unit generator, or to set the score tempo via the "set
+tempowith" command;
+
+Examples:
+
+   var 0 p5 33;         {Sets p5 to 33 at time 0}
+   var 0 p5 33 44;      {Sets p5 to 33 and p6 to 44 at time 0}
+   var 0 v[v3/2] 19Hz;  {If variable v3 is equal to 15, then this
+			 statement sets v7 to 19Hz}
+   var 0 s1 "filename1" "filename2";
+			{sets string variable s1 to "filename1" and
+			 s2 to "filename2"}

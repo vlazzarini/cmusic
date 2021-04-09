@@ -1,0 +1,114 @@
+set - the cmusic set command
+
+Cmusic command line flags have the possibility of overriding set
+options specified in the score (see "help cmusic/commandline").  Only the
+first three characters of any option name are significant, i.e., "set
+verbose;" may be written as "set ver;".
+
+set barefile = filename; 
+    Produces a "bare" score listing on the named file.  A "bare" score
+    has all macros and expressions replaced with their numerical
+    values  [Default: no barefile is produced].
+set blocklength = N;
+    Sets the io block length to N [Default: N = 256] (in command flag
+    form, use -BN).
+set channels = N; set nchannels = N; set stereo; set quad;
+    Determine the number of output channels  [Default: N = 1].
+set cutoff = N;
+    sets cutoff threshhold for computing the tail of the global reverb
+    to N [Default: N = .0001 (= -120dB)].
+set defer;
+    causes the next note statement encountered to be executed after all
+    other simultaneously-sounding note statements.  Note that only the
+    next note statement is affected.  If multiple deferred notes play
+    simultaneously, they are executed in the order that they are encountered
+    in the notelist.
+set direct = N; set reflect = N;
+    sets "distance amplifier" values for direct and reflected soundpaths
+    during spatial processing.  Amplitude along direct and reflected paths 
+    are proportional to 1/(1+d^direct) and 1/(1+d^reflect) where d is the 
+    length of the path.  direct and reflect are normally equal to 1.0.
+    Setting these parameters to values greater than 1 expands distances, 
+    while setting them to values less than one compresses distances.
+    [Default: N = 1 in both cases].
+set floatoutput;
+set nofloatoutput;
+    Specifies whether cmusic should produce 32-bit floating point sample
+    values  [this is the default].  If floats are not produced, 16-bit
+    2s complement short ints are produced.
+set functionlength = N;
+    Sets the default score function length to N [Default: N = 1024]
+    (in command flag form, use -LN).
+set header;
+set noheader;
+    Specifies whether a csound header should be produced by cmusic
+    (such headers are normally transparent to the user).  [The default
+    is to produce the header.]
+set listingfile = filename;
+    Produces a score listing on the named file [Default: no listing
+    is produced].  If this command is given with no list filename
+    specified, cmusic will create a file with the same name as the
+    score file with a ".list" extension.
+set noclip;
+    turns off clipping of cmusic output (allows float output to exceed
+    range of -1 to +1 in magnitude) [Default: clipping is turned on]
+set notify;
+    Specifies that cmusic should produce its termination message on the
+    terminal (in command flag form, use -n; the -q flag turns off any
+    notify, timer or verbose options in the score).
+set outputfile = filename;
+    Causes cmusic to place its sample output on the named file instead
+    of stdout.
+set rand = N; set seed = N;
+    "Seed" the random number generator with N.
+set sfbuffersize = N;
+    Sets the buffersize used by the sndfile unit generator to N (CARL only)
+    [Default = 16K (bytes)].
+set rate = N; set samplingrate = N; set srate = N;
+    Set the sampling rate to N [Default = 16K = 16384] (in command flag
+    form, use -RN).
+set revscale = N;
+    sets relative amplitude of global reverb to N [Default = .25] (useful
+    with space unit generator only).
+set room = Lx1,Ly1 Lx2,Ly2 Lx3,Ly3 Lx4,Ly4;
+    sets the quadrant 1, 2, 3, and 4 vertices of the inner room to
+    the specified values (given in meters, with point 0,0 being the
+    center of all space) [Default: 4,4 -4,4 -4,-4 4,-4]
+set space = Ax1,Ay1 Ax2,Ay2 Ax3,Ay3 Ax4,Ay4;
+    sets the quadrant 1, 2, 3, and 4 vertices of the outer room to
+    the specified values (given in meters, with point 0,0 being the
+    center of all space) [Default: 50,50 -50,50 -50,-50 50,-50]
+set speakers = Sx1,Sy1 Sx2,Sy2 ... Sxn,Syn;
+    sets the locations of n speakers (must be on the perimeter of the
+    inner room) the specified values (given in meters, with point 0,0 
+    being the center of all space) [Default: 4 speakers defined at
+    4,4 -4,4 -4,-4 4,-4]
+set tempowith vN;
+set offsetwith vN;
+    causes cmusic to use the specified variable to set the tempo or time
+    offset.  If tempo is specified with, say, v1, then the values of both 
+    p2 and p4 will be REPLACED with p2*v1 and p4*v1, respectively.  If 
+    time offset is specified with, say, v2, then v2 will be added to all
+    p2 values after they have been scaled by tempo, if any.  For example:
+	#define TEMPO set tempowith v10; var p2 v10
+	#define T (p2+p4)/(v10)
+	TEMPO 30MM;
+	note 0 one 1 440Hz 0dB;
+	note T one 1 440Hz 0dB;
+	note T one 1 440Hz 0dB;
+    will use variable v10 to set the tempo of the score.  It is set up and 
+    defined with macro TEMPO.  Note the use of v10 in the T macro.
+set t60 = N;
+    sets the global reverberation time to N seconds (approximately)
+set timer;
+    Cause cmusic to send computation timing numbers to the user's
+    terminal.  When 1 second of score is completed, ":1" is printed,
+    etc.  A number in square brackets following the timing value (such
+    as ":5[127]") indicates the number of out-of-range samples during
+    that second of output (in command flag form, use -t; the -q flag
+    turns off any notify, timer or verbose options in the score).
+set verbose;
+    Causes cmusic to send the interpreted input listing, timing, and
+    termination notification messages to the user's terminal
+    (in command flag form, use -v; the -q flag turns off any notify,
+    timer or verbose options in the score).

@@ -1,0 +1,14 @@
+gen0 - Normalize a function to lie within the range +max to -max:
+
+	gen T gen0 F   max ;
+
+F is a previously defined function with a maximum absolute value X.
+Gen0 scales this function so that the old value X corresponds to max.
+If max is omitted, it is assumed to be 1.0.  Some functions consist of
+only positive values, or negative values (such as an amplitude
+envelope), or both positive and negative values (such as a waveform).
+Gen0 will insure that no value exceeds max in either case.  Examples:
+
+gen 0 gen0 f1 1;	(Normalizes maximum value of f1 to 1.0)
+gen 0 gen0 f2 1000Hz; (Normalizes f2 so that its maximum value corresponds to
+			1000 Hz)

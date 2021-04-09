@@ -1,0 +1,23 @@
+sfck - how to determine how much space is left for files
+
+To find out how much space is left in the soundfile system, use the
+command 
+ 
+ % sfck -n <csound_filesystem>
+
+for instance
+
+ % sfck -n /snd
+
+which prints:
+ 
+   maxcyl    total     used  bigused   unused bignused  alloced    freed
+      384      384      125       16      259      219        0        0
+
+The relevant figure is bignused, which is the largest contiguous block
+of storage, in cylinders.  To figure out how much time that is, use the
+rule of thumb: 3.1 sec. per cylinder at 48K, 9.5 sec. at 16K.
+Storage requirements are doubled for stereo.
+
+To see an allocation map of a csound disk, including used and unused
+portions, read the help file for the command "sdc".  

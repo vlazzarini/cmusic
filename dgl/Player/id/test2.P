@@ -1,0 +1,12 @@
+true()
+{
+	return(TRUE);
+}
+
+Player test(0)
+{
+	register long now = Now;
+
+	fprintf(1, "%d\n", now);
+	Wait_until(now+100);
+}

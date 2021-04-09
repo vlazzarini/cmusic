@@ -1,0 +1,5 @@
+* make Pitches routine 
+* put in | barlines
+fix Notes to hold accidentals until barlines
+Beats routines
+make Instance data types initializable.

@@ -1,0 +1,74 @@
+.TH GETSFNAME 3 BICSF "1st Edition" "Berkeley/IRCAM/CARL Sound Filesystem"
+.SH NAME
+getsfname \- returns full pathname to requested soundfile
+.SH SYNOPSIS
+.PP
+.nf
+char *getsfname(shortname);
+	
+	char *shortname;
+
+.fi
+.SH DESCRIPTION
+.BR getsfname ()
+returns the full pathname to
+.IR shortname .
+If it finds "/" at the beginning of 
+.IR shortname ,
+.BR getsfname ()
+assumes that it has been passed a full pathname and returns.
+.PP
+If the first character of shortname is "~", 
+.BR getsfname () 
+expands "~person" into "current_soundfile_directory_of_person", appends
+shortname to it, and returns the full pathname.
+.PP
+If neither "/" nor "~" are found,
+.BR getsfname () 
+gets the current soundfile
+directory pathname of the user's environment variable SFDIR,
+appends shortname to this, and returns the full pathname.
+.SH EXAMPLES
+mix and sndnorm call 
+.BR getsfname () 
+to open soundfiles.
+.PP
+.nf
+In this example:
+	-shortname is the second command line argument to "this_program".
+	-getsfname() expands shortname into a full pathname.
+	-readopensf() now has a full pathname to the soundfile.
+
+
+	char *name, *shortname, *getsfname();
+
+	shortname = argv[1];
+	name = getsfname(shortname);
+	readopensf(name,fd,sfh,sfst,"this_program",result);
+.SH FILES
+getsfname.c.  
+The location of include files 
+.I crack.h
+and
+.I argscan.h
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+In order to use 
+.BR getsfname (),
+you must load "libbicsf" with it 
+when you compile your program:
+.RS .5i
+% cc [options] your_program.c -lbicsf
+.RE
+.PP
+You do not have to declare
+.BR getsfname ()
+in your program because it is declared in sfheader.h.
+.SH SEE ALSO
+readopensf() in sfheader(5)
+

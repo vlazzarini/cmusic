@@ -1,0 +1,213 @@
+cp Player.h /usr/include/carl
+cc -g -DP_FLOAT  -sun3 -c  Abs_time.c
+cc -g -DP_FLOAT  -sun3 -c  Alias.c
+cc -g -DP_FLOAT  -sun3 -c  Beg_time.c
+cc -g -DP_FLOAT  -sun3 -c  Caller.c
+cc -g -DP_FLOAT  -sun3 -c  Direction.c
+cc -g -DP_FLOAT  -sun3 -c  Dur_time.c
+cc -g -DP_FLOAT  -sun3 -c  End_time.c
+cc -g -DP_FLOAT  -sun3 -c  Expr.c
+cc -g -DP_FLOAT  -sun3 -c  Exprs.c
+cc -g -DP_FLOAT  -sun3 -c  Find_measure.c
+cc -g -DP_FLOAT  -sun3 -c  Func.c
+cc -g -DP_FLOAT  -sun3 -c  Func_length.c
+cc -g -DP_FLOAT  -sun3 -c  Gen.c
+cc -g -DP_FLOAT  -sun3 -c  Get_keysig.c
+cc -g -DP_FLOAT  -sun3 -c  Get_list.c
+cc -g -DP_FLOAT  -sun3 -c  Get_metronome.c
+cc -g -DP_FLOAT  -sun3 -c  Get_pname.c
+cc -g -DP_FLOAT  -sun3 -c  Get_paddr.c
+cc -g -DP_FLOAT  -sun3 -c  Get_timesig.c
+cc -g -DP_FLOAT  -sun3 -c  Hipn.c
+cc -g -DP_FLOAT  -sun3 -c  Index.c
+cc -g -DP_FLOAT  -sun3 -c  Instances.c
+cc -g -DP_FLOAT  -sun3 -c  Join.c
+cc -g -DP_FLOAT  -sun3 -c  Key.c
+cc -g -DP_FLOAT  -sun3 -c  Keys.c
+cc -g -DP_FLOAT  -sun3 -c  Kill.c
+cc -g -DP_FLOAT  -sun3 -c  Kill_test.c
+cc -g -DP_FLOAT  -sun3 -c  Motive.c
+cc -g -DP_FLOAT  -sun3 -c  New_player.c
+cc -g -DP_FLOAT  -sun3 -c  Octave.c
+cc -g -DP_FLOAT  -sun3 -c  Oct_pt.c
+cc -g -DP_FLOAT  -sun3 -c  Oct_pts.c
+cc -g -DP_FLOAT  -sun3 -c  P.c
+cc -g -DP_FLOAT  -sun3 -c  Peekcl.c
+cc -g -DP_FLOAT  -sun3 -c  Pexit.c
+cc -g -DP_FLOAT  -sun3 -c  Pitch.c
+cc -g -DP_FLOAT  -sun3 -c  Pitches.c
+cc -g -DP_FLOAT  -sun3 -c  Player_status.c
+cc -g -DP_FLOAT  -sun3 -c  Pmain.c
+cc -g -DP_FLOAT  -sun3 -c  Pp.c
+cc -g -DP_FLOAT  -sun3 -c  Print_stat.c
+cc -g -DP_FLOAT  -sun3 -c  Ps.c
+cc -g -DP_FLOAT  -sun3 -c  Psleep.c
+cc -g -DP_FLOAT  -sun3 -c  Read_func.c
+cc -g -DP_FLOAT  -sun3 -c  Read_list.c
+cc -g -DP_FLOAT  -sun3 -c  Read_lists.c
+cc -g -DP_FLOAT  -sun3 -c  Rel_func.c
+cc -g -DP_FLOAT  -sun3 -c  Rel_time.c
+cc -g -DP_FLOAT  -sun3 -c  Rest.c
+cc -g -DP_FLOAT  -sun3 -c  Resting.c
+cc -g -DP_FLOAT  -sun3 -c  Rhythm.c
+cc -g -DP_FLOAT  -sun3 -c  Rhythms.c
+cc -g -DP_FLOAT  -sun3 -c  Set_beg_time.c
+cc -g -DP_FLOAT  -sun3 -c  Set_dur_time.c
+cc -g -DP_FLOAT  -sun3 -c  Set_p.c
+cc -g -DP_FLOAT  -sun3 -c  Set_pi.c
+cc -g -DP_FLOAT  -sun3 -c  Set_pp.c
+cc -g -DP_FLOAT  -sun3 -c  Set_ps.c
+cc -g -DP_FLOAT  -sun3 -c  Setup_p.c
+cc -g -DP_FLOAT  -sun3 -c  Setup_pp.c
+cc -g -DP_FLOAT  -sun3 -c  Setup_ps.c
+cc -g -DP_FLOAT  -sun3 -c  Silent.c
+cc -g -DP_FLOAT  -sun3 -c  Start.c
+cc -g -DP_FLOAT  -sun3 -c  Stop.c
+cc -g -DP_FLOAT  -sun3 -c  Strings.c
+cc -g -DP_FLOAT  -sun3 -c  SubPname.c
+cc -g -DP_FLOAT  -sun3 -c  Tempo.c
+cc -g -DP_FLOAT  -sun3 -c  Tmap.c
+cc -g -DP_FLOAT  -sun3 -c  Unrest.c
+cc -g -DP_FLOAT  -sun3 -c  Unsilent.c
+cc -g -DP_FLOAT  -sun3 -c  Unwait_until.c
+cc -g -DP_FLOAT  -sun3 -c  Wait_for.c
+cc -g -DP_FLOAT  -sun3 -c  Wait_until.c
+cc -g -DP_FLOAT  -sun3 -c  add_player.c
+cc -g -DP_FLOAT  -sun3 -c  check_waits.c
+cc -g -DP_FLOAT  -sun3 -c  ckmaxp.c
+cc -g -DP_FLOAT  -sun3 -c  clist_direct.c
+cc -g -DP_FLOAT  -sun3 -c  cmusout.c
+cc -g -DP_FLOAT  -sun3 -c  cpy_args.c
+cc -g -DP_FLOAT  -sun3 -c  cyclist.c
+cc -g -DP_FLOAT  -sun3 -c  do_rhy.c
+cc -g -DP_FLOAT  -sun3 -c  garbage.c
+cc -g -DP_FLOAT  -sun3 -c  get_templ.c
+cc -g -DP_FLOAT  -sun3 -c  globs.c
+cc -g -DP_FLOAT  -sun3 -c  hi_p_ck.c
+cc -g -DP_FLOAT  -sun3 -c  interplist.c
+cc -g -DP_FLOAT  -sun3 -c  keysig.c
+cc -g -DP_FLOAT  -sun3 -c  malerr.c
+cc -g -DP_FLOAT  -sun3 -c  metronome.c
+cc -g -DP_FLOAT  -sun3 -c  mk_Player.c
+cc -g -DP_FLOAT  -sun3 -c  parse_flags.c
+cc -g -DP_FLOAT  -sun3 -c  pc_oct.c
+cc -g -DP_FLOAT  -sun3 -c  pexprerr.c
+Player -P poll_waits.P && cc -c -g -DP_FLOAT poll_waits.c
+/lib/cpp  poll_waits.P | /cmil/bin/Playery   > poll_waits.c
+poll_waits.c: 1: P_FLOAT redefined
+cc -g -DP_FLOAT  -sun3 -c  read_notes.c
+Player -P read_stdin.P && cc -c -g -DP_FLOAT read_stdin.c
+/lib/cpp  read_stdin.P | /cmil/bin/Playery   > read_stdin.c
+read_stdin.c: 1: P_FLOAT redefined
+cc -g -DP_FLOAT  -sun3 -c  resize_p.c
+cc -g -DP_FLOAT  -sun3 -c  run_arbiter.c
+cc -g -DP_FLOAT  -sun3 -c  scanargs.c
+cc -g -DP_FLOAT  -sun3 -c  sched.c
+cc -g -DP_FLOAT  -sun3 -c  symtab.c
+cc -g -DP_FLOAT  -sun3 -c  symtab_stat.c
+cc -g -DP_FLOAT  -sun3 -c  timesig.c
+ar uv libPlayer.a  Abs_time.o Alias.o Beg_time.o Caller.o Direction.o Dur_time.o End_time.o Expr.o Exprs.o Find_measure.o Func.o Func_length.o Gen.o Get_keysig.o Get_list.o Get_metronome.o Get_pname.o Get_paddr.o Get_timesig.o Hipn.o Index.o Instances.o Join.o Key.o Keys.o Kill.o Kill_test.o Motive.o New_player.o Octave.o Oct_pt.o Oct_pts.o P.o Peekcl.o Pexit.o Pitch.o Pitches.o Player_status.o Pmain.o Pp.o Print_stat.o Ps.o Psleep.o Read_func.o Read_list.o Read_lists.o Rel_func.o Rel_time.o Rest.o Resting.o Rhythm.o Rhythms.o Set_beg_time.o Set_dur_time.o Set_p.o Set_pi.o Set_pp.o Set_ps.o Setup_p.o Setup_pp.o Setup_ps.o Silent.o Start.o Stop.o Strings.o SubPname.o Tempo.o Tmap.o Unrest.o Unsilent.o Unwait_until.o Wait_for.o Wait_until.o add_player.o check_waits.o ckmaxp.o clist_direct.o cmusout.o cpy_args.o cyclist.o do_rhy.o garbage.o get_templ.o globs.o hi_p_ck.o interplist.o keysig.o malerr.o metronome.o mk_Player.o parse_flags.o pc_oct.o pexprerr.o poll_waits.o read_notes.o read_stdin.o resize_p.o run_arbiter.o scanargs.o sched.o symtab.o symtab_stat.o timesig.o
+ar: creating libPlayer.a
+a - Abs_time.o
+a - Alias.o
+a - Beg_time.o
+a - Caller.o
+a - Direction.o
+a - Dur_time.o
+a - End_time.o
+a - Expr.o
+a - Exprs.o
+a - Find_measure.o
+a - Func.o
+a - Func_length.o
+a - Gen.o
+a - Get_keysig.o
+a - Get_list.o
+a - Get_metronome.o
+a - Get_pname.o
+a - Get_paddr.o
+a - Get_timesig.o
+a - Hipn.o
+a - Index.o
+a - Instances.o
+a - Join.o
+a - Key.o
+a - Keys.o
+a - Kill.o
+a - Kill_test.o
+a - Motive.o
+a - New_player.o
+a - Octave.o
+a - Oct_pt.o
+a - Oct_pts.o
+a - P.o
+a - Peekcl.o
+a - Pexit.o
+a - Pitch.o
+a - Pitches.o
+a - Player_status.o
+a - Pmain.o
+a - Pp.o
+a - Print_stat.o
+a - Ps.o
+a - Psleep.o
+a - Read_func.o
+a - Read_list.o
+a - Read_lists.o
+a - Rel_func.o
+a - Rel_time.o
+a - Rest.o
+a - Resting.o
+a - Rhythm.o
+a - Rhythms.o
+a - Set_beg_time.o
+a - Set_dur_time.o
+a - Set_p.o
+a - Set_pi.o
+a - Set_pp.o
+a - Set_ps.o
+a - Setup_p.o
+a - Setup_pp.o
+a - Setup_ps.o
+a - Silent.o
+a - Start.o
+a - Stop.o
+a - Strings.o
+a - SubPname.o
+a - Tempo.o
+a - Tmap.o
+a - Unrest.o
+a - Unsilent.o
+a - Unwait_until.o
+a - Wait_for.o
+a - Wait_until.o
+a - add_player.o
+a - check_waits.o
+a - ckmaxp.o
+a - clist_direct.o
+a - cmusout.o
+a - cpy_args.o
+a - cyclist.o
+a - do_rhy.o
+a - garbage.o
+a - get_templ.o
+a - globs.o
+a - hi_p_ck.o
+a - interplist.o
+a - keysig.o
+a - malerr.o
+a - metronome.o
+a - mk_Player.o
+a - parse_flags.o
+a - pc_oct.o
+a - pexprerr.o
+a - poll_waits.o
+a - read_notes.o
+a - read_stdin.o
+a - resize_p.o
+a - run_arbiter.o
+a - scanargs.o
+a - sched.o
+a - symtab.o
+a - symtab_stat.o
+a - timesig.o

@@ -1,0 +1,2 @@
+ld -N -T 1000 -e start libmon.a test.o tmPlayer.o libmon.a -liPlayer libc.a
+.

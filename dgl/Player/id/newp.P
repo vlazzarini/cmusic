@@ -1,0 +1,99 @@
+M_ter()
+{
+	stop_ptm();
+	exit(0);
+}
+
+int	key;
+
+keydown()
+{
+	int	ch;
+
+	if (nb_acia_read(0, &ch) != 0) {
+		acia_write(0, ch);
+		key = ch;
+		return(TRUE);
+	} else
+		return(FALSE);
+}
+
+int ter;
+
+Player keytest(0)
+{
+	P_start {
+		ter = 0;
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	switch (key) {
+		case '.':
+			M_ter();
+		default:
+			printf("%d\t%c\n", Now, key);
+			break;
+	}
+}
+
+Player note()
+{
+	Instance int sequence; 
+	Instance int key, chan, vel;
+	int next;
+
+	P_start {
+# ifdef NOTDEF
+		P4 = 1000;
+		P5 = 0;
+		P6 = 60;
+		P7 = 64;
+# ifdef NOTDEF
+		chan = P5;
+		key = P6;
+		vel = P7;
+	}
+
+	switch (sequence) {
+		case 0:
+			fprintf(1, "^ %d\t%d\t%d\t%d\n", Now, chan, key, vel);
+			next = Now + P4;
+			Wait_until(next);
+			sequence = 1;
+			break;
+		case 1:
+			fprintf(1, "v %d\t%d\t%d\t%d\n", Now, chan, key, vel);
+			Kill(Self);
+			break;
+	}
+}
+
+typedef Player * Pptr;
+# define FOREVER -1
+
+
+Player track(0) 
+{
+	Pptr	v;
+	int	dur, chan, key, vel;
+
+	P_start {
+		dur = 1000;
+		chan = 0;
+		key = 60;
+		vel = 64;
+	}
+
+	if ((v = New_player(note, Now, FOREVER, P_READY)) == NULL) {
+		fprintf(1, "New_player failed\n");
+		M_ter();
+	}
+# ifdef notdef
+	Set_p(v, 4, dur);
+	Set_p(v, 5, chan);
+	Set_p(v, 6, key);
+	Set_p(v, 7, vel);
+# endif notdef
+	Join(ALL_CHILDREN);
+}

@@ -1,0 +1,38 @@
+/*
+ * You might have occasion to want to do certain actions before any Player
+ * is run, or to do some action after the last Player is done.  Statements
+ * in the procedure M_start() are executed after the Players are cueued,
+ * but before any are run.  In this instance, we print a string which will
+ * set the sample rate in cmusic.  We then modify element 9 in the global
+ * array used for specifying pitches.  As a result of this assignment, any
+ * reference to the pitch  a  in any octave will return a value of 435.0
+ * (times the appropriate octave) instead of 440.0.
+ * 
+ * The procedure M_ter() is executed after the last Player and before
+ * "ter;" is printed by ccmp.
+ * 
+ * Notice that M_start() and M_ter() are procedures, and must have
+ * parenthesis after their names, whereas P_start is just a word that
+ * appears at the head of a block inside a Player, and does not have
+ * parenthesis after.
+ */
+
+M_start() 
+{
+	printf("set 0 srate = 33.3K;\n");
+	Scale[9] = 435.0;
+}
+
+M_ter() 
+{
+	printf("Tha's all, folks!\n");
+}
+
+Player blat(0,5)
+{
+	P_start {
+		P4 = 1;
+	}
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

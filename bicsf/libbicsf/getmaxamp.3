@@ -1,0 +1,68 @@
+.TH GETMAXAMP 3 BICSF "1st Edition" "Berkeley/IRCAM/CARL Sound Filesystem"
+.SH NAME
+getmaxamp \\-finds the maximum amplitude of a soundfile
+.SH SYNOPSIS
+.nf
+# include <sfheader.h>
+
+SFMAXAMP  *getmaxamp(fd, update, startsamp, numsamps);
+	
+	int fd, update;
+	long startsamp, numsamps;
+
+.fi
+.SH DESCRIPTION
+.BR getmaxamp ()
+will find the sample location of the maximum absolute value
+per channel for a given soundfile window.  If the 
+.I entire 
+soundfile was scanned 
+.I and 
+update is turned on 
+.I and
+the user has permission, that information plus a timetag will be
+put in the header.
+.PP
+Notice that 
+.BR getmaxamp ()
+returns a pointer to an SFMAXAMP struct, which
+is defined in sfheader.h.
+.SH EXAMPLES
+.BR getmaxamp ()
+is called by sndpeak and sndnorm.
+.PP
+.nf
+In this example:
+	\-getmaxamp() returns a pointer(sfm) to an SFMAXAMP struct. 
+	\-using the macros sfmaxamp() and sfmaxamploc() from sfheader.h,
+		it prints out the maximum amplitude sample and
+		its location for numchans.
+	\-since update = 1, getmaxamp will call putsfcode()
+		to put maximum amplitudes per channel into the header.	
+	 
+
+	SFMAXAMP  *getmaxamp(), *sfm;
+	int sfd, update = 1, i = 0;
+	long sampframes;
+
+	sfm = getmaxamp(sfd,update,0,sampframes);
+	printf("Maxamp for file %s:\n",*argv);
+	for(i = 0; i < numchans; i++) 
+			printf("%f at sample location %d\n",
+			       sfmaxamp(sfm,i),sfmaxamploc(sfm,i));
+.SH FILES
+getmaxamp.c.  
+The location of include files 
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+.PP
+You do not need to declare
+.BR getmaxamp ()
+in your program because it is declared in sfheader.h.
+.SH "SEE ALSO"
+See the relevant information in sfheader(5), sndnorm(1), sndpeak(1).

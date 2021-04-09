@@ -1,0 +1,6 @@
+sqroot - calculates the square root of a signal
+
+sqroot  output[b] input[bvpfdn] ;
+
+The output of the sqroot unit generator is equal to the square root of
+its input.  Naturally, the input must be positive.

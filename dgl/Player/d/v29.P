@@ -1,0 +1,10 @@
+Player x(0)
+{
+	P_start {
+		P4 = 1;
+		Motive("n: c0 g c1 g c2 g c3 g c4 g c5 g c6 g Stop");
+	}
+	P5 = Keys("@n");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

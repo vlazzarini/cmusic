@@ -1,0 +1,24 @@
+The method for making up the sources database for help is unfortunately
+not entirely automatic.  One would like to have a program that would
+search from the root directory of the distributed programs for all
+"programs", as distinct from subroutine files.  This unfortunately is not
+easy due to our tendency to put subroutine files in directories
+with their programs.  Also, it is nice to mention the source directories
+of the various libraries, even though there is no "program" for them.
+
+With this in mind, the way to update the sources database is as follows:
+
+% find /mnt/carl/src \( -name '*.c' \) -print > helpcsrc
+% vi helpcsrc
+	edit out subroutine entries,
+	reduce library entries to just the name of the library,
+	replace the directory prefix /mnt/carl/src with m4SRCDIR:
+		:1,$s:/mnt/carl/src:m4SRCDIR:
+	ZZ
+% rm -f helpfiles/sources
+% foreach n (`cat helpcsrc`)
+echo $n > helpfiles/sources/${n:t}
+end
+% foreach n (helpfiles/sources/*)
+if (${n:x} != "") mv $n ${n:x}
+end

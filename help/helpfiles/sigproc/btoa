@@ -1,0 +1,8 @@
+btoa - convert binary float to ASCII
+
+DESCRIPTION:
+btoa coverts binary to ASCII. It reads binary floating-point on the
+standard input and writes ascii encoded floating-point on the standard 
+output.
+
+SEE ALSO: atob

@@ -1,0 +1,11 @@
+nonzero - indicates samples which are not equal to  0.0
+
+usage:
+
+    nonzero < floatsams > output
+
+Input must be a file or pipe.  If the output is a file or pipe, the
+non-zero floatsams are produced.  If the output is a terminal, a line
+is produced for every nonzero sample showing sample number, sample time
+(re. 48K, unless changed with -R), and sample value.  Arguments may be
+expressions.

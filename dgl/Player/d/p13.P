@@ -1,0 +1,32 @@
+
+Player xyzzy()
+{
+	P_start {
+		if (Dur_time(Self) == Forever) {
+			printf("xyzzy: Forever\n");
+			Return;
+		}
+		Ps5 = Pi5;
+		Ps6 = Pi6;
+		Ps7 = Pi7;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player foo()
+{
+	P_start {
+		if (Dur_time(Self) == Forever) {
+			printf("xyzzy: Forever\n");
+			Return;
+		}
+		Ps5 = Pi5;
+		Ps6 = Pi6;
+		Ps7 = Pi7;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

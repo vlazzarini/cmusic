@@ -1,0 +1,26 @@
+trans - arbitrary transition generator
+
+trans output[b] t1[dvp] t2[dpv] t3[dpv] [t[vpn] v[vpn] a[vpn]]* t[vpn] v[vpn] ;
+
+trans is the unit generator equivalent of gen4, which is a general
+transition generator.  The three temporary variables, t1, t2, and t3,
+are normally d's.  The rest of the line gives a description of a
+transition path exactly like a gen4 definition, except that the
+transition path occurs over the duration of a note.  Any number of
+time-value (t-v) pairs may be given, and the transition parameters
+(a's) work as they do in gen4: 0 yields a straightline transition,
+negative numbers yield exponential transitions, and positive numbers
+yield inverse exponential transitions.  The power of this generator
+lies in the fact that the transition points and parameters may be
+connected to p-fields, allowing such things as easy glissando
+specification, loudness contouring, etc.  For example, the following
+score plays a 1-second glissando from 440Hz to 880Hz, followed by a
+2-second gliss to 100Hz:
+    ins 0 gliss;
+	trans b1 d d d 0,p6 0 1/3,p7 0 1,p8;
+	osc   b1 p5 b1 f1 d;
+	out   b1;
+    end;
+    gen 0 gen5 f1 1 1 0;
+    note 0 gliss 3 -6dB 440Hz 880Hz 100Hz;
+    ter;

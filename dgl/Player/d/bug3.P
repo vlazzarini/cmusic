@@ -1,0 +1,30 @@
+/* fixed */
+/*
+ * Ce programme fonctionne mais le compilateur donne un warning
+ * illegal combination pointer = etc...
+ * d'apres l'exemple 18 page 20.
+ */
+
+
+Player popo(0,5.,P_READY)
+{
+	Instance  double i ;
+	P_start {
+		i = 1 ;
+	}
+	
+	P2 = Abs_time() ;
+	P4 = 1. ;
+	P5 = i++ ;
+	Wait_until(P2 + P4) ;
+}
+Player pp(0,5.,P_READY)
+{
+	Player *pt ;
+	P2 = Abs_time() ;
+	P4 = 1.3 ;
+	pt = Instances (popo) ;/* <---- PROVOQUE UN WARNING	*/
+	P5 = 15. + P ( pt, 5) ;
+	Wait_until(P2 + P4) ;
+}
+

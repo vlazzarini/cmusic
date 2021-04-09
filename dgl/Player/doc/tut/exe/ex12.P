@@ -1,0 +1,13 @@
+Player blat(0)
+{
+	double lower, upper;
+
+	upper = Exprs("1 2 3 4 5 6 7 8 9 10 Kill");
+	lower = Exprs("0 1 2 3 4 5 6 7 8 9");
+	P4 = frand(lower, upper);
+	P5 = cauchy(frand, 1.0, 1.0);
+	P6 = gamma(onefrand, 1.0, 0.0);
+	P7 = onefrand(P5, P6);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

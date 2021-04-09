@@ -1,0 +1,21 @@
+ccmp - music language to produce cmusic scores
+
+ccmp is a way to produce MUSIC V scores, suitable as input to
+cmusic.  The method is to write programs that are interpreted by ccmp
+as descriptions of cmusic scores you want to produce.
+
+There is a tutorial and a manual page entry for ccmp.  You can
+read the tutorial by saying:
+
+% type /mnt/tutorials/ccmp.dgl | more
+
+which will display it on your screen filtered by the more program.  
+The manual page is available by saying:
+
+% man ccmp
+
+The relevant programs and files are:
+/usr/local/ccmp
+/usr/local/ccmpy
+/usr/include/local/ccmp.h
+/usr/local/lib/libccmp.a

@@ -1,0 +1,14 @@
+quant - linear quantizer for signals
+
+quant  output[b] in[bvpn] imin[bvpn] imax[bvpn] steps[bvpn] ;
+
+The input signal is considered to lie in the range [imin, imax].
+The output lies in the same range, but quantized into the specified
+number of discrete steps which are linearly distributed between
+imin and imax accord to the relation
+
+                                                    (in-imin)
+                                   floor[ steps * ------------- ]
+                                                   (imax-imin) 
+    output = imin + (imax-imin) * -----------------------------
+                                             steps

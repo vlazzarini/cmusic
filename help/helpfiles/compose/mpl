@@ -1,0 +1,21 @@
+mpl - preliminary details of MPL
+
+The MPL system now resides in directory /usr/local/MPL , and READ_ME there
+gives some information about what is in it.  Of immediate use for those
+wanting to try a few things,
+	/usr/local/MPL/bin/mplhelp keyword ....
+gives help on MPL functions without going into APL;
+	/usr/local/MPL/bin/keywords
+prints a list of keywords;
+	/usr/local/MPL/apl
+is the APL needed to run MPL; a manual for  APL is
+   /mnt/tmp/rph/apl/manual/manual
+and, if you want to take the plunge,
+	/usr/local/MPL/apl /usr/local/MPL/run/mplws
+will get you an APL workspace initialized with the current version of MPL.
+To avoid all those /'s, it is suggested that you include in your .cshrc
+aliases for apl, mplhelp and keywords, and a shell variable for mplws .
+
+The S&E library has at least 2 copies of
+   Gilman, L. & Rose, A.J.:  APL - an interactive approach (Wiley,1976)
+[QA 76.73 A27 G54], which is a reasonable introductory text.

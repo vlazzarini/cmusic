@@ -1,0 +1,26 @@
+ran - random noise signal generator with controlled bandwidth
+
+ran output[b] amplitude[bvpn] increment[bvpn] pos[dpv] from[dpv] to[dpv] ;
+
+Random signal generator similar to the MUSIC V RAN unit generator.  The
+output signal consists of straight line segments which travel from one
+random value to another.  The frequency with which new random values
+are chosen is determined by increment.  A new random value is chosen
+every Lfuncs/increment samples, or at a rate of Srate*increment/Lfuncs
+Hz, where Lfuncs is the prevailing default function length and Srate is
+the sampling rate.  Setting increment equal to 100Hz, for example,
+would cause a new random value to be chosen every 10 milliseconds.  The
+random values lie in the range -1 to +1, and the output signal is
+scaled by amplitude.  The last three arguments are typically dynamic
+variables, used for temporary storage by ran.  The spectrum of the
+output signal is sync-squared, symmetrically centered around 0 Hz with
+a bandwidth given by increment.  The following score produces bandpass
+noise centered around 1000 Hz with a bandwidth from 900 to 1100 Hz:
+
+ ins 0 noise;
+    ran b1 p5 p7 d d d;
+    osc b1 b1 p6 f1 d;
+    out b1;
+ end;
+ gen 0 gen2 f1 1 1;
+ note 0 noise 4 0dB 1000Hz 200Hz;

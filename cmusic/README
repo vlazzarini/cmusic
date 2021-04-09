@@ -1,0 +1,51 @@
+SOURCE FOR:
+    cmusic
+MAKEFILE:
+    makefile
+    NOTE:  The CARL version of cmusic makes use of the CARL soundfile
+    system routines, called the "csound" system.  Non-CARL
+    installations may or may not have these routines, or may have their
+    own versions of them.  To compile cmusic without the csound
+    routines, change the "-DCSOUND" flag in the makefile to
+    "-UCSOUND".  This will cause conditional non-compilation of the
+    csound-dependent portions of cmusic.  It will also be necessary
+    (probably) to remove the reference to the soundfile routine library
+    (-lsf).
+SPECIAL INCLUDE FILES NEEDED:
+    #include <carl/carl.h>
+    #include </carl/sndio.h> (csound-dependent)
+SPECIAL LIBRARIES NEEDED:
+    -lcarl -lsf (the sf library is csound-dependent)
+COMMENTS:
+This directory contains source for cmusic.  
+There is a makefile which recreates cmusic in this directory. 
+Cmusic needs some routines from frmlib, which should exist before the
+    "make" command is uttered (i.e., the makefile refers to "-lcarl").
+The makefile names the main executable file "cmusic".
+The cmusic main program is in file "cmusic.c".
+The "submain" programs, where most of the work is done, and which generally 
+    correspond to commands in the cmusic score, are in files with 
+    names like "mm.*.c". (e.g., mm.gen.c, mm.play.c, mm.ins.c, etc.)
+Most function generating programs have names such as gen1.c, gen2.c, etc.
+    These are executable programs which are popened by mm.gen.c.
+    Sources for gen commands are in ../gens.
+    Users may supply their own function generating programs, modelling them
+    on gens 1 thru 6, and giving them arbitrary names (see "help" files).
+Unit generator programs are all on files with names of the form "ug.*.c".
+    (cf. ug.osc.c, ug.out.c, etc.)
+The main data structures are described in file "m.structs.h".
+Global variables are defined on files with names of form "*.globs.h".
+    (cf. m.globs.h, ug.globs.h)
+Externals variable references are on files with names of form "*.exts.h".
+    (cf. m.exts.h)
+Definitions (such as macros) are on files with names of form "*.defs.h".
+    (cf. m.defs.h, ug.defs.h, etc.)
+Scores are conventionally stored on file with names of form "*.sc".
+Cmusic expect that sprintf returns a string pointer to the generated
+    string (not all UNIX versions work this way).
+Ints are assumed to be long, since this version was written on a VAX - if
+    you are using a 16-bit machine you might want to either change all
+    ints to longs, or decide case-by-case whether they need to be.
+Further documentation can be found by saying "man cmusic"; a number of
+    help files explain unit generators, function generators, etc., in
+    more and up-to-date detail.

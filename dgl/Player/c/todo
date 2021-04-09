@@ -1,0 +1,11 @@
+Wait_for() to have a polling version and an interrupt version.
+	Polling version to have a downsample count as argument.
+(done)(documented) Pclock
+Run_after(&Player);  &Player || ANY, ONCE | CONTINUOUS
+Run_before(&Player); &Player || ANY, ONCE | CONTINUOUS
+Rm_clist()
+(done) Kill cyclic list directive.
+(fixed) P0 used all by itself is not initialized.
+(done)(documented) Alias()
+Pitch, Rhythm, Key, Octave, may blow up on Stop Kill and Hold.
+Unwait_until()

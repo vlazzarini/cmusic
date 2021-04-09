@@ -1,0 +1,21 @@
+Player TimeSig(0)
+{
+	struct sig_time *t;
+	char *c = "T4/4  4 4 8. 16 4 | Stop";
+	Instance int first;
+
+	P_start {
+		Motive(c);
+	}
+
+	P2 = Now;
+	P4 = Rhythms(c);
+	if (!first) {
+		if ((t = Get_timesig(c)) != NULL)
+		    printf("sig=%s\tnum=%d\tden=%d\n", 
+			t->time_sig, t->time_num, t->time_den);
+		first = 1;
+	}
+
+	Wait_until(Now + P4);
+}

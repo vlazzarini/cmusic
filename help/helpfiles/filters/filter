@@ -1,0 +1,16 @@
+filter - program for performing FIR or IIR digital filtering 
+
+DESCRIPTION
+
+    filter  filterfile < inputdata > outputdata
+
+The "filter" program is for FIR and IIR digital filtering.
+You provide a filterfile such as designed by "fir" or "lpc",
+and an input signal which is 32-bit floating-point.
+
+SEE ALSO
+    fir, lpc 
+
+BUGS
+    The program "fastflt" is faster for long FIR filters. 
+

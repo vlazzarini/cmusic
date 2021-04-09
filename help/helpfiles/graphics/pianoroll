@@ -1,0 +1,6 @@
+pianoroll - display a score file like a piano roll
+
+DESCRIPTION
+
+This program displays a score file on your terminal in a way which
+resembles a piano roll.  Say man pianoroll for details.

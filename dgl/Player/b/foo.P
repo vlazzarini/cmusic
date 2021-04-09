@@ -1,0 +1,25 @@
+Player part()
+{
+	P4= Rhythms("| T4/8 {8}x8 | {8}x4 {4}x2 |");
+	P6= Pitches("| K1s g g a b g b a r | g g a b g f Stop |");
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}
+
+Player beep(0)
+{
+	Instance Player *np;
+	int i, parts;
+
+	if (argc >= 2)
+		parts = atoi(argv[1]);
+	else
+		Pexit(1);
+
+	for (i = 0; i < parts; i++) {
+		np = New_player(part, frand(0.0, 20.0), Forever, P_READY);
+		Set_p(np, 5, (double) i);
+	}
+
+	Kill(Self);
+}

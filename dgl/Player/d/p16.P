@@ -1,0 +1,9 @@
+char *a = "{as 4, b3 8, c 8, df5 12, e 12, f 12}x2 Stop Stop";
+
+Player blat(0)
+{
+	P5= Pitches(a);
+	P4= Rhythms(a);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,103 @@
+/* %M%	%I%	(CARL)	%G%	%U% */
+
+# include <carl/sa_mpuvar.h>
+# include <sys/types.h>
+# include <carl/midi.h>
+# include <carl/dx7.h>
+# include "medit.h"
+
+typedef Player * Pptr;
+
+extern Pptr 	P[P_TRK];
+extern int	busy[P_TRK];
+extern int	key;
+extern struct mpu_trk mpu_trk[P_TRK];
+extern struct mpu_trkp mpu_trkp[P_TRK];
+extern int	cur_trk;
+extern int	printit;
+
+typedef struct mpu_trkp trkpstruct;	
+
+Player track(0, Forever, P_STOPPED, P_TRK)
+{
+	Instance int	pos, cnt, len, sequence;
+	Instance u_char	*pla_buf;
+	Instance int	ct;
+	Instance trkpstruct tp;
+	unsigned char	cmd_buf[4]; 
+	int		i, n;
+
+	P_start {
+		sequence = -1;
+	}
+
+start:	if (sequence < 0) {
+		ct = P0;			/* index of track buffer */
+		fprintf(0, "(%d", P2);
+		if (mpu_trk[ct].trk_cnt == 0) {
+			printf("empty track\n");
+			Stop(Self);
+			Return;
+		}
+		pla_buf = mpu_trk[ct].trk_buf;
+		cnt	= mpu_trk[ct].trk_cnt;
+		init_trkp(&tp, &mpu_trk[ct]);
+		pos	= 0;
+		sequence = 0;
+		busy[P2] = 1;			/* say we're busy */
+	}
+
+again:	if (sequence == 0) { /* figure out next note */
+		register int	next = 0, p;
+		while ((len = next_cmd(&tp)) > 0) {
+			pos = p = tp.trkp_pos;
+			if (pla_buf[p] == 0xf8)
+				next += 240;
+			else if (pla_buf[p+1] == 0xf9)
+				/* add f9 timetag, but skip playing it */
+				next += pla_buf[p];
+			else {
+				next += pla_buf[p];
+				break;
+			}
+		}
+		if (len < 0) {
+			fprintf(0, "track: error\n");
+			len = 0;
+		}
+		if (len == 0) {
+			sequence = -1;
+			if (P1 != 0)
+				goto start;
+			Stop(Self);
+			fprintf(0, "%d)", P2);
+			busy[P2] = 0;
+			Return;
+		}
+		if (printit == 1)
+			fprintf(0, "%d next=%d\n", ct, next);
+		Wait_until(Now + next);
+		sequence = 1;
+	} else {
+		/* copy command */
+		cmd_buf[0] = 0xd0;
+		if (printit == 1)
+			fprintf(0, "%d\t", ct);
+		cmd_buf[1] = (pla_buf[pos+1] & 0xf0) | ct;
+		for (i = 2; i < len; i++) {
+			cmd_buf[i] = pla_buf[pos+i];	/* channel cmd */
+			if (printit == 1) 
+				fprintf(0, "%x\t", pla_buf[pos+i] & 0xff);
+		}
+		if (printit == 1)
+			fprintf(0, "\n");
+		if (printit == 0) {
+			if ((n = mpu_write(0, cmd_buf, len)) < 0) {
+				fprintf(0, "mpu_write: %d\n", n);
+				Pexit(1);
+			}
+		}
+		sequence = 0;
+		goto again;
+	}
+}

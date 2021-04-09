@@ -1,0 +1,29 @@
+Player blah(0)
+{
+	double dur, overlap = .01;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Kill");
+	P4 = dur + dur * overlap;
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}
+
+Player blot(0)
+{
+	double dur, overlap = .05;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Kill");
+	P4 = dur + overlap;
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}
+
+Player blonk(0)
+{
+	double dur, underlap = .5;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Kill");
+	P4 = dur * underlap;
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

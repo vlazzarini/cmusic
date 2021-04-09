@@ -1,0 +1,122 @@
+# include "../libxcmpu/xc_mpu.h"
+
+int	key;
+
+keydown()
+{
+	int	ch;
+
+	if (nb_acia_read(0, &ch) != 0) {
+		acia_write(0, ch);
+		key = ch;
+		return(TRUE);
+	} else
+		return(FALSE);
+}
+
+M_start() {
+	trap_init();
+	mpu_init();
+	start_watch_pedal(0);
+	fprintf(1, "ubrk=0x%x (%d)\n", stat_ubrk(), stat_ubrk());
+}
+
+M_ter()
+{
+	stop_ptm();
+	m_mpureset(0);
+	exit(0);
+}
+
+int ter;
+
+Player keytest(0)
+{
+	P_start {
+		ter = 0;
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	switch (key) {
+		case '.':
+			ter = 1;
+			Kill(Self);
+			Return;
+		case '?':
+			fprintf(1, "ubrk=0x%x (%d)\n", stat_ubrk(), stat_ubrk());
+			break;
+		default:
+			acia_write(0, key);
+			break;
+	}
+}
+
+Player note()
+{
+	Instance int sequence; 
+	Instance int key, chan;
+	int vel, next;
+
+	switch (sequence) {
+		case 0:
+			chan = P5;
+			key = P6;
+			vel = P7;
+			note_on(chan, key, vel);
+			next = Now + P4;
+			Wait_until(next);
+			sequence = 1;
+			break;
+		case 1:
+			note_off(chan, key);
+			Kill(Self);
+			break;
+	}
+}
+
+typedef Player * Pptr;
+# define FOREVER -1
+
+
+Player track() 
+{
+	Pptr	v;
+	Instance int	dur, chan, key, vel;
+
+	if (ter) {
+		Kill(Self);
+		Return;
+	}
+	acia_write(1, P1 + '0');
+
+	if ((v = New_player(note, Now, FOREVER, P_READY)) == NULL) {
+		fprintf(0, "New_player failed\n");
+		exit(1);
+	}
+	dur = Rand() % 4000 + 50;
+	chan = P1;
+	key = Rand() % 64 + 32;
+	vel = Rand() % 64 + 32;
+	Set_p(v, 4, dur);
+	Set_p(v, 5, chan);
+	Set_p(v, 6, key);
+	Set_p(v, 7, vel);
+	Join(ALL_CHILDREN);
+}
+
+
+Player agent(0)
+{
+	Pptr 	v[8];
+	int		i;
+
+	for (i = 0; i < 8; i++) {
+		if ((v[i] = New_player(track, Now, FOREVER, P_READY)) == NULL) {
+			fprintf(0, "New_player failed\n");
+			exit(1);
+		}
+		Set_p(v[i], 1L, i);
+	}
+	Kill(Self);
+}

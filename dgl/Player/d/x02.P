@@ -1,0 +1,28 @@
+
+unsigned cnt;
+
+condition()
+{
+
+	if (++cnt > 10)
+		return(TRUE);
+	else
+		return(FALSE);
+}
+
+Player x(0)
+{
+	P_start {
+		p4 = 1;
+		p2 = Now;
+		Wait_for(condition, ONCE);
+		if (Rest(Self) != 0)
+			fprintf(stderr, "Player x: Rest error\n");
+	}
+	p5 = cnt;
+}
+
+M_ter()
+{
+	printf("ter;\n");
+}

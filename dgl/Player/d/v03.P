@@ -1,0 +1,13 @@
+/*
+ * Commas as well as blanks can be used to separate expressions in
+ * Rhythms and Notes statements.  Sets in "{}" can contain as little
+ * as one element, as in {4}x2, which puts out two quarter notes.
+ */
+
+Player beep(1.5,100)
+{
+	P4 = Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5 = Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

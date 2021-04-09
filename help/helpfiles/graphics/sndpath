@@ -1,0 +1,71 @@
+sndpath - create/edit a sound trajectory
+
+     sndpath [flags] [filename]
+
+               flag:
+               -b   don't print box around edge of screen
+
+DESCRIPTION
+     sndpath is an interactive program to produce and edit two
+     dimensional sound trajectories or paths.  It works on ordi-
+     nary CRT terminals by using the curses(3) screen control
+     package.  The user is presented with a rectangle the size of
+     the screen with a '+' sign in the middle indicating the
+     center of the sound space.  Four numbers surround the '+'
+     representing the four speakers typically used to reproduce
+     such sound paths.  The user marks the locations the sound is
+     to pass through in the order they occur. On command, sndpath
+     draws a smooth curve (a spline function) through the points,
+     creating the trajectory.  The user then writes out the
+     spline function to a file.  Commands exist in sndpath to
+     modify, append and delete points on the path. The area
+     covered by the screen display can be scaled to represent a
+     range from a few meters to many kilometers.  The spline file
+     contains [x,y] coordinate pairs for each point on the path.
+     The file is in text format.  Although this information can
+     be utilized by any subsequent program, one such exists,
+     named quad, which can be used with cmusic to actually syn-
+     thesize a sound on the described path.
+
+COMMANDS
+    q	quit sndpath,
+    ?	print a help message,
+    u i o j l m , .	move cursor one position,
+    U I O J  K L M < >	slam cursor to window edge, K to center,
+    x [spacebar]	put/remove a node where cursor is,
+    y p	yank a node, place a node,
+    [RETURN]	draw spline curve through nodes,
+    e E	erase spline curve, erase whole screen,
+    f b	move forward/back to next/previous node,
+    n	interpolate new point between this and next node,
+    w W	write node file, write spline file,
+    r a	read in node file, append node file to screen,
+    t	set time of a node,
+    :	enter extend mode, (extend mode commands follow:)
+    z		set set zoom size (2.0),
+    c		set x,y coordinates of center of terrain displayed (0 0)
+    d		set distance between speakers in meters (5),
+    P		print nodes,
+    o		add offset to path (type two blank-separated numbers)
+    s		scale path (type two blank-separated numbers)
+    r		rotate path (type degrees of rotation)
+    i		toggle spline interpolation mode (reset),
+    n		set number of total spline points plotted (128 average),
+    t		set time in seconds to scale duration of entire function,
+    k		set spline constant (0),
+    p		toggle spline periodic mode (reset),
+    T		toggle spline time mode (set)
+
+    Refer to the user manual for further explanation of these commands:
+
+
+AUTHOR
+     Gareth Loy
+
+BUGS
+    When typing in filenames, [BACKSPACE] characters are not deleted.
+    So they end up in the filename.
+SEE ALSO
+    cmusic(1carl), quad(1carl), 
+    "Sndpath - A Program to Interactively Create/Edit Sound Trajectories",
+    in /mnt/tutorials/sndpath.dgl at CARL.

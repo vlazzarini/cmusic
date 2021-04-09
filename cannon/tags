@@ -1,0 +1,4 @@
+Mcannon	cannon.c	/^main(argc, argv)$/
+cannonfodder	cannon.c	/^cannonfodder()$/
+getf	cannon.c	/^double getf()$/
+lookup	cannon.c	/^lookup(name)$/

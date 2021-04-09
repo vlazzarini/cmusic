@@ -1,0 +1,32 @@
+
+char *M = "1,2,3,4,{10,11,12}x2,5,6,7,8,9";
+
+Player x(0, 50)
+{
+	Instance char *l, *m, *n;
+	Instance int i;
+
+	P_start {
+		P4 = 1;
+		if ((l = (char *) malloc(strlen(M)+1)) == NULL)
+			malerr("x", 1);
+		strcpy(l, M);
+		Motive(l);
+		if ((m = (char *) malloc(strlen(M)+1)) == NULL)
+			malerr("x", 1);
+		strcpy(m, M);
+		Motive(m);
+		if ((n = (char *) malloc(strlen(M)+1)) == NULL)
+			malerr("x", 1);
+		strcpy(n, M);
+		Motive(n);
+	}
+	P5 = Exprs(n);			/* rectus */
+	P6 = Expr(Index(m, i, 0));	/* inversus */
+	P7 = Expr(Index(l, -1, 1));	/* inversus */
+	P8 = Expr(Index(m, i, 2));	/* rectus */
+	P9 = i--;
+
+	P2 = Now;
+	Wait_until(Now + P4);
+}

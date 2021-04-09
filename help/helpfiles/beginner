@@ -1,0 +1,15 @@
+beginner - orientation about CARL programs
+
+This is the CARL help program, designed to provide information about
+programs developed at the Computer Audio Research Laboratory, San Diego.
+The best way to get started is to find the CARL Startup Kit and read
+the Tutorial Introduction to UNIX, Introduction to Text Editing with VI,
+Cmusic, and the Csound File System.  This program is best suited to
+browsing around in the CARL software, and to provide
+practical information on how to make programs work.  In addition to
+this program, you can use the man command and the apropos command
+to get more general information about most of these programs.  
+
+For more information about the help program, say
+
+	% help help

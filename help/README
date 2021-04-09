@@ -1,0 +1,19 @@
+help - program to provide orientation to beginning users
+
+To install this program, you should edit ../../include/carl/config.m4
+and modify the entry m4HELPDIR, which is the database directory
+for the help program.  Also, check the entries for m4DESTDIR and
+m4SRCDIR, which point to where the help program will live on your
+system, and where the sources for CARL programs will live on your
+system.
+
+Then edit Makefile.m4 in this directory and, if necessary, modify the
+name of the program by changing the variable PROGNAME
+if you already have a help program.  Then,
+say mm to create a site-dependent Makefile, then say 
+
+	% make 
+then
+	% make install
+
+If you wish to modify the sources database for help, read ./SOURCES.

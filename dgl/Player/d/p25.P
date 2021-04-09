@@ -1,0 +1,20 @@
+int i;
+
+Player targets(0, -1, P_STOPPED, 5)
+{
+	Instance int j;
+
+	printf("i=%d, j=%d, p0=%f\n", i++, j++, p0);
+}
+
+Player fireup(0)
+{
+	Player	*p;
+	int	i = 0;
+
+	for (p = Instances(targets); p != NULL; p = p->P_next, i++) {
+		Start(p);
+		Set_p(p, 0, (double) i);
+	}
+	printf("targets = %d\n", i);
+}

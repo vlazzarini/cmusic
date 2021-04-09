@@ -1,0 +1,16 @@
+/*
+ * The command line arguments to the program that runs the voices
+ * is available to the voices.  The count is Argc, the string
+ * variables are Argv.  This voice simply prints out the command
+ * line arguments and stops.
+ */
+
+Player blat(0)
+{
+	int i;
+
+	for (i = 0; i < Argc; i++)
+		printf("%s ", Argv[i]);
+	printf("\n");
+	Stop(Self);
+}

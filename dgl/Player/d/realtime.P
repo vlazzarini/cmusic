@@ -1,0 +1,16 @@
+M_start() {
+	if (Argc < 2)
+		exit(1);
+	Realtime = 1;
+}
+
+Player foo (0, 10)
+{
+	P_start {
+		p4 = atof(Argv[1]);
+		Silent(Self);
+	}
+	p2 = Now;
+	printf("%f\n", p2);
+	Wait_until(p2 + p4);
+}

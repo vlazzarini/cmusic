@@ -1,0 +1,6 @@
+show - debugging test probe for printing out signals
+
+show input[bvpfdn]* ;
+
+Causes the specified input(s) to be printed on the user's terminal.
+Useful as a signal probe when debugging instrument definitions.

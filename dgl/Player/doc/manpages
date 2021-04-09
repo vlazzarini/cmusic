@@ -1,0 +1,8 @@
+.so ../man/man1/Player.1
+.so ../man/man1/Playery.1
+.so ../man/man3/Abs_time.3
+.so ../man/man3/Func.3
+.so ../man/man3/P.3
+.so ../man/man3/Pitches.3
+.so ../man/man3/Pmain.3
+.so ../man/man3/Wait_until.3

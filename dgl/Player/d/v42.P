@@ -1,0 +1,15 @@
+/*
+ * Blat tests some of the wilder rhythmic values.
+ * Note that 1.5/1 and 1/1. are equal, as are 4. and 3/8, and 1 and 4/4
+ */
+
+Player blat(0)
+{
+	P_start {
+		Pp5 = "Hz";
+	}
+	P4 = Rhythms("1.5/1 1/1. 4.5 4.5. 4.5.. 4 4. 3/8 2.. 1 4/4 Stop");
+	P5 = Pitches("a b c d e f");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,9 @@
+Player ready(0, -1, P_READY)
+{
+	printf("ready\n");
+}
+
+Player stopped(0, -1, P_STOPPED)
+{
+	printf("stopped\n");	/* will never execute */
+}

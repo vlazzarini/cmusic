@@ -1,0 +1,6 @@
+Player canon(0, 10, P_READY, 10)
+{
+	P4 = 1;
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

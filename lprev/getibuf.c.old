@@ -1,0 +1,23 @@
+#include <stdio.h>
+#define FBUFSIZ (BUFSIZ * sizeof(float))
+
+int pad;
+
+getibuf(buf)
+	float *buf;
+{
+	register int n;
+	static int zeroed;
+	static FILE	*iop;
+
+	if ((n = fgetfbuf(buf, BUFSIZ, stdin)) <= 0)
+		return(0);
+
+	while (n < BUFSIZ && pad > 0) {
+		*(buf+n) = 0.0;
+		n++;
+		pad--;
+	}
+
+	return(n);
+}

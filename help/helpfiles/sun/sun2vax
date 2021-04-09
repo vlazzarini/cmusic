@@ -1,0 +1,25 @@
+sun2vax - convert sun floatsams to vax floatsams
+
+This program is to be run on a VAX to convert data obtained from a SUN
+into suitable format for the VAX.  A complete example of its usage is as
+follows.  (sdcarla is the SUN, and sdcarl is the VAX in this example.)
+Comments are in {}.
+
+Copying in data files:
+    sdcarl% rcp sdcarla:~dgl/waveform xxx
+	{Remote copy sun floatsam file waveform to vax file xxx.}
+    sdcarl% sun2vax < xxx > waveform
+	{Convert it on the vax.}
+
+Reading pipes across machines:
+    sdcarl% rsh sdcarla cmusic "~dgl/file.sc" | sun2vax > waveform
+	{Remote shell executes cmusic on the sun, pipes the output
+	 to the vax, which reads it with sun2vax.}
+
+Note: the "" around ~dgl/file.sc above serves to keep the ~ from
+being filename expanded on sdcarl.  Unfortunately, UNIX is not
+smart enough to realize we are refering to a file on sdcarla in this
+context.  However, the path sdcarla:~dgl/waveform does not need to
+be enclosed in "" on a technicality, namely that the pathname
+does not start with ~, so it is not taken as a home directory, and
+is shipped verbatim to the remote system.

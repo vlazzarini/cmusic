@@ -1,0 +1,10 @@
+signum - sign tester, writes +1 if signal > 0, 0 if = 0, -1 if < 0
+
+DESCRIPTION:
+signum reads samples from sndin, assigns a value of +1 if the signal
+is > 0, a value of -1 if the signal is < 0, and a value of 0 if the
+signal = 0.
+effectively transforms a periodic signal into a square wave.
+a possible front end for a frequency follower.
+
+	sndin <filename> | signum | sndout <filename>

@@ -1,0 +1,247 @@
+.TH ARGSCAN 3 BICSF "1st Edition" "Berkeley/IRCAM/CARL Sound Filesystem"
+.SH NAME
+argscan \- command line argument scanner
+.SH SYNOPSIS
+.PP
+.B int argscan(argc,argv,flags,ign)
+.br
+.RS .5i
+.B int argc ;
+.br
+.B char **argv ;
+.br
+.B char *flags ;
+.br
+.B char *ign ;
+.RE
+.PP
+.B extern int args_index ;
+.br
+.B extern char *args_option ;
+.br
+.B extern int args_count ;
+.br
+.B extern char **args_vector ;
+.PP
+.B # include <argscan.h>
+.SH DESCRIPTION
+.PP
+.BR Argscan ()
+scans the command line of a program
+in a manner that is consistent with
+standard UNIX usage.  Since, in most respects, it behaves in
+exactly the same way as 
+.BR crack (),
+only the differences will be described here.  Read the 
+manual page on 
+.BR crack ()
+for a basic explanation of what both these programs do.
+.PP
+The #include file <argscan.h> contains the declaration for
+.BR argscan ()
+and the four external variable declarations.
+.PP
+The first important difference between 
+.BR crack ()
+and
+.BR argscan ()
+is that
+.BR argscan ()
+allows flags and args to appear in any order.
+.PP
+A flag still consists of a minus sign (`\-') followed
+by a character.
+A flag may have an option associated with it, which must
+follow immediately after the flag, but
+.BR argscan ()
+allows for intervening whitespace, so the option does not necessarily
+have to be butted up to the flag, as with
+.BR crack ().
+.br
+Flags may be concatenated, as long as a flag
+that takes an option is the last flag concatenated.
+.br
+An argument is anything not considered to be a flag; 
+the arguments are usually
+soundfile names.
+.PP
+.BR Argscan ()
+handles its "ignore" argument differently than 
+.BR crack ().
+With
+.BR argscan (),
+.I ign
+is a string consisting of any of the given flags that
+.BR argscan ()
+is to 
+.IR ignore .
+If
+.I ign
+is a null string, ("") then no flags will be ignored. 
+.PP
+If a non-described flag is encountered,
+.BR argscan ()
+will complain, quit, or do whatever is specified in the "default" case.
+It will also ignore the unknown flag and any options that are butted
+up to it. 
+.PP
+.BR Argscan ()
+will return a  NULL 
+when it has processed all the flags in the command line.
+At this point, all the arguments (e.g. filenames) that were
+found in the command line are put into an array,
+.IR args_vector .  
+.I Args_count
+is the index to this array, and will be set to the number of
+arguments (filenames) that were found in the command line.
+.I Args_index
+and
+.I args_option
+work in the same way as their counterparts in 
+.BR crack ().
+.PP
+The command line may be re-scanned if desired.
+This can be accomplished by resetting
+.I args_index
+and
+.I args_count
+to 0.
+.SH Sfexpr
+The expression evaluator,
+.BR sfexpr ()
+may be used to interpret expressions, as in 
+.BR crack ().
+If you want to use
+.BR sfexpr (),
+you must  #include <crack.h>  in your program. 
+.SH EXAMPLE
+.PP
+An example of the use of
+.BR argscan ()
+in a program named argscantest.  There is a working copy of this program
+on line, so that you can try it for yourself.
+.RS
+.PP
+# include <stdio.h>
+.br
+# include <argscan.h>
+.PP
+main ( argc, argv )
+.br
+.RS 2
+int argc ;
+.br
+char **argv ;
+.RE
+{
+.RS 2
+int c, i ;
+.PP
+while ( c = argscan ( argc, argv, "x|a|bc", "b" ) )
+.RS 2
+switch ( c )  {
+.RS 2
+case 'x' :
+.RS 2
+printf ( "Flag 'x' value =  '%f'\\n", atof(args_option) ) ;
+.RS 2
+.br
+break ;
+.RE
+case 'a' :
+.RS 2
+printf ( "Flag 'a' option '%s'\\n", args_option ) ;
+.br
+break ;
+.RE
+case 'b' :
+.RS 2
+printf ( "Flag 'b'\\n" ) ;
+.br
+break ;
+.RE
+case 'c' :
+.RS 2
+printf ( "Flag 'c'\\n" ) ;
+.br
+break ;
+.RE
+default :
+.RS 2
+fprintf ( stderr, "%s: Unknown flag - %c", argv[0], *args_option ) ;
+.RE
+.RE
+}
+.RE
+.PP
+for ( i = 0 ; i < args_count ; i++ )
+.RS 2
+printf ( "args_vector[%d] = %s\\n", i, args_vector[i] ) ;
+.RE
+.RE
+}
+.PP
+.RE
+.RE
+.RE
+When given this command line:
+.RS .5i
+% argscantest -x 1023 -apizza -a margarita -b -h -c pomidoro formaggio
+.RE
+.PP
+argscantest will respond:
+.RS .5i
+.nf
+Flag 'x' value =  1023.000000
+Flag 'a' option pizza
+Flag 'a' option margarita
+argscantest: Unknown flag: h
+Flag 'c' 
+
+Argument  0 = pomidoro
+Argument  1 = formaggio
+.SH FILES
+libbicsf/argscan.c.  
+The location of include files 
+.I crack.h
+and
+.I argscan.h
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+.SH LIBS
+In order to use
+.BR argscan (),
+you must load "libbicsf" with it when you compile your program:
+.RS .5i
+% cc [options] your_program -lbicsf
+.RE
+.SH SEE ALSO
+crack(3)
+.SH BUGS
+.PP
+The minus sign should not be used as a flag.
+.BR Argscan ()
+will not return what is expected.
+.br
+If you want
+.BR argscan ()
+to accept flag options with postoperators such as 'dB', use 
+.IR sfexpr ()
+to evaluate options which follow flags.  To do this, you only need
+to  #include  
+.I crack.h
+in your program.  See the man page for crack for more information
+about 
+.IR sfexpr .
+.SH AUTHOR
+.PP
+M. Derek Ludwig
+.br
+Northwestern University Computer Music Studio
+.br
+26 Feburary 1985

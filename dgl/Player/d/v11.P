@@ -1,0 +1,122 @@
+#include <math.h>
+
+# define MPU
+
+/*
+ * example usage:
+ * a.out 10 "gen3 -L100 60 120" "gen3 -L100 120 60" "4 8 8"
+ * which will run one Player from
+ * MM=60 to MM=120 
+ * and the other Player from MM=120 to MM=60
+ * over the duration of 10 seconds of un-tempo-factored time.
+ */
+
+double Tempo(tempofun, abstart, absdur, abs_total_dur)
+	Function *tempofun;
+	double abstart, absdur, abs_total_dur;
+{
+	double seg_per_sec, x, ub;
+	long fl;
+	double dursum=0.0, absend = abstart + absdur;
+
+	if ((fl = Func_length(tempofun)) < 0) {	/* no function? */
+		fprintf(stderr, "Tempo: no function\n");
+		return -1.0;
+	}
+
+	if (abstart >= abs_total_dur)		/* done */
+		return -1.0;			
+
+	if (abs_total_dur <= 0.) {		/* avoid divide by 0 && -dur */
+		fprintf(stderr, "Tempo: invalid abs_total_dur\n");
+		return -1.0;
+	}
+	seg_per_sec = fl / abs_total_dur;
+
+	for (x = abstart; x < absend; x = ub) {
+		register double tf = tempofun->fyval[(long)(x * seg_per_sec)];
+
+		if (tf == 0.) {
+			fprintf(stderr, "Tempo: tempo factor == 0.\n");
+			dursum = HUGE;
+			break;
+		}
+		ub = ceil(x) == x ? x+1.0 : ceil(x);
+		ub = ub > absend ? absend : ub;
+		dursum += (ub - x) * 60.0 / tf;
+	}
+	abstart += absdur;
+	return dursum;
+}
+
+double utf_total_duration;
+
+M_start()
+{
+	if (Argc < 5) 
+		usage(1);
+	if ((utf_total_duration = atof(Argv[1])) <= 0.)
+		usage(2);
+}
+
+Player one(0.)
+{
+	Instance Function *tempo;
+	Instance double utf_begin;
+	double utf_dur;
+
+	P_start {
+		tempo = Gen(Argv[2]);
+	}
+	utf_dur = Rhythms(Argv[4]);
+	if ((P4 = Tempo(tempo, utf_begin, utf_dur, utf_total_duration)) < 0.) {
+		Kill(Self);
+		Return;
+	}
+	utf_begin += utf_dur;
+	P2 = Abs_time();
+# ifdef MPU
+	P5 = Exprs("60, 62, 64");
+	P6 = 60;
+	P7 = 0;
+# else MPU
+	P5 += 1.;
+	P6 = utf_begin;
+	P7 = utf_dur;
+# endif MPU
+	Wait_until(P2 + P4);
+}
+
+Player two(0.)
+{
+	Instance Function *tempo;
+	Instance double utf_begin;
+	double utf_dur;
+
+	P_start {
+		tempo = Gen(Argv[3]);
+	}
+	utf_dur = Rhythms(Argv[4]);
+	if ((P4 = Tempo(tempo, utf_begin, utf_dur, utf_total_duration)) < 0.) {
+		Kill(Self);
+		Return;
+	}
+	utf_begin += utf_dur;
+	P2 = Abs_time();
+# ifdef MPU
+	P5 = Exprs("48, 47, 46");
+	P6 = 60;
+	P7 = 0;
+# else MPU
+	P5 += 1.;
+	P6 = utf_begin;
+	P7 = utf_dur;
+# endif MPU
+	Wait_until(P2 + P4);
+}
+
+usage(x)
+{
+fprintf(stderr, "usage: a.out phrase_duration \"tempo1 gen command\" \"tempo2 gen command\" \"rhythms\"\n");
+exit(x);
+}

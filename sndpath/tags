@@ -1,0 +1,52 @@
+Msndpath	sndpath.c	?^main(argc, argv)$?
+addnod	nodfun.c	?^LIST *addnod(head, y, x, n, time, cx, cy, cd, ysig?
+adjustyx	sndpath.c	?^adjustyx(c)$?
+adrnod	nodfun.c	?^LIST *adrnod(head, y, x)$?
+circlemod	nodfun.c	?^float circlemod(x) $?
+cntlist	sndpath.c	?^cntlist(nod)$?
+delnod	nodfun.c	?^LIST *delnod(Hed, nod)$?
+die	sndpath.c	?^die() $?
+dospline	spl.c	?^dospline(ani)$?
+erasedsp	sndpath.c	?^erasedsp()$?
+getdistance	nodfun.c	?^float getdistance(x, y)$?
+getheta	nodfun.c	?^float getheta(x, y)$?
+getlim	spl.c	?^getlim(p)$?
+gotoyx	sndpath.c	?^gotoyx(c)$?
+interp	spl.c	?^float *interp(buf, nopts)$?
+massage	sndpath.c	?^massage(buf)$?
+mknod	nodfun.c	?^LIST *mknod()$?
+mvlist	nodfun.c	?^mvlist(head, cx, cy, cd, ysign)$?
+ntrpnod	nodfun.c	?^LIST *ntrpnod(nod, cx, cy, cd)	$?
+offlist	nodfun.c	?^offlist(head, xoff, yoff, cx, cy, cd, ysign)$?
+pboard	sndpath.c	?^pboard() $?
+printlist	sndpath.c	?^printlist(nod)$?
+prompt	sndpath.c	?^char *prompt(c)$?
+pspline	sndpath.c	?^pspline(n, x, y)$?
+putnod	nodfun.c	?^putnod(nod, y, x, cx, cy, cd)$?
+readplot	sndpath.c	?^readplot(name, appending)$?
+resetchsiz	sndpath.c	?^resetchsiz()$?
+rfun	nodfun.c	?^LIST *rfun(head, name, cx, cy, cd, ysin)$?
+rhs	spl.c	?^rhs(i)$?
+rmlist	nodfun.c	?^rmlist(nod)$?
+rnfun	sndpath.c	?^LIST *rnfun(head, name, cx, cy, cd, ysin, appendin?
+room	sndpath.c	?^room(c, cy, cx, rs)$?
+rotlist	nodfun.c	?^rotlist(head, rot, cx, cy, cd, ysign)$?
+save	spl.c	?^save(x)$?
+saywhere	sndpath.c	?^saywhere()$?
+scalist	nodfun.c	?^scalist(head, xscl, yscl, cx, cy, cd, ysign)$?
+setdsp	sndpath.c	?^setdsp()$?
+sndphelp	sndpath.c	?^sndphelp(x)$?
+spline	spl.c	?^float *spline(per, kons, ntrp, nipts, nopts, xin, ?
+splineit	sndpath.c	?^splineit()$?
+start	sndpath.c	?^start() $?
+statln	sndpath.c	?^statln(c)$?
+statnod	sndpath.c	?^statnod(nod)$?
+statspc	sndpath.c	?^statspc(y, x)$?
+velocity	nodfun.c	?^velocity(nod)$?
+wfun	nodfun.c	?^wfun(name, nod, cx, cy, cd, ysin)$?
+wnfun	sndpath.c	?^wnfun(name, nod, cx, cy, cd, ysin)$?
+wspline	sndpath.c	?^wspline(name, n, x, y)$?
+wxy	sndpath.c	?^wxy(name, n, x, y)$?
+xedge	sndpath.c	?^xedge(x)$?
+xtendmod	sndpath.c	?^xtendmod()$?
+yedge	sndpath.c	?^yedge(y)$?

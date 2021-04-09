@@ -1,0 +1,33 @@
+Player root(0)
+{
+	float beg, dur, pos, end;
+
+	if (Argc < 5) {
+		fprintf(stderr, "%s beg dur pos end\n", Argv[0]);
+		exit(1);
+	}
+	beg = atof(Argv[1]);
+	dur = atof(Argv[2]);
+	pos = atof(Argv[3]);
+	end = atof(Argv[4]);
+	sprout(beg, dur, pos, end, 0, 0);
+}
+
+Player spirlz()
+{
+	p5;
+}
+
+sprout(beg, dur, pos, end, cnt, dir)
+	float dur, beg, pos, end; 
+{
+	Player *p;
+
+	if (pos > beg && pos <= end) {
+		p = New_player(spirlz, beg, dur, P_READY);
+		Set_p(p, 2, (float) cnt++);
+		Set_p(p, 4, dur);
+		Set_p(p, 5, pos);
+		sprout(beg, dur, pos+dur*(dir?cnt:-cnt), end, cnt, !dir);
+	}
+}

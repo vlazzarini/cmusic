@@ -1,0 +1,13 @@
+shape - general purpose shape generator
+
+shape output[b] table[fvpn] sum[dpv] ;
+
+A truncating, table lookup oscillator with amplitude automatically set to
+1, and frequency automatically set to p4sec.  In other words, this unit
+generator simply scales the function given in table to the note duration.
+Dynamic variables are recommended for sum locations. Table may be either 
+explicit, or number may be given.  If number is n, then function floor(n) 
+is used.  
+NOTE: This unit generator is equivalent to (but faster than) an osc with
+amplitude = 1.  It is not significantly faster than the freq unit generator,
+but it obviates the need for a p-field set to p4sec.

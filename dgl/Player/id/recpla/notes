@@ -1,0 +1,11 @@
+to record:
+	[track] r <portamento_down> notes <portamento_up>
+to play:
+	[track] s
+to stop:
+	[track] S
+to play continuously:
+	[track] c
+Note:
+use S to stop immediately a track playing continuously.
+use s to stop at the end a track playing continuously.

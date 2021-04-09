@@ -1,0 +1,11 @@
+csound - storing sound on the CARL system
+
+There is a special file system available at CARL to store and
+manipulate sound.  The easiest way to learn about it is to read the
+tutorial introduction.  The best way to do this is to get a hardcopy of the 
+CARL Startup Kit from CME.  
+
+To read it online, say:
+
+    % type -e /mnt/tutorials/csound.dgl | more
+

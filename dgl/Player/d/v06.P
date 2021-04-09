@@ -1,0 +1,58 @@
+/*
+ * If you want a voice to run for all time, set its begin time to 0
+ * and its end time to "HUGE", which translates into the largest positive
+ * floating point number on your computer.
+ * The statement:
+ * 	Instance Function *f1;
+ * declares that the variable f1 will point to a Function.  
+ * A Function can hold an array of floating point values such as those
+ * produced by the cmusic gen programs, gen1, gen2, etc.
+ * The "Instance" part says that the value in this variable should be
+ * kept from one note to the next.  "Instance" is a data class
+ * which is peculiar to Player.  It is similar to the C language "static"
+ * declaration, except that "static" saves only one instance of a value
+ * deposited in it, whereas an Instance variable can save as many
+ * values as there are simultaneous instances of a Player.
+ * In the P_start block, we will read a file named "ramp" which has 
+ * previously been created using gen1.  
+ * It was created by the following statement:
+ * 	% gen1 -L32 0 0 1 1 > ramp
+ * which creates 32 floating point numbers ramping from 0 to 1.
+ * The Function pointer f1 will
+ * be given the address of the array of floating point values after the
+ * procedure Read_gen() has read in the file.  
+ * 
+ * Later, we access the function in f1 with the statement
+ * 	P6 = Func(f1, 5.0);
+ * which looks up the y value of the function at x = 5.0 and puts it
+ * in p6.  N.B. the number "5" and the number "5.0" are not equal in  c!
+ * Had we said
+ * 	P6 = Func(f1, 5)
+ * we would most likely have produced an error when the scr program was run.
+ * Just "5" is taken as an integer, 5.0 is taken as a float.  It makes a
+ * big difference to the Func() procedure, which expects floats.  It 
+ * expects floats because we can say, for instance,
+ * 	P6 = Func(f1, 5.4);
+ * which interpolates by .4 between the value of the function at 5 and the
+ * value at 6.
+ * 
+ * IMPORTANT RULE: unless stated otherwise, wherever constant numbers
+ * are required they are to be in floating point form, i.e., with a fractional
+ * part.  Just supplying the decimal point is sufficient if it is a whole
+ * number, e.g., "5." equals "5.0".
+ */
+
+#include <carl/defaults.h>
+
+Player bqop(0, HUGE)
+{
+	Instance Function *f1;
+	P_start {
+		f1 = Read_func(Argv[1], H_MONO_IN_X);
+	}
+	P4= Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P6 = Func(f1, 5.0);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

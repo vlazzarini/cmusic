@@ -1,0 +1,386 @@
+
+DIGITAL SIGNAL PROCESSING ON CARL
+
+
+The multitude of digital signal processing programs on the CARL
+system can be both tantalizing and bewildering.  For the user
+interested only in sound synthesis via ``cmusic'', these programs
+are of scant concern.  However, for anyone working with recorded
+sounds, a certain facility with these programs is absolutely
+essential.  Fortunately, it is quite possible to acquire this
+facility without any great mathematical expertise.  Manual pages
+and helpfiles exist for all of the programs in question, and the
+user is strongly urged to read them.  However, in addition to
+detailed information about specific programs, it is also important to
+have a more general idea of which programs are appropriate for which
+applications.  In this section, we attempt to provide such a view.
+
+
+OVERVIEW
+
+Signal processing at CARL relies very heavily on the UNIX
+piping paradigm.  Happily, this is very much the way that signal
+processing is generally conceived of in other contexts as well.
+Thus, the general form of CARL signal processing operations is:
+
+	sndin [-flags] file1 | program [-flags] [filename] | sndout file2
+
+Inevitably, there are exceptions to this form, but most programs
+conform fairly well.  Another general rule is that signal processing
+programs do not expect stdout to be the terminal.  Some older programs
+may tolerate (or even encourage) output to the terminal, but most do
+not.  The safe way to get output to the terminal is to make ``btoa''
+(binary to ascii) the final program in the pipe.
+
+To a certain extent, the suggestions which follow are a matter of
+style and personal taste; they are therefore not inviolable.  However,
+they ARE the product of considerable experience and careful
+thought.  Programs which are not recommended here are either outdated,
+unsupported, superfluous, or as yet unwritten!
+
+
+SIGNAL DISPLAY
+
+It is quite possible to run all of the CARL digital signal processing
+programs without any graphic display.  But this mode of operation will
+only be successful until something "unexpected" occurs.  To really
+use the software effectively, the user MUST be able to plot waveforms
+and to make some sense of the display.
+
+Unfortunately, the CARL software does not presently include a graphics
+editor (i.e., a program which would allow one to work with soundfiles
+visually, the way one works with text in ``vi''). [But see "Signal 
+Editing" below.]  The CARL software does include several elementary
+plotting programs designed specifically for non-graphics terminals
+(e.g., ``show'' and ``yshow'').  However, the approach which will be
+advocated here is that of simply using the device-independent UNIX
+plot routines as described in the manual page for ``graph''.  The basic
+idea is as follows.
+
+Since ``graph'' expects its input to be ascii (x, y) pairs, the
+way to graph a stream of samples is first to pass the stream through
+``btoa -s'' (to generate sample numbers for the x axis) or through
+``btoa -t'' (to generate time values for the x axis).  The output
+of ``graph'' then must be piped either to ``v550'' (to get a display
+on a VISUAL 550 graphics terminal) or to ``lplot | lpr'' (to get a
+hardcopy graph from the laser-graphics-printer).  For example:
+
+	sndin -b3.1 -d.05 file | btoa -t | graph | v550
+	sndin file | energy | btoa -t | graph -y 0 1. | lplot | lpr
+	alias dsp 'sndin \!* | btoa -s | graph | v550'
+
+NOTE:  Because of the limited resolution of the display, and because of
+the significant amount of time required to produce a plot, it is
+rarely advisable to plot more than a few thousand values at a time.
+
+
+SPECTRAL DISPLAY
+
+For audio signals, being able to display the spectrum of the signal
+is probably even more important than being able to display the signal
+itself.  At CARL, spectral display is handled by the program ``spect''.
+The default operation of ``spect'' is to produce a very crude spectral
+display on a non-graphics terminal; but this is rarely desired.  The
+more useful way of running ``spect'' is to specify the -d flag to
+force floating point output in decibels.  There are then two useful
+possibilities for displaying the output: 1) treat the output as a
+stream of values to be displayed graphically as described above, or
+2) list the output numerically on the screen.  The latter method is
+more precise, but the former is easier to view at a glance.  Thus:
+
+	sndin -3.1 file | spect -d | btoa -s | graph -y -100 0 | v550
+	sndin -3.1 file | spect -d | btoa -s -F | more
+	alias dspf 'sndin \!* | spect -d | btoa -s | graph -y -100 0 | v550'
+
+NOTE:  There are many useful options to ``spect'' in addition to the -d
+flag; the manual page is MUST reading.  For example, ``spect'' can be
+made to plot an average of successively overlapped spectra, or the frequency
+response of a newly designed filter, or the linear-prediction envelope of
+a calculated spectrum.  It is especially important to understand the
+significance of the -w flag which controls the number of samples
+in the window (and thus the number of bins in the FFT).
+
+
+SIGNAL EDITING
+
+As mentioned above, the CARL software is very weak in the area of signal
+editing; however, there are definitely some programs which make life easier.
+Perhaps the most important of these is ``play -i'', interactive play.
+
+The complete capabilities of ``play'' are described in the manual page,
+but the important feature from the editing point of view is that ``play -i''
+allows for easy manipulation of begin and end times in playing a soundfile.
+Even more importantly, ``play -i'' provides a mechanism for piping out
+the intervening samples to any other desired program.  The trick is simply
+to type two exclamation points, and then the rest of the command stream.
+Thus, one could type 
+
+	play -i soundfile_name
+
+then type "b3.1" to set the begin time to 3.1, and then type:
+
+	!!spect -d | btoa -s | graph -y -100 0 | v550
+
+This gives something of the effect of a graphics editor.  Alternatively,
+one could type:
+
+	!!sndout new_file
+
+One other program that is particularly useful in signal editing is the
+program ``janus'' which applies a smooth fade to the beginning and end
+of the stream which is fed to it.  Thus, the above example might better read:
+
+	!!janus | sndout new_file
+
+Other programs which may have application in signal editing are described
+below under "Arithmetic Operations" and "Signal Analysis".
+
+
+SAMPLE RATE CONVERSION
+
+Recorded sounds at CARL are almost always digitized at a sample rate of
+48KHz; but doing digital signal processing at this sample rate on the
+hardware available at CARL is agonizingly slow.  Therefore, almost all
+signal processing (and almost all sound synthesis) is done at 16KHz.
+This results in a maximum usable frequency of around 7KHz.  While this
+may seem unbearably low, the fact remains that this is all that the
+present system can realistically support.  As a result, sample rate
+conversion is probably the first digital signal processing operation
+that the new user encounters.  
+
+The preferred means for performing sample rate conversion at CARL is
+via the program ``convert''.  (An older and more limited program is
+"srconv".)  The ``convert'' program is actually quite sophisticated
+(for example, it can convert between arbitrary frequencies such as
+48KHz and 44.1kHz, or it can even do time-varying sample rate conversion),
+but its basic operation is very simple.  For example, to convert a
+signal (at any sample rate) to one at 16KHz:
+
+	sndin file1 | convert -r16K | sndout file2
+
+NOTE:  The sample rate of a soundfile can be trivially changed by
+using ``visf'' to change the labeled sample rate, but this will
+simply cause the file to play back at the wrong speed.
+
+
+FILTERING
+
+Filtering may be useful both for removing unwanted components from a
+signal, and for applying a desired spectral shaping to a signal.
+These two applications are sufficiently distinct that it is well
+worth discussing them separately.
+
+If a signal contains unwanted rumble or hum, a high-pass filter
+may be effective in removing the undesirable low-frequency components.
+(However, it is always a good idea to use ``spect'' to verify that
+these components are really present.)  There are currently two
+alternatives for designing band-pass filters on the CARL system.
+The first and most useful of these is the program ``fastfir''
+which is quick and simple to run, and easy to understand.  For
+example:
+
+fastfir -R16K -n1027 -x2 -w6 -f100 filter_file | spect -d -f | btoa -s -F | more
+
+This command designs a high-pass filter with a cutoff frequency of
+100Hz, writes the filter specifications in the file "filter_file",
+and produces a listing of the filter frequency response.
+
+The second alternative is the program ``fir'' which uses a more
+sophisticated optimal design algorithm, but which is really only
+appropriate in certain highly specialized applications.  In fact,
+for filters with really sharp cutoffs, ``fastfir'' may be the only
+possibility because the impulse response will need to be longer than
+``fir'' can support.  (The general rule is that impulse response length
+must be greater than sample_rate / transition_bandwidth, e.g., 16KHz / 40Hz
+if the above example is to block out everything below 60Hz.)
+
+It is important to note that both of the above programs design finite
+impulse response (FIR) filters.  To actually apply these filters to a
+signal, the program ``convolve'' should be used.  The ``convolve''
+program uses a fast convolution algorithm to implement FIR filters
+efficiently.  For example:
+
+	sndin file1 | convolve filter_file | sndout file2
+
+The second case in which filtering may be desired is when the user
+wishes to modify the spectral shaping of a signal.  If the modification
+is very simple (e.g., introducing a 6 dB / octave boost above some
+frequency), then the FIR design programs can be used with a very small
+impulse response length (e.g., 15) to design a suitable filter.  More
+typically, however, the goal is to apply the resonant features of one
+signal (e.g., a vowel spectrum) to another signal.  Here, the options
+are more open ended.
+
+One approach which is available is to use ``lpc'' to calculate the
+coefficients of an infinite impulse response (IIR) filter whose frequency
+response matches the desired pattern of resonances.  This will work if
+the reference signal has a nice steady state portion which can be used
+as input to ``lpc''.  For example:
+
+sndin -b3.1 file | lpc -w512S -l16 filter_file | spect -d -f | btoa -s -F | more
+
+The filter designed by ``lpc'' can then be implemented via the program
+``filter''.  (``filter'' can implement either FIR or IIR filters, but
+``convolve'' is far more efficient for FIR filters.)
+
+Another approach is to capture the impulse response of a desired resonator
+in a soundfile (e.g., by recording the sound of a loud click in a room),
+and then to use the program ``convolvesf'' to apply the resonator to a
+new signal.  For example:
+
+	sndin file1 | convolvesf impulse_response_soundfile | sndout file2
+
+Unfortunately, there are currently no programs on the CARL system for
+applying a time-varying filter (e.g., to get such effects as the "talking
+orchestra").
+
+
+ARITHMETIC OPERATIONS
+
+Simple arithmetic operations are an indispensable part of digital signal
+processing.  On the CARL system, several different programs have evolved
+to meet this need.  To add or subtract a constant from a signal the 
+program ``offset'' can be used. To multiply a signal by a constant
+the program ``gain'' is available; alternatively the program ``sfnorm''
+may be used to rescale the signal to have a specified maximum value.
+To add, subtract, or multiply two signals, the program ``mixsf'' can
+be used.  Thus we have:
+
+	sndin file1 | offset .3 | sndout file2
+	sndin file1 | gain .5 | sndout file2
+	sndin file1 | mixsf -s file2 | sndout file3
+	sfnorm -a.707 file1 | sndout file2
+
+NOTE:  In general, it is a bad idea to use ``sfnorm'' without the -a
+flag, because this will rescale the signal to have a maximum amplitude
+of 1.0.  In the course of subsequent digital signal processing
+operations, round-off errors can easily transform this to a maximum
+amplitude of 1.01.  However, the ``csound'' system will represent a
+value of 1.01 as -.99.  Hence, it is important to leave some "head room"
+for the digital signal processing software.
+
+
+SIGNAL GENERATION
+
+Most signals on the CARL system are either recorded via analog-to-digital
+conversion, or are synthesized via ``cmusic''.  However, there are also
+several programs which are useful for generating test signals and noise
+signals.  In particular, the program ``wave'' provides a convenient means
+of creating sine waves, square waves, sawtooths, pulse trains, and noise.
+For more sophisticated kinds of noise synthesis, the program ``cannon''
+is recommended.  Another program which may occasionally prove useful is
+``impulse'', which generates a single impulse followed by zeros.
+
+
+SIGNAL ANALYSIS
+
+Programs for signal analysis on the CARL system are a mixed bag.  The
+simplest of these is ``peak'' which is nevertheless very useful for
+determining the maximum (in absolute value) of a stream of numbers.
+Another simple and generally useful program is ``energy'' which moves
+a window along a stream of samples and reports the RMS energy within
+the window as a function of time.  Thus ``energy'' can be used to view
+the temporal envelope of a signal, and to determine begin and end times
+for a sound.  A more sophisticated envelope detection program is ``envelope''
+which displays the time-varying magnitude of the analytic signal; but this
+envelope is actually too high resolution to be of much value in normal
+applications.  Thus:
+
+	sndin file | peak
+	sndin file | energy
+	sndin -e3.1 file | energy | btoa -s | graph | v550
+
+One other program which is useful for time-domain analysis is ``glitch'',
+which looks for sudden changes in second derivative to locate clicks.
+
+For frequency-domain analysis, by far the most useful program is ``spect''
+which is described above.  Other good programs to know about are ``pitch'',
+which attempts to determine the pitch of an input signal as a function of
+time, and ``median'', which implements a non-linear smoothing filter which
+is particularly useful immediately after ``pitch''.  For example:
+
+	sndin file | pitch | btoa
+	sndin -e3.1 | pitch | btoa -s | graph | v550
+	sndin file | pitch | median | btoa
+
+The most sophisticated signal analysis program on the system is ``pvoc'',
+the phase vocoder.  Unfortunately, ``pvoc' also requires an at least
+moderately sophisticated user; and the manual page and helpfile
+are absolute MUST reading.  As an example of what is possible,
+however, the following command sequence can be used to graph the 
+amplitude-vs-time of the third harmonic of a signal which is known
+to have a pitch of around 440Hz:
+
+	sndin file | pvoc -A -F440 -W0 | sndout file.anl
+	sndin -c7 file.anl | btoa -s | graph | v550
+
+Note, however, that unlike the other analysis programs, ``pvoc''
+generally takes fairly long to run.  (Note: one additional program which
+may be useful in conjunction with ``pvoc'' analysis is ``envanal''.)
+
+
+TIME-SCALING AND PITCH-TRANSPOSITION
+
+Two of the most interesting and most difficult signal processing operations
+which are included in the CARL software are time-scaling (i.e., 
+time-expansion and time-contraction) and pitch-transposition.  Both
+of these operations are performed via ``pvoc'', and both require a
+certain sophistication of the user.  Again, the manual page and helpfile
+are absolutely indispensable; but a few examples may whet the appetite.
+The first command expands a sound by a factor of four, and the second
+lowers it in pitch an octave without changing the frequencies of the
+resonances:
+
+	sndin file1 | pvoc -N1024 -W3 -T4 | sndout file2
+	sndin file2 | pvoc -N1024 -W3 -P.5 -w.5 | sndout file3
+
+
+REVERBERATION
+
+Reverberation outside of ``cmusic'' is available at CARL via two different
+programs.  The older and more computationally efficient program is ``lprev'',
+which uses a fairly good synthetic reverberation scheme and is also
+reconfigurable (although not trivially).  The newer program is ``convolvesf'',
+which convolves a signal with a recorded impulse response in the same way
+that ``convolve'' convolves a signal with a filter impulse response.  If
+actual room impulse responses are available, then ``convolvesf'' is the
+means by which a signal can be placed in a specific environment.  In the
+absence of real recorded room responses, however, it is still very easy
+to construct synthetic room responses such that the resulting reverberation
+is of extremely high quality.
+
+
+NOISE REDUCTION
+
+Even with digital recording and storage media, wideband background noise 
+remains a troublesome problem.  Linear filtering techniques are of little
+use in this situation because the signal and noise both occupy the same
+frequency range.  At present, the only CARL program which attempts to cope
+with this problem is ``denoise''.  An important feature of this program
+is that it needs at least .25 seconds of noise without signal in order to
+establish a noise floor.  Therefore, users should not edit their soundfiles
+TOO tightly.  It is also important to note that ``denoise'' is
+still in the experimental stage, and it's results are not guaranteed.
+
+
+CROSS-SYNTHESIS
+
+Cross-synthesis is a kind of time-varying filtering in which the changing
+resonances of one signal (especially speech) are applied to another signal.
+As stated above, there are currently no programs on the CARL system which
+can implement a time-varying filter.
+
+
+COMPUTATION LOADS
+
+A final consideration (actually, a constant consideration) is the
+computational load placed on the system by these various digital
+signal processing programs.  The standard way to measure this is via
+the ratio: seconds of CPU / seconds of output sound.  At a sample
+rate of 16KHz, ``pvoc'' will typically run at a ratio of around 100,
+which ranks it with (or above) ``cmusic'' as the most computationally
+intensive program on the system;  ``denoise'' and ``convolvesf'' are
+next, down around 50, followed by ``convolve'', ``convert'', ``filter'',
+and ``lprev'' down to around 20.  Programs other than these introduce
+negligible loading.
+

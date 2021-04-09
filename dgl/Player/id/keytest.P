@@ -1,0 +1,38 @@
+int	key;
+
+keydown()
+{
+	int	ch;
+
+	if (nb_acia_read(0, &ch) != 0) {
+		acia_write(0, ch);
+		key = ch;
+		return(TRUE);
+	} else
+		return(FALSE);
+}
+
+M_start() {
+	fprintf(1, "ubrk=0x%x (%d)\n", stat_ubrk(), stat_ubrk());
+}
+
+Player keytest(0)
+{
+	P_start {
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	switch (key) {
+		case '.':
+			Kill(Self);
+			Return;
+		case '?':
+			fprintf(1, "ubrk=0x%x (%d)\n", stat_ubrk(), stat_ubrk());
+			break;
+		default:
+			acia_write(0, key);
+			break;
+	}
+}
+

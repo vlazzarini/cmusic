@@ -1,0 +1,21 @@
+Player q(0, 2)
+{
+	P4 = Rhythm("12");
+	if (Player_stat != 0) {
+		printf("Player_stat = %x\n", Player_stat);
+	}
+	P5 = Pitch("a4");
+	if (Player_stat != 0) {
+		printf("Player_stat = %x\n", Player_stat);
+	}
+	P6 = Octave("a4");
+	if (Player_stat != 0) {
+		printf("Player_stat = %x\n", Player_stat);
+	}
+	P7 = Expr("2*2");
+	if (Player_stat != 0) {
+		printf("Player_stat = %x\n", Player_stat);
+	}
+	P2 = Now;
+	Wait_until(Now + P4);
+}

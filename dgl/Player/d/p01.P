@@ -1,0 +1,7 @@
+Player crxk(1.5,100)
+{
+	P4 = Rhythms("{1 {4 8 8 4}x2 1}x2 Stop");
+	P5 = Pitches("as b3 c df5 e f fs ff5 bs6 a8");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,74 @@
+illus - generates control signals for pitch illusions
+
+illus ampout[b] incrout[b] ampin[bvpn] incrin[bvpn] which[bvpn]
+	ratio[bvpn] table[fvpn] incrmin[bvpn] incrmax[bvpn] ;
+
+Special Shepard/Risset tone illusion control function generator.
+Generates amplitude (ampout) and frequency (incrout) control signals
+from an input frequency (incrin) and a spectral shaping function
+(table).  which determines which of M ratio-related components in the
+frequency range incrmin to incrmax is to be output.
+
+ampout and incrout are fed (presumably) to an oscillator that generates
+a single component of the illusion.  each component has a frequency
+equal to ratio times the last one (unless it exceeds incrmax, in which
+case it wraps around to a frequency between incrmin and incrmax).  The
+amplitude of each component is obtained from table by mapping the table
+abscissa onto the frequency range [incrmin, incrmax].  All output
+amplitudes are also scaled by the constant factor ampin.
+
+The following cmusic score generates a full ascending chromatic scale
+of Shepard tones, using a special gen function for the spectral
+envelope (shepenv) that produces a "raised inverted cosine" envelope
+over a logarithmic frequency abscissa:
+
+    #include <carl/cmusic.h>
+
+    ins 0 shep;
+	seg		b3 p5 f2 d 0; 		{note envelope}
+	illus	b1 b2 b3 p10 p6 p7 f3 p8 p9;	{spectral envelope}
+	osc		b1 b1 b2 f1 d;		{carrier}
+	out		b1;
+    end;
+
+    { reserve spectral space for 6 components }
+    #define NCOMP 6
+    { each component separated by an octave }
+    #define BASE 2
+    { spectral enveloped based at 50 Hz }
+    #define FMIN 50Hz
+    { max frequency NCOMP octaves higher }
+    #define FMAX FMIN*(BASE^NCOMP)
+    { amplitude scaler for each component }
+    #define AMP 1/NCOMP
+
+    SINE(f1); 				{component waveshape}
+    GEN4(f2) 0,0 -3 .1,1 0 .9,1 -1 1,0; {overall note envelope}
+    gen p2 shepenv f3 NCOMP BASE;  	{special spectral envelope}
+
+    {macro for tone complex}
+    {NOTE : NCOMP-1 components fit under spectral envelope}
+
+    #define SHEP(time,pitch,dur)\
+    note time shep dur AMP 1 BASE FMIN FMAX pitch;\
+    note p2 shep dur AMP 2 BASE FMIN FMAX pitch;\
+    note p2 shep dur AMP 3 BASE FMIN FMAX pitch;\
+    note p2 shep dur AMP 4 BASE FMIN FMAX pitch;\
+    note p2 shep dur AMP 5 BASE FMIN FMAX pitch;\
+    note p2 shep dur AMP 6 BASE FMIN FMAX pitch
+
+    SHEP(0,A(-3),.5);
+    SHEP(p2+1,As(-3),.5);
+    SHEP(p2+1,B(-3),.5);
+    SHEP(p2+1,C(-2),.5);
+    SHEP(p2+1,Cs(-2),.5);
+    SHEP(p2+1,D(-2),.5);
+    SHEP(p2+1,Ds(-2),.5);
+    SHEP(p2+1,E(-2),.5);
+    SHEP(p2+1,F(-2),.5);
+    SHEP(p2+1,Fs(-2),.5);
+    SHEP(p2+1,G(-2),.5);
+    SHEP(p2+1,Gs(-2),.5);
+    SHEP(p2+1,A(-2),.5); {last note sounds same as first}
+
+    ter;

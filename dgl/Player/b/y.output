@@ -1,0 +1,1099 @@
+
+state 0
+	$accept : _start $end 
+	start : _    (1)
+
+	error  shift 2
+	.  reduce 1
+
+	start  goto 1
+
+state 1
+	$accept :  start_$end 
+	start :  start_stat 
+	start :  start_tstat 
+	start :  start_INSTANCE tstat 
+	start :  start_LRCRLY 
+	start :  start_player LSYMBOL LLPAREN args LRPAREN 
+
+	$end  accept
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 6
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 10
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	INSTANCE  shift 5
+	MOTIVE  shift 39
+	.  error
+
+	stat  goto 3
+	tstat  goto 4
+	obj  goto 8
+	player  goto 7
+	motive  goto 9
+	motivh  goto 38
+
+state 2
+	start :  error_LSEMI 
+
+	LSEMI  shift 40
+	.  error
+
+
+3: shift/reduce conflict (shift 18, red'n 3) on LPERIOD
+3: shift/reduce conflict (shift 19, red'n 3) on LINT
+3: shift/reduce conflict (shift 20, red'n 3) on LFLOAT
+3: shift/reduce conflict (shift 21, red'n 3) on LSYMBOL
+3: shift/reduce conflict (shift 22, red'n 3) on LCOMMA
+3: shift/reduce conflict (shift 23, red'n 3) on LOCTAL
+3: shift/reduce conflict (shift 24, red'n 3) on LHEX
+3: shift/reduce conflict (shift 25, red'n 3) on LQSTR
+3: shift/reduce conflict (shift 26, red'n 3) on LBRACKETS
+3: shift/reduce conflict (shift 27, red'n 3) on LOP
+3: shift/reduce conflict (shift 28, red'n 3) on LQCHR
+3: shift/reduce conflict (shift 36, red'n 3) on LARB
+3: shift/reduce conflict (shift 29, red'n 3) on LCOMMENT
+3: shift/reduce conflict (shift 30, red'n 3) on LERROR
+3: shift/reduce conflict (shift 31, red'n 3) on LLPAREN
+3: shift/reduce conflict (shift 32, red'n 3) on LRPAREN
+3: shift/reduce conflict (shift 33, red'n 3) on LLCRLY
+3: shift/reduce conflict (shift 46, red'n 3) on LRCRLY
+3: shift/reduce conflict (shift 34, red'n 3) on LLSQB
+3: shift/reduce conflict (shift 35, red'n 3) on LRSQB
+3: shift/reduce conflict (shift 44, red'n 3) on PLAYER
+3: shift/reduce conflict (shift 37, red'n 3) on EXTERN
+3: shift/reduce conflict (shift 11, red'n 3) on PNFIELD
+3: shift/reduce conflict (shift 13, red'n 3) on PIFIELD
+3: shift/reduce conflict (shift 12, red'n 3) on PSFIELD
+3: shift/reduce conflict (shift 14, red'n 3) on PPFIELD
+3: shift/reduce conflict (shift 15, red'n 3) on P_START
+3: shift/reduce conflict (shift 16, red'n 3) on M_START
+3: shift/reduce conflict (shift 17, red'n 3) on M_TER
+state 3
+	start :  start stat_    (3)
+	stat :  stat_obj 
+	stat :  stat_cycl 
+	stat :  stat_gen 
+	stat :  stat_PLAYER 
+	tstat :  stat_LSEMI 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LSEMI  shift 45
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 44
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	CYCLIST  shift 49
+	GEN  shift 50
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	.  reduce 3
+
+	obj  goto 41
+	cycl  goto 42
+	cyclh  goto 47
+	gen  goto 43
+	genh  goto 48
+
+state 4
+	start :  start tstat_    (4)
+
+	.  reduce 4
+
+
+state 5
+	start :  start INSTANCE_tstat 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	MOTIVE  shift 39
+	.  error
+
+	stat  goto 52
+	tstat  goto 51
+	obj  goto 8
+	motive  goto 9
+	motivh  goto 38
+
+6: reduce/reduce conflict (red'ns 6 and 59 ) on $end
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LPERIOD
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LINT
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LFLOAT
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LSYMBOL
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LCOMMA
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LOCTAL
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LHEX
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LQSTR
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LBRACKETS
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LOP
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LQCHR
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LARB
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LCOMMENT
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LERROR
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LLPAREN
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LRPAREN
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LLCRLY
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LRCRLY
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LLSQB
+6: reduce/reduce conflict (red'ns 6 and 59 ) on LRSQB
+6: reduce/reduce conflict (red'ns 6 and 59 ) on PLAYER
+6: reduce/reduce conflict (red'ns 6 and 59 ) on EXTERN
+6: reduce/reduce conflict (red'ns 6 and 59 ) on PNFIELD
+6: reduce/reduce conflict (red'ns 6 and 59 ) on PIFIELD
+6: reduce/reduce conflict (red'ns 6 and 59 ) on PSFIELD
+6: reduce/reduce conflict (red'ns 6 and 59 ) on PPFIELD
+6: reduce/reduce conflict (red'ns 6 and 59 ) on P_START
+6: reduce/reduce conflict (red'ns 6 and 59 ) on M_START
+6: reduce/reduce conflict (red'ns 6 and 59 ) on M_TER
+6: reduce/reduce conflict (red'ns 6 and 59 ) on INSTANCE
+6: reduce/reduce conflict (red'ns 6 and 59 ) on MOTIVE
+state 6
+	start :  start LRCRLY_    (6)
+	obj :  LRCRLY_    (59)
+
+	LSEMI  reduce 59
+	CYCLIST  reduce 59
+	GEN  reduce 59
+	.  reduce 6
+
+
+state 7
+	start :  start player_LSYMBOL LLPAREN args LRPAREN 
+
+	LSYMBOL  shift 53
+	.  error
+
+
+state 8
+	stat :  obj_    (23)
+
+	.  reduce 23
+
+
+state 9
+	stat :  motive_    (27)
+
+	.  reduce 27
+
+
+state 10
+	player :  PLAYER_    (8)
+
+	.  reduce 8
+
+
+state 11
+	obj :  PNFIELD_    (36)
+
+	.  reduce 36
+
+
+state 12
+	obj :  PSFIELD_    (37)
+
+	.  reduce 37
+
+
+state 13
+	obj :  PIFIELD_    (38)
+
+	.  reduce 38
+
+
+state 14
+	obj :  PPFIELD_    (39)
+
+	.  reduce 39
+
+
+state 15
+	obj :  P_START_LLCRLY 
+
+	LLCRLY  shift 54
+	.  error
+
+
+state 16
+	obj :  M_START_    (41)
+
+	.  reduce 41
+
+
+state 17
+	obj :  M_TER_    (42)
+
+	.  reduce 42
+
+
+state 18
+	obj :  LPERIOD_    (43)
+
+	.  reduce 43
+
+
+state 19
+	obj :  LINT_    (44)
+
+	.  reduce 44
+
+
+state 20
+	obj :  LFLOAT_    (45)
+
+	.  reduce 45
+
+
+state 21
+	obj :  LSYMBOL_    (46)
+
+	.  reduce 46
+
+
+state 22
+	obj :  LCOMMA_    (47)
+
+	.  reduce 47
+
+
+state 23
+	obj :  LOCTAL_    (48)
+
+	.  reduce 48
+
+
+state 24
+	obj :  LHEX_    (49)
+
+	.  reduce 49
+
+
+state 25
+	obj :  LQSTR_    (50)
+
+	.  reduce 50
+
+
+state 26
+	obj :  LBRACKETS_    (51)
+
+	.  reduce 51
+
+
+state 27
+	obj :  LOP_    (52)
+
+	.  reduce 52
+
+
+state 28
+	obj :  LQCHR_    (53)
+
+	.  reduce 53
+
+
+state 29
+	obj :  LCOMMENT_    (54)
+
+	.  reduce 54
+
+
+state 30
+	obj :  LERROR_    (55)
+
+	.  reduce 55
+
+
+state 31
+	obj :  LLPAREN_    (56)
+
+	.  reduce 56
+
+
+state 32
+	obj :  LRPAREN_    (57)
+
+	.  reduce 57
+
+
+state 33
+	obj :  LLCRLY_    (58)
+
+	.  reduce 58
+
+
+state 34
+	obj :  LLSQB_    (60)
+
+	.  reduce 60
+
+
+state 35
+	obj :  LRSQB_    (61)
+
+	.  reduce 61
+
+
+state 36
+	obj :  LARB_    (62)
+
+	.  reduce 62
+
+
+state 37
+	obj :  EXTERN_    (63)
+
+	.  reduce 63
+
+
+state 38
+	motive :  motivh_LLPAREN stat LRPAREN 
+
+	LLPAREN  shift 55
+	.  error
+
+
+state 39
+	motivh :  MOTIVE_    (34)
+
+	.  reduce 34
+
+
+state 40
+	start :  error LSEMI_    (2)
+
+	.  reduce 2
+
+
+state 41
+	stat :  stat obj_    (24)
+
+	.  reduce 24
+
+
+state 42
+	stat :  stat cycl_    (25)
+
+	.  reduce 25
+
+
+state 43
+	stat :  stat gen_    (26)
+
+	.  reduce 26
+
+
+state 44
+	stat :  stat PLAYER_    (28)
+
+	.  reduce 28
+
+
+state 45
+	tstat :  stat LSEMI_    (29)
+
+	.  reduce 29
+
+
+state 46
+	obj :  LRCRLY_    (59)
+
+	.  reduce 59
+
+
+state 47
+	cycl :  cyclh_LLPAREN stat LRPAREN 
+
+	LLPAREN  shift 56
+	.  error
+
+
+state 48
+	gen :  genh_LLPAREN stat LRPAREN 
+
+	LLPAREN  shift 57
+	.  error
+
+
+state 49
+	cyclh :  CYCLIST_    (30)
+
+	.  reduce 30
+
+
+state 50
+	genh :  GEN_    (32)
+
+	.  reduce 32
+
+
+state 51
+	start :  start INSTANCE tstat_    (5)
+
+	.  reduce 5
+
+
+state 52
+	stat :  stat_obj 
+	stat :  stat_cycl 
+	stat :  stat_gen 
+	stat :  stat_PLAYER 
+	tstat :  stat_LSEMI 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LSEMI  shift 45
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 44
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	CYCLIST  shift 49
+	GEN  shift 50
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	.  error
+
+	obj  goto 41
+	cycl  goto 42
+	cyclh  goto 47
+	gen  goto 43
+	genh  goto 48
+
+state 53
+	start :  start player LSYMBOL_LLPAREN args LRPAREN 
+
+	LLPAREN  shift 58
+	.  error
+
+
+state 54
+	obj :  P_START LLCRLY_    (40)
+
+	.  reduce 40
+
+
+state 55
+	motive :  motivh LLPAREN_stat LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	MOTIVE  shift 39
+	.  error
+
+	stat  goto 59
+	obj  goto 8
+	motive  goto 9
+	motivh  goto 38
+
+state 56
+	cycl :  cyclh LLPAREN_stat LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	MOTIVE  shift 39
+	.  error
+
+	stat  goto 60
+	obj  goto 8
+	motive  goto 9
+	motivh  goto 38
+
+state 57
+	gen :  genh LLPAREN_stat LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 32
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	MOTIVE  shift 39
+	.  error
+
+	stat  goto 61
+	obj  goto 8
+	motive  goto 9
+	motivh  goto 38
+
+58: shift/reduce conflict (shift 65, red'n 9) on LINT
+58: shift/reduce conflict (shift 66, red'n 9) on LFLOAT
+58: shift/reduce conflict (shift 64, red'n 9) on LSYMBOL
+58: shift/reduce conflict (shift 67, red'n 9) on LOCTAL
+58: shift/reduce conflict (shift 68, red'n 9) on LHEX
+58: shift/reduce conflict (shift 73, red'n 9) on LOP
+58: shift/reduce conflict (shift 69, red'n 9) on LARB
+58: shift/reduce conflict (shift 70, red'n 9) on LLPAREN
+58: shift/reduce conflict (shift 71, red'n 9) on LLSQB
+58: shift/reduce conflict (shift 72, red'n 9) on LRSQB
+state 58
+	start :  start player LSYMBOL LLPAREN_args LRPAREN 
+	args : _    (9)
+
+	LINT  shift 65
+	LFLOAT  shift 66
+	LSYMBOL  shift 64
+	LOCTAL  shift 67
+	LHEX  shift 68
+	LOP  shift 73
+	LARB  shift 69
+	LLPAREN  shift 70
+	LLSQB  shift 71
+	LRSQB  shift 72
+	.  reduce 9
+
+	args  goto 62
+	arg_obj  goto 63
+
+state 59
+	stat :  stat_obj 
+	stat :  stat_cycl 
+	stat :  stat_gen 
+	stat :  stat_PLAYER 
+	motive :  motivh LLPAREN stat_LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 74
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 44
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	CYCLIST  shift 49
+	GEN  shift 50
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	.  error
+
+	obj  goto 41
+	cycl  goto 42
+	cyclh  goto 47
+	gen  goto 43
+	genh  goto 48
+
+state 60
+	stat :  stat_obj 
+	stat :  stat_cycl 
+	stat :  stat_gen 
+	stat :  stat_PLAYER 
+	cycl :  cyclh LLPAREN stat_LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 75
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 44
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	CYCLIST  shift 49
+	GEN  shift 50
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	.  error
+
+	obj  goto 41
+	cycl  goto 42
+	cyclh  goto 47
+	gen  goto 43
+	genh  goto 48
+
+state 61
+	stat :  stat_obj 
+	stat :  stat_cycl 
+	stat :  stat_gen 
+	stat :  stat_PLAYER 
+	gen :  genh LLPAREN stat_LRPAREN 
+
+	LPERIOD  shift 18
+	LINT  shift 19
+	LFLOAT  shift 20
+	LSYMBOL  shift 21
+	LCOMMA  shift 22
+	LOCTAL  shift 23
+	LHEX  shift 24
+	LQSTR  shift 25
+	LBRACKETS  shift 26
+	LOP  shift 27
+	LQCHR  shift 28
+	LARB  shift 36
+	LCOMMENT  shift 29
+	LERROR  shift 30
+	LLPAREN  shift 31
+	LRPAREN  shift 76
+	LLCRLY  shift 33
+	LRCRLY  shift 46
+	LLSQB  shift 34
+	LRSQB  shift 35
+	PLAYER  shift 44
+	EXTERN  shift 37
+	PNFIELD  shift 11
+	PIFIELD  shift 13
+	PSFIELD  shift 12
+	PPFIELD  shift 14
+	CYCLIST  shift 49
+	GEN  shift 50
+	P_START  shift 15
+	M_START  shift 16
+	M_TER  shift 17
+	.  error
+
+	obj  goto 41
+	cycl  goto 42
+	cyclh  goto 47
+	gen  goto 43
+	genh  goto 48
+
+state 62
+	start :  start player LSYMBOL LLPAREN args_LRPAREN 
+	args :  args_arg_obj 
+	args :  args_LCOMMA arg_obj 
+
+	LINT  shift 65
+	LFLOAT  shift 66
+	LSYMBOL  shift 64
+	LCOMMA  shift 79
+	LOCTAL  shift 67
+	LHEX  shift 68
+	LOP  shift 73
+	LARB  shift 69
+	LLPAREN  shift 70
+	LRPAREN  shift 77
+	LLSQB  shift 71
+	LRSQB  shift 72
+	.  error
+
+	arg_obj  goto 78
+
+state 63
+	args :  arg_obj_    (10)
+
+	.  reduce 10
+
+
+state 64
+	arg_obj :  LSYMBOL_    (13)
+
+	.  reduce 13
+
+
+state 65
+	arg_obj :  LINT_    (14)
+
+	.  reduce 14
+
+
+state 66
+	arg_obj :  LFLOAT_    (15)
+
+	.  reduce 15
+
+
+state 67
+	arg_obj :  LOCTAL_    (16)
+
+	.  reduce 16
+
+
+state 68
+	arg_obj :  LHEX_    (17)
+
+	.  reduce 17
+
+
+state 69
+	arg_obj :  LARB_    (18)
+
+	.  reduce 18
+
+
+state 70
+	arg_obj :  LLPAREN_    (19)
+
+	.  reduce 19
+
+
+state 71
+	arg_obj :  LLSQB_    (20)
+
+	.  reduce 20
+
+
+state 72
+	arg_obj :  LRSQB_    (21)
+
+	.  reduce 21
+
+
+state 73
+	arg_obj :  LOP_    (22)
+
+	.  reduce 22
+
+
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LPERIOD
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LINT
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LFLOAT
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LSYMBOL
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LCOMMA
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LOCTAL
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LHEX
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LQSTR
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LBRACKETS
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LOP
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LQCHR
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LARB
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LCOMMENT
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LERROR
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LLPAREN
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LRPAREN
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LLCRLY
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LRCRLY
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LLSQB
+74: reduce/reduce conflict (red'ns 35 and 57 ) on LRSQB
+74: reduce/reduce conflict (red'ns 35 and 57 ) on PLAYER
+74: reduce/reduce conflict (red'ns 35 and 57 ) on EXTERN
+74: reduce/reduce conflict (red'ns 35 and 57 ) on PNFIELD
+74: reduce/reduce conflict (red'ns 35 and 57 ) on PIFIELD
+74: reduce/reduce conflict (red'ns 35 and 57 ) on PSFIELD
+74: reduce/reduce conflict (red'ns 35 and 57 ) on PPFIELD
+74: reduce/reduce conflict (red'ns 35 and 57 ) on CYCLIST
+74: reduce/reduce conflict (red'ns 35 and 57 ) on GEN
+74: reduce/reduce conflict (red'ns 35 and 57 ) on P_START
+74: reduce/reduce conflict (red'ns 35 and 57 ) on M_START
+74: reduce/reduce conflict (red'ns 35 and 57 ) on M_TER
+state 74
+	motive :  motivh LLPAREN stat LRPAREN_    (35)
+	obj :  LRPAREN_    (57)
+
+	.  reduce 35
+
+
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LPERIOD
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LINT
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LFLOAT
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LSYMBOL
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LCOMMA
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LOCTAL
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LHEX
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LQSTR
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LBRACKETS
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LOP
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LQCHR
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LARB
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LCOMMENT
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LERROR
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LLPAREN
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LRPAREN
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LLCRLY
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LRCRLY
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LLSQB
+75: reduce/reduce conflict (red'ns 31 and 57 ) on LRSQB
+75: reduce/reduce conflict (red'ns 31 and 57 ) on PLAYER
+75: reduce/reduce conflict (red'ns 31 and 57 ) on EXTERN
+75: reduce/reduce conflict (red'ns 31 and 57 ) on PNFIELD
+75: reduce/reduce conflict (red'ns 31 and 57 ) on PIFIELD
+75: reduce/reduce conflict (red'ns 31 and 57 ) on PSFIELD
+75: reduce/reduce conflict (red'ns 31 and 57 ) on PPFIELD
+75: reduce/reduce conflict (red'ns 31 and 57 ) on CYCLIST
+75: reduce/reduce conflict (red'ns 31 and 57 ) on GEN
+75: reduce/reduce conflict (red'ns 31 and 57 ) on P_START
+75: reduce/reduce conflict (red'ns 31 and 57 ) on M_START
+75: reduce/reduce conflict (red'ns 31 and 57 ) on M_TER
+state 75
+	cycl :  cyclh LLPAREN stat LRPAREN_    (31)
+	obj :  LRPAREN_    (57)
+
+	.  reduce 31
+
+
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LPERIOD
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LINT
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LFLOAT
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LSYMBOL
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LCOMMA
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LOCTAL
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LHEX
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LQSTR
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LBRACKETS
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LOP
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LQCHR
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LARB
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LCOMMENT
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LERROR
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LLPAREN
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LRPAREN
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LLCRLY
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LRCRLY
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LLSQB
+76: reduce/reduce conflict (red'ns 33 and 57 ) on LRSQB
+76: reduce/reduce conflict (red'ns 33 and 57 ) on PLAYER
+76: reduce/reduce conflict (red'ns 33 and 57 ) on EXTERN
+76: reduce/reduce conflict (red'ns 33 and 57 ) on PNFIELD
+76: reduce/reduce conflict (red'ns 33 and 57 ) on PIFIELD
+76: reduce/reduce conflict (red'ns 33 and 57 ) on PSFIELD
+76: reduce/reduce conflict (red'ns 33 and 57 ) on PPFIELD
+76: reduce/reduce conflict (red'ns 33 and 57 ) on CYCLIST
+76: reduce/reduce conflict (red'ns 33 and 57 ) on GEN
+76: reduce/reduce conflict (red'ns 33 and 57 ) on P_START
+76: reduce/reduce conflict (red'ns 33 and 57 ) on M_START
+76: reduce/reduce conflict (red'ns 33 and 57 ) on M_TER
+state 76
+	gen :  genh LLPAREN stat LRPAREN_    (33)
+	obj :  LRPAREN_    (57)
+
+	.  reduce 33
+
+
+state 77
+	start :  start player LSYMBOL LLPAREN args LRPAREN_    (7)
+
+	.  reduce 7
+
+
+state 78
+	args :  args arg_obj_    (11)
+
+	.  reduce 11
+
+
+state 79
+	args :  args LCOMMA_arg_obj 
+
+	LINT  shift 65
+	LFLOAT  shift 66
+	LSYMBOL  shift 64
+	LOCTAL  shift 67
+	LHEX  shift 68
+	LOP  shift 73
+	LARB  shift 69
+	LLPAREN  shift 70
+	LLSQB  shift 71
+	LRSQB  shift 72
+	.  error
+
+	arg_obj  goto 80
+
+state 80
+	args :  args LCOMMA arg_obj_    (12)
+
+	.  reduce 12
+
+
+39/127 terminals, 13/300 nonterminals
+64/600 grammar rules, 81/750 states
+39 shift/reduce, 125 reduce/reduce conflicts reported
+44/350 working sets used
+memory: states,etc. 450/12000, parser 47/12000
+18/600 distinct lookahead sets
+0 extra closures
+344 shift entries, 4 exceptions
+25 goto entries
+28 entries saved by goto default
+Optimizer space used: input 727/12000, output 275/12000
+275 table entries, 35 zero
+maximum spread: 293, maximum offset: 276

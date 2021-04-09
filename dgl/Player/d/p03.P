@@ -1,0 +1,29 @@
+Player blat(0,20)
+{
+	P_start {
+		Hipn(Self, 0);
+	}
+	P4 = Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5 = Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player beep(0, 10)
+{
+	P4= Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player wonk(0, 10)
+{
+	P_start {
+		Silent(Self);
+	}
+	P4= Rhythms("{4,8,8,{4}x2,1,2,2,1}x2 Stop");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

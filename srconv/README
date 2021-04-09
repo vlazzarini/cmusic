@@ -1,0 +1,11 @@
+
+srconv keeps a stable of filterfiles in a "wired-in" directory to be
+used under certain default conditions.  The file <carl/paths.h>
+contains the names of these paths.  If this file is correct for
+your system, the filter files will be correctly installed by
+default.  Otherwise, modify the srconv.c program to
+refer to the area where these files are kept.  They are now in the
+subdirectory ./filts with names "*.flt".
+
+9/1/84:  convert is the preferred program in this directory
+

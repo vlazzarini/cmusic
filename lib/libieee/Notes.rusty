@@ -1,0 +1,14 @@
+Had to give f77 -Nx argument; this tells it to use a larger table
+for externals.
+
+Added -w flag to f77.
+
+Had to take out calls to "decode" in eqiir.f, this was documented
+on how to do this. Saved original eqiir.f on eqiir.f.orig.
+
+Modified mxfft.f to assume rounded arithmetic instead of trying to
+compensate for truncation error; this is well documented in the code.
+
+Modified pmpse.f to rename subroutine "fft" to "fftps"; this avoids
+conflict with mxfft.f.
+

@@ -1,0 +1,12 @@
+Player chord(0)
+{
+	P2 = Now;
+	P4 = 1.0;
+	Ps5 = Strings("f g a & c5 & e bf c Stop");
+	if (Player_stat & P_CHORD) {
+		printf("chord detected\n");
+		Wait_until(Now);
+	} else {
+		Wait_until(Now + P4);
+	}
+}

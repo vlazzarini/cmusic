@@ -1,0 +1,29 @@
+include(/usr/`include'/carl/config.m4)dnl
+PLAYER	=	recpla
+CFLAGS	=	-O
+LIBDIR	=	/carl/lib
+LIBS	=	${LIBDIR}/libiPlayer.a ../libstubs.a ../libxcmpu.a -lc
+OBJS 	=	mpu_record.o\
+		mpu_play.o\
+		next_cmd.o\
+		list_trk.o\
+		init_trk.o\
+		setup_trk.o\
+		dump_trk.o
+
+.SUFFIXES:      .P
+.P.c:           ;Player -P -i $*.P
+.P.o:           ;Player -i -L -r $*.P
+
+download: ${PLAYER}
+	srec -e -l -T2000 ${PLAYER}
+
+${PLAYER}:	${PLAYER}.o ${OBJS}
+	Player -L -i -r ${PLAYER}.o
+	ld -N -T 2000 tmPlayer.o ${PLAYER}.o ${OBJS} ${LIBS} -o ${PLAYER}
+
+srec:	${PROG}
+	srec -e -T2000 ${PROG} > ${PROG}.sre
+
+clean:
+	rm -f *.o core a.out ${PLAYER} ${PLAYER}.sre ${PLAYER}.c

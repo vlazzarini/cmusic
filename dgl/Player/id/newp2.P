@@ -1,0 +1,33 @@
+long	then;
+
+Player note()
+{
+	register int now = Now;
+
+	fprintf(1, "note: %d\n", now - then);
+	Kill(Self);
+}
+
+typedef Player * Pptr;
+# define FOREVER -1L
+
+
+Player track(0) 
+{
+	Pptr	v;
+	int	dur, chan, key, vel;
+
+	P_start {
+		dur = 1000;
+		chan = 0;
+		key = 60;
+		vel = 64;
+		pr_symtab(AT_CLASS);
+	}
+
+	if ((v = New_player(note, then = Now, FOREVER, P_READY)) == NULL) {
+		fprintf(0, "New_player failed\n");
+		exit(1);
+	}
+	Join(ALL_CHILDREN);
+}

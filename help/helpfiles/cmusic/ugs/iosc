@@ -1,0 +1,10 @@
+iosc - general purpose interpolating oscillator
+
+iosc output[b] amplitude[bvpn] increment[bvpn] table[fvpn] sum[dpv] ;
+
+An interpolating, table lookup oscillator.  Dynamic variables are
+recommended for sum locations. Table may be either explicit, or number
+may be given.  If number is n, then function floor(n) is used.
+
+Iosc requires a much shorter table than osc for equivalent distortion
+(see the Startup Kit), but runs much more slowly, of course.

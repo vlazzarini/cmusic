@@ -1,0 +1,44 @@
+double get_tempo(tempofun, abstart, absdur, limit)
+	Function *tempofun;
+	double *abstart, absdur, limit;
+{
+	double dursum=0, x, ub, absend = *abstart + absdur;
+	for (x = *abstart; x < absend; x = ub) {
+		ub = ceil(x) == x ? x+limit : ceil(x);
+		ub = ub > absend ? absend : ub;
+		dursum += (ub - x) * tempofun->fyval[(int)x];
+	}
+	*abstart += absdur;
+	return(dursum);
+}
+
+#define DUR 20
+#define GRAIN 1.0
+
+Function *tempo;
+
+M_start() {
+	tempo = Gen("step -L20 0 .5 4 1 20 1");
+}
+
+Player blat(0, DUR)
+{
+	Instance double startsum; 
+	double dur;
+
+	dur = Exprs(".5 .5 4 1 1 1 Kill");
+	P4 = get_tempo(tempo, &startsum, dur, GRAIN);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}
+
+Player bleat(0, DUR)
+{
+	Instance double startsum; 
+	double dur;
+
+	dur = Exprs(".5 .5 4 1 1 1 Kill");
+	P4 = get_tempo(tempo, &startsum, dur, GRAIN);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

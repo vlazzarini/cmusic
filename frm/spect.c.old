@@ -1,0 +1,1004 @@
+/*
+ * General Purpose Spectral Display Program
+ * at CARL:
+ * cc -O spect.c -lieee -lI77 -lF77 -lplot -lcarl -lnm -lm -o spect
+ */
+#include <stdio.h>
+#include <strings.h>
+#include <math.h>
+#include <carl/carl.h>
+#include <carl/defaults.h>
+#include <carl/procom.h>
+
+#define XMIN 0
+#define XMAX 4096
+#define YMIN 0
+#define YMAX 4096
+#define MAP(x,x1,x2,y1,y2)(((y2)-(y1))*((x)-(x1))/((x2)-(x1))+(y1))
+#define MX(x)(int)(MAP(x,xmin,xmax,pxmin,pxmax)+.5)
+#define L10(x)log10((double)x)
+#define LMX(x)(int)(pow(10.,(double)MAP(L10(x),lxmin,lxmax,lpxmin,lpxmax))+.5)
+#define MLX(x)lf?(LMX(x)):(MX(x))
+#define MY(y)(int)(MAP(y,ymin,ymax,pymin,pymax)+.5)
+#define MOX(x)(int)(MAP(x,xmin,xmax,pxmino,pxmaxo)+.5)
+#define LMOX(x)(int)(pow(10.,(double)MAP(L10(x),lxmin,lxmax,lpxmino,lpxmaxo))+.5)
+#define MOLX(x)lf?(LMOX(x)):(MOX(x))
+#define MOY(y)(int)(MAP(y,ymin,ymax,pymino,pymaxo)+.5)
+
+long	sampa,		/* input starting sample */
+	N,		/* FFT length */
+	N2,		/* 1/2 FFT length */
+	npoles,		/* number of poles used in linear prediction */
+	skip,		/* hop size for window */
+	w ;		/* analysis window size (<=N) */
+int	ampspec,	/* amplitude spectrum flag */
+	powspec = 1,	/* power spectrum flag */
+	comspec,	/* complex spectrum flag */
+	phaspec,	/* phase spectrum flag */
+	dbspec,		/* power spectrum in dB flag */
+	rect,		/* rectangular (instead of Hamming) window flag */
+	un,		/* suppress normalization flag */
+	aspec,		/* average power spectrum (over niter iterations) */
+	lpcauto,	/* autocorrelation linear prediction flag */
+	lpccovar,	/* covariance linear prediction flag */
+	gflag,		/* generate device-independent plot flag */
+	lpspec,		/* linear prediction flag */
+	fspec,		/* filter evaluation flag */
+	phadelspec, 	/* phase delay flag */
+	grpdelspec,	/* group delay flag */
+	autoflag,	/* autocorrelation flag */
+	Wflag,		/* display windowed waveform flag */
+	lf,		/* log frequency flag */
+	yminflag,	/* ranged y flag */
+	ymaxflag,	/* ranged y flag */
+	xminflag,	/* ranged x flag */
+	xmaxflag,	/* ranged x flag */
+	enhancer	/* special plot enhancer for amp or power modes */
+	;
+int 	iter,
+	aniter,
+	niter = 1 ;
+float	srate = 1. ;
+char	plotlabel[BUFSIZ] ;
+float miny, maxy ;
+
+main( argc, argv ) int argc ; char *argv[] ; {
+ int i, j, v, exhausted = 0 ;
+ float	*ibuf, *sbuf, *delbuf, *wind, *abuf, *cbuf, *grc, alpha,
+        fac, norm = 1., sum = 0., pmax, minfreq, maxfreq ;
+ char	ch ;
+ PROP	*proplist ;	/* from header on stdin */
+ char	*dbuf ;		/* buffer for strings read from header */
+ char	chbuf[72] ;	/* buffer for strings to write to header */
+
+/*
+ * read header from stdin
+ */
+    if ( isatty(0) )
+	usage( 1 ) ;
+    if ( (proplist =  getheader( stdin ) ) != NULL) {
+        if ( ( dbuf = getprop( stdin, H_SRATE ) ) != NULL )
+            srate = atof( dbuf ) ;        /* get input srate */
+        if ( ( dbuf = getprop( stdin, H_FILENAME ) ) != NULL )
+            strcpy( plotlabel, rindex( dbuf, '/' ) + 1 ) ;
+    }
+/*
+ * call crack to interpet commandline
+ */
+    while ( ( ch = crack( argc, argv, "R|", 1 ) ) != NULL ) {
+	switch ( ch ) {
+	    case 'R': srate = sfexpr( arg_option, 1.0 ) ; break ;
+	}
+    }
+    minfreq = 0. ;
+    maxfreq = srate/2 ;
+    arg_index = 0 ;    /* reset for second call to crack() */
+    while (
+	( ch = crack( argc, argv,
+	    "W|n|y|Y|x|X|g|G|c|v|l|k|b|w|s|i|R|aAdeEfpmtruhz^", 0 ) ) != NULL )
+	{
+	switch (ch) {
+	    case 'R': break ;
+	    case 'a': powspec = 0 ; ampspec = 1 ; break ;
+	    case 'A': powspec = 0 ; autoflag = 1 ; break ;
+	    case 'b': sampa = sfexpr( arg_option, srate ) ; break ;
+	    case 'c': npoles = sfexpr( arg_option, 1.) ;
+		      rect = 1 ; lpcauto = 1 ; lpspec = 1 ; break ;
+	    case 'd': powspec = 0 ; dbspec = 1 ; break ;
+	    case 'e': powspec = 0 ; phadelspec = 1 ; break ;
+	    case 'E': powspec = 0 ; grpdelspec = 1 ; break ;
+	    case 'f': fspec = 1 ; rect = 1 ; un = 1 ; break ;
+	    case 'G': lf = 1 ;
+	    case 'g': gflag = 1 ;
+		      if ( strlen( arg_option ) )
+			  strcpy( plotlabel, arg_option ) ;
+		      if ( isatty(1) ) {
+			  fprintf( stderr,
+		          "spect: with -g flag output must be a file or pipe\n"
+			  ) ;
+			  exit( 1 ) ;
+		      }
+		      break ;
+	    case 'h': usage(0) ;
+	    case 'i': niter = sfexpr( arg_option, 1. ) ; break ;
+	    case 'm': powspec = 0 ; aspec = 1 ; break ;
+	    case 'n': N = sfexpr( arg_option, 1. ) ; break ;
+	    case 'p': powspec = 1 ; break ;
+	    case 'r': rect = 1 ; break ;
+	    case 's': skip = sfexpr( arg_option, srate ) ; break ;
+	    case 't': powspec = 0 ; phaspec = 1 ; break ;
+	    case 'u': un = 1 ; break ;
+	    case 'v': npoles = sfexpr( arg_option, 1. ) ; rect = 1 ;
+		      lpccovar = 1 ; lpspec = 1 ; break ;
+	    case 'w': w = sfexpr( arg_option, srate ) ; break ;
+	    case 'W': powspec = 0 ; Wflag = 1 ; break ;
+	    case 'x': xminflag = 1 ; gflag = 1 ;
+		      minfreq = sfexpr( arg_option, 1. ) ; break ;
+	    case 'X': xmaxflag = 1 ; gflag = 1 ; 
+		      maxfreq = sfexpr( arg_option, 1. ) ; break ;
+	    case 'y': yminflag = gflag = 1 ; 
+		      miny = sfexpr( arg_option, 1. ) ; break ;
+	    case 'Y': ymaxflag = gflag = 1 ; 
+		      maxy = sfexpr( arg_option, 1. ) ; break ;
+	    case 'z': powspec = 0 ; comspec = 1 ; break ;
+	    case '^': enhancer = 1 ; break ;
+	    default:  usage(1) ;
+	}
+	if ( exprerr ) {
+	    fprintf( stderr,"spect: expression error:'%s'\n",argv[arg_index] ) ;
+	    exit(1) ;
+	}
+    }
+    if ( w == 0. )
+	w = 1024. ;
+    if ( N == 0 )
+/*
+ * N is the smallest power of two greater than or equal to w by default
+ */
+	for ( N = 2 ; N <= 32*1024 ; N *= 2 )
+	    if ( N >= w )
+		break ;
+/*
+ * check N for validity
+ */
+    if ( N >= 32*1024 ) {
+	fprintf( stderr, "spect: n too large!\n" ) ;
+	exit(1) ;
+    }
+    for ( i = 2 ; ; i *= 2 ) {
+	if ( i == N )
+	    break ;
+	if ( i > N ) {
+	    fprintf( stderr, "spect: n not a power of two!\n" ) ;
+	    exit(1) ;
+	}
+    }
+    if ( N < w )
+	fprintf( stderr, "spect: warning--n (%d) < w (%d)\n", N, (int) w ) ;
+    N2 = N/2 ;
+    if ( autoflag || Wflag ) {
+	if ( !xminflag )
+	    minfreq = 0 ;
+	if ( !xmaxflag )
+	    maxfreq = N ;
+    }
+    if ( skip == 0 )
+	skip = w/2 ;
+    if ( ( ibuf = (float *) calloc( w, sizeof(float) ) ) == NULL )
+        malerr( "spect: insufficient memory", 1 ) ;
+    if ( ( sbuf = (float *) calloc( N+2, sizeof(float) ) ) == NULL )
+        malerr( "spect: insufficient memory", 1 ) ;
+    if ( ( wind = (float *) calloc(w, sizeof(float) ) ) == NULL )
+        malerr( "spect: insufficient memory", 1 ) ;
+    if ( grpdelspec )
+        if ( (delbuf = (float *) calloc( N2, sizeof(float) ) ) == NULL )
+            malerr( "spect: insufficient memory", 1 ) ;
+    if ( lpspec )
+        if ( ( cbuf = (float *) calloc( (npoles+1), sizeof(float) ) ) == NULL )
+            malerr( "spect: insufficient memory", 1 ) ;
+    if ( lpspec )
+        if ( (grc = (float *) calloc( npoles, sizeof(float) ) ) == NULL )
+            malerr("spect: insufficient memory", 1) ;
+    if ( aspec )
+        if ( ( abuf = (float *) calloc( N2, sizeof(float) ) ) == NULL )
+            malerr( "spect: insufficient memory", 1 ) ;
+/*
+ * write header to stdout
+ */
+    if ( !isatty(1) ) {
+	sprintf( chbuf,"%d",N) ;
+	addprop( stdin,"BlockSize", chbuf ) ;
+	addprop( stdin, H_SNDOUT_FORMAT, H_FLOATSAM ) ;    /* -of */
+	cpoheader( proplist, stdout ) ;
+	putheader( stdout ) ;            /* write header to stdout */
+    }
+/*
+ * skip over sampa input samples
+ */
+    for ( i = 0 ; i < sampa ; i++ )
+	if ( getfloat( ibuf ) <= 0 ) {
+	    fprintf( stderr, "spect: EOF while skipping to first sample\n" ) ;
+	    exit( -1 ) ;
+	}
+/*
+ * set up normalized Hamming window
+ */
+    fac = 8.*atan(1.)/(w - 1.) ;
+    for ( i = 0 ; i < w ; i++ )
+	wind[i] = .54 -.46*cos( fac*i ) ;
+    for ( i = 0 ; i < w ; i++ )
+	sum += wind[i] ;
+    sum = 1./sum ;
+    for ( i = 0 ; i < w ; i++ )
+	wind[i] *= sum ;
+    if ( !fspec )
+	norm = 1./w ;
+/*
+ * main loop: step through niter times, skipping by skip samples
+ */
+    for ( iter = 0 ; iter < niter ; iter++ ) {
+        if ( iter == 0 ) {
+	    for ( i = 0 ; i < w ; i++ )
+		if ( getfloat( &ibuf[i] ) <= 0) {
+		    if ( i == 0 ) {
+			fprintf( stderr, "spect: can't process 0 samples\n" ) ;
+			exit( -1 ) ;
+		    }
+		    ibuf[i] = 0. ;
+		    niter = iter + 1 ;
+		}
+	} else {
+            if ( skip >= w ) {
+                for ( i = 0 ; i < skip - w ; i++ )
+		    getfloat( ibuf ) ;
+                for ( i = 0 ; i < w ; i++ )
+		    if ( getfloat( &ibuf[i] ) <= 0) {
+			niter = iter + 1 ;
+			if ( i == 0 ) {
+			    exhausted = 1 ;
+			    niter = iter-- ;
+			    goto done ;
+			}
+			ibuf[i] = 0. ;
+		    }
+            } else {
+                for ( i = 0 ; i < skip ; i++ )
+		    ibuf[i] = ibuf[skip+i] ;
+                for ( i = skip ; i < w ; i++ )
+		    if ( getfloat( &ibuf[i] ) <= 0 ) {
+			ibuf[i] = 0. ;
+			niter = iter + 1 ;
+		    }
+            }
+        }
+/*
+ * apply window
+ */
+        if ( rect )
+	    if ( norm != 1. )
+		for ( i = 0 ; i < w ; i++ )
+		    sbuf[i] = norm*ibuf[i] ;
+	    else
+		for ( i = 0 ; i < w ; i++ )
+		    sbuf[i] = ibuf[i] ;
+	else
+	    for ( i = 0 ; i < w ; i++ )
+		sbuf[i] = ibuf[i]*wind[i] ;
+        for ( i = w ; i < N+2 ; i++)
+	    sbuf[i] = 0. ;
+/*
+ * optional linear prediction: replace signal to be transformed by lp estimate
+ */
+        if ( lpspec ) {
+            if ( lpcauto )
+		auto_( &w, sbuf, &npoles, cbuf, &alpha, grc ) ;
+            if ( lpccovar )
+		covar_( &w, sbuf, &npoles, cbuf, &alpha, grc ) ;
+            sbuf[0] = 1. ;
+            for ( i = 1 ; i < N ; i++ ) {
+                sum = 0. ;
+                for ( j = 1 ; j <= npoles ; j++ ) {
+                    if ( (i - j) >= 0)
+			sum += cbuf[j]*sbuf[i - j] ;
+                }
+                sbuf[i] = -sum ;
+            }
+        }
+/*
+ * if -W then write out windowed waveform
+ */
+        if ( Wflag ) {
+	    output( sbuf, N, minfreq, maxfreq ) ;
+	    continue ;
+	}
+/*
+ * call fast_ to perform FFT
+ */
+        fast_( sbuf, &N ) ;
+
+/*
+ * if -z then write out complex values
+ */
+        if ( comspec ) {
+	    output( sbuf, N, minfreq, maxfreq ) ;
+	    continue ;
+/*
+ * if -t then write out phase values (no unwraping)
+ */
+        } else if ( phaspec ) {
+            for ( i = 0 ; i < N2 ; i++ )
+		sbuf[i] = atan2( (double) sbuf[i*2+1], (double) sbuf[i*2] ) ;
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+/*
+ * if -e then write out phase delay values
+ */
+        } else if ( phadelspec ) { register float fac = 4.*atan(1.)/N2 ;
+            for ( i = 0 ; i < N2 ; i++ )
+		sbuf[i] = atan2( (double) sbuf[i*2+1], (double) sbuf[i*2] ) ;
+            for ( i = 1 ; i < N2 ; i++ )
+		sbuf[i] /= i*fac ;
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+/*
+ * if -E then write out group delay values
+ */
+        } else if ( grpdelspec ) { register float fac = N2/(4.*atan(1.)) ;
+            for ( i = 0 ; i < N2 ; i++ )
+		sbuf[i] = atan2( (double) sbuf[i*2+1], (double) sbuf[i*2] ) ;
+            for ( i = 1 ; i < N2 ; i++ )
+		delbuf[i] = sbuf[i] - sbuf[i-1] ;
+            for ( i = 1 ; i < N2 ; i++ )
+		sbuf[i] = delbuf[i]*fac ;
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+/*
+ * if -A then calculate autocorrelation
+ */
+        } else if ( autoflag ) {
+	    for ( i = 0 ; i <= N2 ; i++ ) {
+		sbuf[i*2] = sbuf[i*2]*sbuf[i*2] + sbuf[i*2+1]*sbuf[i*2+1] ;
+		sbuf[i*2+1] = 0. ;
+	    }
+	    fsst_( sbuf, &N ) ;
+	    output( sbuf, N, minfreq, maxfreq ) ;
+	    continue ;
+	}
+/*
+ * otherwise calculate power spectrum
+ */
+        for ( i = 0 ; i < N2 ; i++ )
+	    sbuf[i] = sbuf[i*2]*sbuf[i*2] + sbuf[i*2+1]*sbuf[i*2+1] ;
+/*
+ * if -p then write out power values
+ */
+        if ( powspec ) {
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+        }
+/*
+ * if -a then write out amplitude values
+ */
+        if ( ampspec ) {
+            for ( i = 0 ; i < N2 ; i++ )
+		sbuf[i] = sqrt( (double) sbuf[i] ) ;
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+        }
+/*
+ * if -m then accumulate spectral values for later averaged output
+ */
+        if ( aspec ) {
+            for ( i = 0 ; i < N2 ; i++ )
+		abuf[i] += sbuf[i] ;
+	    continue ;
+        }
+/*
+ * if -d then write out log-magnitude (decibel) values
+ */
+        if ( dbspec ) {
+	    if ( !un )
+		normalize( sbuf, N2 ) ;
+	    for ( i = 0 ; i < N2 ; i++ ) {
+		if ( sbuf[i] > 1.e-20 )
+		    sbuf[i] = 10.* log10( (double) sbuf[i] ) ;
+		else sbuf[i] = -200. ;
+	    }
+	    output( sbuf, N2, minfreq, maxfreq ) ;
+	    continue ;
+        }
+    }
+    done:
+    if ( exhausted && !aspec )
+	output( sbuf, 0, minfreq, maxfreq ) ;
+/*
+ * if -m then output averaged spectral values
+ */
+    if ( aspec ) {
+	aniter = niter ;
+	for ( i = 0 ; i < N2 ; i++ )
+	    sbuf[i] = abuf[i]/niter ;
+	if ( !un )
+	    normalize( sbuf, N2 ) ;
+	for ( i = 0 ; i < N2 ; i++ ) {
+	    if ( sbuf[i] > 1.e-20 )
+		sbuf[i] = 10.* log10( (double) sbuf[i] ) ;
+	    else sbuf[i] = -200. ;
+	}
+	iter = 0 ;
+	niter = 1 ;
+	output( sbuf, N2, minfreq, maxfreq ) ;
+    }
+    exit(0) ;
+}
+/*
+ * take care of various forms of output (printable, floatsam, and graphic)
+ */
+output( array, length, minfreq, maxfreq ) 
+ float array[], minfreq, maxfreq ; int length ; {
+ register int i ;
+    if ( !gflag ) {
+/*
+ * print complex values two per output line
+ */
+	if ( comspec )
+	    for ( i = 0 ; i < length ; i += 2 )
+		printf( "%f %f\n", array[i], array[i+1] ) ;
+	else
+	    for ( i = 0 ; i < length ; i++ )
+		printf( "%f\n", array[i] ) ;
+/*
+ * generate graphic output
+ */
+    } else {
+     static float xmin, xmax, ymin, ymax, pxmin, pxmax, pymin, pymax,
+	dmax, dmin, yrange, xrange, pxmino, pxmaxo, pymino, pymaxo,
+	lxmin, lxmax, lpxmin, lpxmax, lpxmino, lpxmaxo,
+        xtick[100], ytick[100], *obuf, Nyquist ;
+     static int normlen, *peakmark, first = 1 ;
+     float x, tick ;
+     char svalue[BUFSIZ], s2[BUFSIZ], *malloc() ;
+     int j, nxticks, nyticks ;
+/*
+ * allocate output buffer large enough to hold the works,
+ * otherwise scaling of plot is unknown
+ */
+	if ( first ) {
+	    Nyquist = srate/2 ;
+	    first = 0 ;
+	    normlen = length ;
+	    if (
+	     ( obuf = (float *) malloc( niter*length*sizeof(float) ) ) == NULL
+	    ) {
+		fprintf( stderr,
+		    "spect: unable to obtain %d bytes for plot memory\n",
+			niter*length*sizeof(float)
+		) ;
+		exit( -1 ) ;
+	    }
+	    if ( (powspec || ampspec) && enhancer ) {
+		if (
+		 ( peakmark = (int *) malloc( length*sizeof(int) ) ) == NULL
+		) {
+		    fprintf( stderr,
+			"spect: unable to obtain %d bytes for peak memory\n",
+			    length*sizeof(float)
+		    ) ;
+		    exit( -1 ) ;
+		}
+	    }
+	    dmax = dmin = array[0] ;
+	}
+/*
+ * squirrel away plot data, ranging as we go
+ */
+	for ( i = 0 ; i < length ; i++ ) {
+	 register float temp = array[i] ;
+	 register int k = iter*length ;
+	    if ( temp > dmax ) dmax = temp ;
+	    if ( temp < dmin ) dmin = temp ;
+	    obuf[k+i] = temp ;
+	}
+/*
+ * generate plot output on last iteration only
+ */
+	if ( iter != niter - 1 )
+	    return ;
+	else for ( iter = 0 ; iter < niter ; iter++ ) {
+	 register int k = iter*normlen ;
+	    if ( iter == 0 ) {
+		pxmino = pxmin = .2*( XMAX - XMIN ) ;
+		pymino = pymin = .2*( YMAX - YMIN ) ;
+		pxmaxo = pxmax = .85*( XMAX - XMIN ) ;
+		pymaxo = pymax = .85*( YMAX - YMIN ) ;
+		xmin = minfreq ;
+/*
+ * can't use 0 frequency on log frequency plot
+ */
+		if ( lf && xmin <= 0. )
+		    xmin = 0.01 ;
+		xmax = maxfreq ;
+		ymin = dmin ;
+/*
+ * normally force ymin to 0 for amplitude and (linear) power spectral plots
+ */
+		if ( ampspec || powspec ) 
+		    ymin = 0 ;
+		ymax = dmax ;
+/*
+ * normally force phase spectrum plots to range from -pi to pi
+ */
+		if ( phaspec ) {
+		    ymin = -4.*atan(1.) ;
+		    ymax = 4.*atan(1.) ;
+		}
+/*
+ * give user enough rope to coerce ymin and ymax values
+ */
+		if ( ymaxflag )
+		    ymax = maxy ;
+		if ( yminflag )
+		    ymin = miny ;
+/*
+ * set up log frequency plot constants
+ */
+		if ( lf ) {	
+		    lxmin = log10( (double) xmin ) ;
+		    lxmax = log10( (double) xmax ) ;
+		    lpxmin = log10( (double) pxmin ) ;
+		    lpxmax = log10( (double) pxmax ) ;
+		    lpxmino = log10( (double) pxmino ) ;
+		    lpxmaxo = log10( (double) pxmaxo ) ;
+		}
+		xrange = fabs( xmax - xmin ) ;
+		yrange = fabs( ymax - ymin ) ;
+/*
+ * open plot and draw coordinates
+ */
+		openpl() ;
+		space( XMIN, YMIN, XMAX, YMAX ) ;
+		erase() ;
+		line( MX(xmin), MY(ymin), MX(xmin), MY(ymax) ) ;
+		line( MX(xmax), MY(ymin), MX(xmin), MY(ymin) ) ;
+/*
+ * use box with grid lines for single plots
+ * use left and bottom ticked axes for iterated plots
+ */
+		if ( niter == 1 ) {
+		    line( MX(xmin), MY(ymax), MX(xmax), MY(ymax) ) ;
+		    line( MX(xmax), MY(ymax), MX(xmax), MY(ymin) ) ;
+		}
+/*
+ * generate extreme value labels
+ */
+		line( MX(xmin-.05*xrange), MY(ymin), MX(xmin), MY(ymin) ) ;
+		move( MX(xmin-.15*xrange), MY(ymin) ) ;
+		if ( fabs( (double) ymin ) >= .01 || ymin == 0. )
+		    sprintf( svalue, "%.2f", ymin ) ;
+		else
+		    sprintf( svalue, "%.4f", ymin ) ;
+		label( svalue ) ;
+
+		line( MX(xmin-.05*xrange ), MY(ymax), MX(xmin), MY(ymax) ) ;
+		move( MX(xmin-.15*xrange ), MY(ymax) ) ;
+		if ( fabs( (double) ymax ) >= .01 || ymax == 0. )
+		    sprintf( svalue, "%.2f", ymax ) ;
+		else
+		    sprintf( svalue, "%.4f", ymax ) ;
+		label( svalue ) ;
+
+		line( MX(xmin), MY(ymin-.05*yrange), MX(xmin), MY(ymin) ) ;
+		move( MX(xmin-.05*xrange), MY(ymin-.1*yrange) ) ;
+		sprintf( svalue, "%.2f", xmin ) ;
+		label( svalue ) ;
+
+		line( MX(xmax), MY(ymin-.05*yrange), MX(xmax), MY(ymin) ) ;
+		move( MX(xmax), MY(ymin-.1*yrange) ) ;
+		sprintf( svalue, "%.2f", xmax ) ;
+		label( svalue ) ;
+/*
+ * label plot fully
+ */
+		if ( lf )
+		    strcpy( svalue, "log f ->" ) ;
+		else
+		    if ( autoflag || Wflag )
+			strcpy( svalue, "T ->" ) ;
+		    else
+			strcpy( svalue, "f ->" ) ;
+		move( MX(xmax), MY(ymin-.15*yrange) ) ;
+		label( svalue ) ;
+
+		if ( ampspec ) strcpy( svalue, "Amplitude Spectrum" ) ;
+		else if ( powspec ) strcpy( svalue, "Power Spectrum" ) ;
+		else if ( phaspec ) strcpy( svalue, "Phase Spectrum" ) ;
+		else if ( comspec ) strcpy( svalue, "Complex Spectrum" ) ;
+		else if ( autoflag ) strcpy( svalue, "Autocorrelation" ) ;
+		else if ( Wflag ) strcpy( svalue, "Waveform (windowed)" ) ;
+		else if ( phadelspec ) {
+		    strcpy( svalue, "Phase Delay Spectrum" ) ;
+		    move( MX(xmin-.19*xrange), MY(ymin+.5*yrange) ) ;
+		    label( "(samples)" ) ;
+		} else if ( grpdelspec ) {
+		    strcpy( svalue, "Group Delay Spectrum" ) ;
+		    move( MX(xmin-.19*xrange), MY(ymin+.5*yrange) ) ;
+		    label( "(samples)" ) ;
+		} else if ( dbspec ) {
+		    strcpy( svalue, "Power Spectrum (in dB)" ) ;
+		    move( MX(xmin-.15*xrange), MY(ymin+.5*yrange) ) ;
+		    label( "(dB)" ) ;
+		} else if ( aspec ) {
+		    strcpy( svalue, "Averaged Power Spectrum (in dB)" ) ;
+		    move( MX(xmin-.15*xrange), MY(ymin+.5*yrange) ) ;
+		    label( "(dB)" ) ;
+		}
+		if ( fspec )
+		    strcat( svalue, " (filter response)" ) ;
+		else if ( ( dbspec || aspec ) && un )
+		    strcat( svalue, " (unnormalized)" ) ;
+		else if ( ( dbspec || aspec ) && !un )
+		    strcat( svalue, " (normalized)" ) ;
+		move( MX(xmin+.1*xrange), MY(ymin-.05*yrange) ) ;
+		if( strlen( plotlabel ) ) {
+		    strcat( svalue, ": " ) ;
+		    strcat( svalue, plotlabel ) ;
+		}
+		label( svalue ) ;
+		if ( lpcauto ) {
+		    move( MX(xmin+.125*xrange), MY(ymin-.1*yrange) ) ;
+		    sprintf( svalue,
+			"%d-pole LPC Estimate (Autocorrelation)", npoles ) ;
+		    label( svalue ) ;
+		} else if ( lpccovar ) {
+		    move( MX(xmin+.125*xrange), MY(ymin-.1*yrange) ) ;
+		    sprintf( svalue,
+			"%d-pole LPC Estimate (Covariance)", npoles ) ;
+		    label( svalue ) ;
+		}
+		if ( rect )
+		    sprintf( svalue, 
+			"R=%dHz, %s window=%dS", 
+			    (int) srate, "Rectangular", (int) w ) ;
+		else
+		    sprintf( svalue, 
+			"R=%dHz, %s window=%dS", 
+			    (int) srate, "Hamming", (int) w ) ;
+		move( MX(xmin+.15*xrange), MY(ymin-.15*yrange) ) ;
+		label( svalue ) ;
+		if ( niter > 1 ) {
+		    move( MX(xmin+.2*xrange), MY(ymin-.2*yrange) ) ;
+		    sprintf( svalue,
+			"%d iterations, skip=%dS", niter, (int) skip ) ;
+		    label( svalue ) ;
+		}
+		if ( aspec ) {
+		    move( MX(xmin+.2*xrange), MY(ymin-.2*yrange) ) ;
+		    sprintf( svalue,
+			"%d iterations, skip=%dS", aniter, (int) skip ) ;
+		    label( svalue ) ;
+		}
+/*
+ * generate a good set of y tick (or grid) values
+ */
+		nyticks = maketicks( ymin, ymax, ytick ) ;
+		if ( niter > 1 ) {
+		    linemod( "solid" ) ;
+		    for ( j = 0 ; j < nyticks ; j++ )
+			if ( fabs( ytick[j] ) < 1.e-10 ) {
+			    line( MX(xmin-.05*xrange), MY(ytick[j]),
+				MX(xmin), MY(ytick[j]) ) ;
+			} else
+			    line( MX(xmin-.02*xrange), MY(ytick[j]),
+				MX(xmin), MY(ytick[j]) ) ;
+		} else {
+		    linemod( "dotted" ) ;
+		    for ( j = 0 ; j < nyticks ; j++ )
+			if ( fabs( ytick[j] ) < 1.e-10 ) {
+			    linemod( "solid" ) ;
+			    line( MX(xmin-.05*xrange), MY(ytick[j]),
+				MLX(xmax), MY(ytick[j]) ) ;
+			    linemod( "dotted" ) ;
+			} else
+			    line( MLX(xmin), MY(ytick[j]), 
+				MLX(xmax), MY(ytick[j]) ) ;
+		}
+/*
+ * generate a good set of x tick (or grid) values
+ */
+		nxticks = maketicks( xmin, xmax, xtick ) ;
+		if ( niter > 1 ) {
+		    linemod( "solid" ) ;
+		    for ( j = 0 ; j < nxticks ; j++ )
+			line( MLX(xtick[j]), MY(ymin-.02*yrange),
+			    MLX(xtick[j]), MY(ymin) ) ;
+		} else {
+		    linemod( "dotted" ) ;
+		    for ( j = 0 ; j < nxticks ; j++ )
+		      line( MLX(xtick[j]), MY(ymin), MLX(xtick[j]), MY(ymax) ) ;
+		}
+	    } else {
+/*
+ * make iterated plots by moving picture up and right a little on each 
+ * iteration dragging axes and ticks as we go
+ */
+	     float delx, dely ;
+	     int xx, yy ;
+		delx = .01*( XMAX - XMIN ) ;
+		dely = .01*( YMAX - YMIN ) ;
+		if ( (powspec || ampspec) && enhancer ) {
+		    delx = .005*( XMAX - XMIN ) ;
+		    dely = .005*( YMAX - YMIN ) ;
+		}
+		move( MX(xmin), MY(ymin) ) ;
+		pxmin += delx ;
+		pxmax += delx ;
+		if ( lf ) {
+		    lpxmin = log10( (double) pxmin ) ;
+		    lpxmax = log10( (double) pxmax ) ;
+		}
+		pymin += dely ;
+		pymax += dely ;
+		cont( MX(xmin), MY(ymin) ) ;
+		linemod( "dotted" ) ;
+		xx = MX(xmax) ;
+		xx = xx >= XMAX ? XMAX-1 : xx ;
+		cont( xx, MY(ymin) ) ;
+		move( MX(xmin), MY(ymin) ) ;
+		yy = MY(ymax) ;
+		yy = yy >= YMAX ? YMAX-1 : yy ;
+		cont( MX(xmin), yy ) ;
+		for ( j = 0 ; j < nyticks ; j++ )
+		   line( MOLX(xmin), MOY(ytick[j]), MLX(xmin), MY(ytick[j]) ) ;
+		for ( j = 0 ; j < nxticks ; j++ )
+		   line( MOLX(xtick[j]), MOY(ymin), MLX(xtick[j]), MY(ymin) ) ;
+		pxmino = pxmin ;
+		pxmaxo = pxmax ;
+		if ( lf ) {
+		    lpxmino = log10( (double) pxmino ) ;
+		    lpxmaxo = log10( (double) pxmaxo ) ;
+		}
+		pymino = pymin ;
+		pymaxo = pymax ;
+	    }
+	    linemod( "solid" ) ;
+/*
+ * optional peak enhancer for power and amplitude plots
+ */
+	    if ( (powspec || ampspec) && enhancer ) {
+		for ( i = 0 ; i < normlen ; i++ )
+		    peakmark[i] = 0 ;
+		for ( i = 1 ; i < normlen - 1 ; i++ )
+		    if ( obuf[k+i-1] < obuf[k+i] && obuf[k+i] > obuf[k+i+1] )
+			peakmark[i] = 1 ;
+		for ( i = 0 ; i < normlen ; i++ )
+		    if ( !peakmark[i] )
+			obuf[k+i] = 0. ;
+	    }
+/*
+ * output plot through plot optimizers
+ */
+/*
+ * show complex spectrum as solid (real) and dashed (imaginary) lines
+ */
+	    if ( comspec ) {
+		optmove( MLX(xmin), MY(obuf[k]) ) ;
+		for ( i = 1 ; i < normlen/2 ; i++ ) {
+		    x = MAP(i*2,0,normlen,0,Nyquist) ;
+		    if ( x < xmin )
+			optmove( MLX(x), MY(obuf[k+i*2]) ) ;
+		    else if ( x <= xmax ) { int xx ;
+			xx = MLX(x) ;
+			if ( xx < XMAX )
+			    if ( obuf[k+i*2] >= ymin &&
+			     obuf[k+i*2] <= ymax )
+				optcont( xx, MY(obuf[k+i*2]) ) ;
+			    else
+				optmove( xx, MY(obuf[k+i*2]) ) ;
+			else break ;
+		    } else break ;
+		}
+		linemod( "longdashed" ) ;
+		optmove( MLX(xmin), MY(obuf[k+1]) ) ;
+		for ( i = 1 ; i < normlen/2 ; i++ ) {
+		    x = MAP(i*2,0,normlen,0,Nyquist) ;
+		    if ( x < xmin )
+			optmove( MLX(x), MY(obuf[k+i*2+1]) ) ;
+		    else if ( x <= xmax ) { int xx ;
+			xx = MLX(x) ;
+			if ( xx < XMAX )
+			    if ( obuf[k+i*2+1] >= ymin &&
+			     obuf[k+i*2+1] <= ymax )
+				optcont( xx, MY(obuf[k+i*2+1]) ) ;
+			    else
+				optmove( xx, MY(obuf[k+i*2+1]) ) ;
+			else break ;
+		    } else break ;
+		}
+		linemod( "solid" ) ;
+/*
+ * delay spectra have one fewer component
+ */
+	    } else if ( phadelspec || grpdelspec ) {
+		optmove( MLX(xmin), MY(obuf[k+1]) ) ;
+		for ( i = 1 ; i < normlen ; i++ ) {
+		    x = MAP(i,0,normlen,0,Nyquist) ;
+		    if ( x < xmin )
+			optmove( MLX(x), MY(obuf[k+i]) ) ;
+		    else if ( x <= xmax ) { int xx ;
+			xx = MLX(x) ;
+			if ( xx < XMAX )
+			    if ( obuf[k+i] >= ymin &&
+			     obuf[k+i] <= ymax )
+				optcont( xx, MY(obuf[k+i]) ) ;
+			    else
+				optmove( xx, MY(obuf[k+i]) ) ;
+			else break ;
+		    } else break ;
+		}
+/*
+ * normal plot output:
+ */
+	    } else {
+/*
+ * on each iteration, move initially to first plot value
+ */
+		optmove( MLX(xmin), MY(obuf[k]) ) ;
+/*
+ * loop through plotted function values
+ */
+		for ( i = 1 ; i < normlen ; i++ ) {
+/*
+ * compute x position on plot
+ */
+		    if ( autoflag || Wflag )
+			x = i ;
+		    else
+			x = MAP(i,0,normlen,0,Nyquist) ;
+/*
+ * skip over x positions less than xmin and greater than xmax
+ */
+		    if ( x < xmin )
+			optmove( MLX(x), MY(obuf[k+i]) ) ;
+		    else if ( x <= xmax ) { int xx ;
+/*
+ * try not to fall off right edge of plot
+ */
+			xx = MLX(x) ;
+/*
+ * if we're in the plot x window, skip y values outside range
+ */
+			if ( xx < XMAX )
+			    if ( obuf[k+i] >= ymin &&
+			     obuf[k+i] <= ymax )
+				if ( (powspec || ampspec) && enhancer ) {
+				    optmove( xx, MY(ymin) ) ;
+				    optcont( xx, MY(obuf[k+i]) ) ;
+				    optmove( xx, MY(ymin) ) ;
+				} else
+				    optcont( xx, MY(obuf[k+i]) ) ;
+			    else
+				optmove( xx, MY(obuf[k+i]) ) ;
+			else break ;
+		    } else break ;
+		}
+	    }
+/*
+ * extra optmove to flush last plot point for each iteration
+ */
+	    optmove( XMIN, YMIN ) ;
+	    if ( iter == niter - 1 ) {
+		move( XMIN, YMIN ) ;
+		closepl() ;
+	    }
+	}
+    }
+}
+normalize( array, length ) float array[] ; int length ; {
+ register int i ;
+ register float max ;
+    max = array[0] ;
+    for ( i = 0 ; i < length ; i++ )
+	if ( array[i] > max)
+	    max = array[i] ;
+    if ( max <= 0. ) {
+	fprintf(stderr,"spect: zero input") ;
+	exit(1) ;
+    }
+    max = 1./max ;
+    for ( i = 0 ; i < length ; i++ )
+	array[i] *= max ;
+}
+/*
+ * maketicks finds a reasonable way to put tick marks between
+ * min and max at decimal subdivisions
+ */
+maketicks( min, max, ticks ) float min, max, ticks[] ; {
+ int order, n ;
+ float forder, delta, tick ;
+    forder = log10( fabs( (double) max - min ) ) ;
+    order = forder ;
+    if ( forder - order < .302 )
+	order -= 1 ;
+    delta = pow( 10., (double) order ) ;
+    tick = delta ;
+    while ( tick > min ) 
+	tick -= delta ;
+    while ( tick < min ) 
+	tick += delta ;
+    for ( n = 0 ; tick < max ; tick += delta ) {
+	ticks[n++] = tick ;
+    }
+    return( n ) ;
+}
+usage( x ) {
+ fprintf( stderr, 
+"USAGE: %s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
+"spect [flags] < floatsams > output (input must be file or pipe)\n",
+"---------------OUTPUT SPECTRUM FLAG (CHOOSE ONE):-----------------\n",
+" -p   power [default]        -a   amplitude       -t   phase\n",
+" -d   power (in dB)                               -e   phase delay\n",
+" -m   power (in dB                                -E   group delay\n",
+"      averaged over\n",
+"      -i iterations)                              -z   complex\n",
+" -A   output autocorrelation of input (instead of spectrum)\n",
+" -W   output windowed input (instead of spectrum)\n",
+"-------------------OPTIONAL CONTROL FLAGS:------------------------\n",
+" -RN  sample rate [set from input header or 1 if no header]\n",
+" -bN  begin at time N seconds [0S]\n",
+" -wN  window is N seconds long [1024S]\n",
+" -nN  FFT is N samples long, N must be power of 2 [n >= wS]\n",
+" -iN  iterate N times [1]\n",
+" -sN  skip window by N seconds between iterations [w/2]\n",
+" -r   rectangular window [Hamming window]\n",
+" -u   don't normalize [normalize to 0 dB]\n",
+" -f   input is filter impulse response\n",
+"---------------OPTIONAL LINEAR PREDICTION FLAGS:------------------\n",
+" -cN  use N-pole linear prediction estimate of input (autocorrelation)\n",
+" -vN  use N-pole linear prediction estimate of input (covariance)\n",
+"--------------------OPTIONAL PLOT FLAGS:--------------------------\n",
+" -gL  generate linear frequency device-independent plot of output\n",
+" -GL  generate log frequency device-independent plot of output\n",
+"      (L is optional plot label [set from input filename if header])\n",
+" -xN  minimum plot frequency is N [0]\n",
+" -XN  maximum plot frequency is N [R/2]\n",
+" -yN  minimum plot data value is N [data minimum]\n",
+" -YN  maximum plot data value is N [data maximum]\n",
+" -^   special peak enhancer for -a or -p plot output\n"
+) ;
+    exit( x ) ;
+}
+malerr(str, ex) char *str ; int ex ; {
+    fprintf( stderr, "%s\n", str ) ;
+    exit( ex ) ;
+}
+/*
+ * optimal drawing routines that avoid redundant plotting calls
+ */
+int lastx, lasty, movelast, horiz ;
+optcont( x, y ) int x, y ; {
+    if ( movelast ) {
+	move( lastx, lasty ) ;
+	movelast = 0 ;
+    }
+    if ( lasty == y ) {
+	lastx = x ;
+	horiz = 1 ;
+    } else {
+	if ( horiz ) {
+	    cont( lastx, lasty ) ;
+	    horiz = 0 ;
+	}
+	lastx = x ;
+	lasty = y ;
+	cont( x, y ) ;
+    }
+}
+optmove( x, y ) int x, y ; {
+    if ( horiz ) {
+	cont( lastx, lasty ) ;
+	horiz = 0 ;
+    }
+    movelast = 1 ;
+    lastx = x ;
+    lasty = y ;
+}

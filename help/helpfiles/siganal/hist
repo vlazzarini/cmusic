@@ -1,0 +1,12 @@
+hist - simple inline program to calculate histogram of digital signals
+
+DESCRIPTION:
+hist reads samples from stdin and calculates a histogram of the amplitude
+values contained in that signal.
+It prints this histogram and various amplitude measures after all samples
+have been read.  It writes samples on stdout if it is a file or pipe. 
+If a file is named as an argument to hist, the histogram is placed on this
+file.  The following examples determine a histogram for sound file boom:
+
+	sndin boom | hist
+	sndin boom | hist xxx | boom2 (histogram placed on file xxx)

@@ -1,0 +1,115 @@
+programs - programs developed at CARL and how to find out about them:
+
+This is a brief overview of some of the programs in the CARL 
+software distribution.  In addition to the help files, there are 
+manual pages for most of these programs.  If you are not at CARL, there
+are some programs you may not have as they are not distributed.
+
+I. cmusic - Sound Synthesis System
+    The CARL sound-synthesis program (reads scores and generates
+    acoustic samples). See "man cmusic" for online documentation, and
+    the CARL Startup Kit for "An Introduction to Sound Synthesis Using
+    Cmusic".  In addition, many "help" files exist for various
+    related programs and documentation (see below).
+gens
+    gen, gen0, gen1, gen2, gen3, gen4, gen5, gen6, ogen, chubby, cspline, 
+    These are programs used with (or by) cmusic to generate stored
+    functions.  For instance, gen1 creates straight-line functions
+    between specified sets of points, gen5 produces a sum-of-sinusoids,
+    each with arbitrary harmonic number, amplitude, and phase, chubby
+    produces a sum of Chebychev polynomial functions (useful with
+    waveshaping synthesis), cspline creates a "maximally smooth" curve
+    which goes through a specified set of points, and gen0 "normalized"
+    the peak amplitude of any function to 1.0 (or some other specified
+    value).  A "help" file exists for each one. Say "help cmusic/gens" 
+    for a general explanation, or "help cmusic/gens/gen1" to learn about 
+    function generator gen1.
+ugs
+    These are documentation files for the cmusic unit generators.  
+    "help ugs" gets a list of available unit generators.
+    "help cmusic/ugs/osc" gets documentation on the osc unit generator.
+cmusic.h, expr, info, scorebugs, commands 
+    These are documentation files describing cmusic expressions, cmusic
+    macros, a set of score debugging suggestions, and the various "set"
+    options available in a cmusic score.  Say "help cmusic/expr", etc.
+
+II. graphics - Graphics Hacks
+
+pianoroll
+    Program which generates a graphic display of information taken
+    from a cmusic score.  Say "help pianoroll".
+sndpath
+    Program to graphically display and edit sound path, to use as input
+    to the cmusic space unit generator, or with the quad gen command.
+
+III. compose - Composing Programs
+
+ccmp
+    score generating language.  Say "help compose/ccmp".
+mpl	      
+    mpl is a Music Programming Language based on APL which produces
+    scores for cmusic.  See "help compose/mpl" for further reading.
+    (Not distributed)
+
+IV. csound 
+
+sndout, sndin, play, record
+   The csound file system transfers acoustic samples to and from the
+   soundfiles and the audio converters.  See "man csound/sndout", etc.
+   for online documentation and the CARL 
+   Startup Kit for "Introduction to the CARL Soundfile System".
+
+siggens - Signal Generation
+
+wave, impulse, noise
+    Generate impulse and (shaped) noise signals, respectively.
+
+B. sigproc - Signal Modification
+
+chan, para
+    Programs for doing multichannel and parallel-stream signal
+    processing using UNIX pipes.  Say "help sigproc/para" and 
+    "help sigproc/chan" as
+    well as the CARL Startup Kit article "Musical Signal Processing in
+    a UNIX Environment".
+comb, reverb
+    Programs for doing comb and nearly all-pass reverberation on
+    acoustic sample data using UNIX pipes.
+filter, fir
+    The filter program does general purpose digital filtering using
+    UNIX pipes.  The fir program allows a user to interactively design
+    an FIR filter for use with the filter program.
+gain, gaindelay, offset
+    Programs for modifying the peak amplitude of a signal, or combining
+    this operation with a delay feature, or adding a constant to a
+    digital signal.  All use the UNIX pipe mechanism.
+srconv
+    Program for changing the sampling rate of a digital signal.
+
+
+siganal - Signal Analysis
+
+energy, hist, maximum, nonzero, peak, rms
+    Programs for detecting various things about the amplitude levels in
+    digital signals.
+noteanal
+    Program which attempts to segment acoustic samples according to
+    where sounds (i.e., "notes") begin and end.
+show
+    Program to make a crude plot of a digital signal on a CRT
+    terminal.
+spect
+    Program which displays successive, windowed FFTs of a digital
+    signal on a CRT terminal.
+
+V. Other Software
+
+libcarl
+    Contains all libraries developed at CARL, including libieee,
+    libfrm, libjos, libsf, libran, and others.  Say "help lib/libcarl".
+
+libfrm
+    Contains several signal-handling programs used at CARL (such as
+    getfloat and putfloat), and other miscellany, such as a program
+    to convert any algebraic expression into a reverse polish list.
+    Say "help lib/libfrm" for documentation.

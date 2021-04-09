@@ -1,0 +1,8 @@
+int i;
+
+Player Ninstances(0, -1, P_READY, 5)
+{
+	Instance int j;
+
+	printf("i=%d, j=%d\n", i++, j++);
+}

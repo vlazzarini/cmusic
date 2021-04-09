@@ -1,0 +1,5 @@
+adn - adds arbitrary number of signals and constants
+
+adn output[b] input[bvpn]* ;
+
+The (arbitrary number of) inputs are added together and placed in the output.

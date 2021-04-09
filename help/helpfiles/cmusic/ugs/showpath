@@ -1,0 +1,55 @@
+showpath - generate a graph of a sound path
+
+showpath x[bvpn] y[bvpn] filename[s] temp1[d] temp2[d] temp3[d]
+
+Causes a "device-independent" plot of one or more sound paths to be 
+generated on the named file suitable for viewing on terminals with 
+graphics capability (such as a Visual 550 or a Diablo printer), or 
+on a graphics printer (such as a laser graphics printer).  This is 
+useful for debugging or demonstrating.  Showpath uses graph to 
+generate the plot (see "man graph").  The following score illustrates 
+its use:
+
+    #include <carl/cmusic.h>
+    set stereo;
+
+    #define FILENAME s1
+    #define DEFSTRING(string)var p2 string 
+
+    DEFSTRING(FILENAME) "path.out" ;
+
+    ins 0 one;
+    {env}	seg  b4 p5 f4 d .1sec 0 .1sec;
+    {pulser}	osc  b5 b4 p10 f5 d;
+    {x}		osc  b2 p7 p8 f2 d;
+    {y}		osc  b3 p7 p9 f3 d;
+    {front}	adn  b3 b3 p11;
+    {carrier} 	osc  b1 b5 p6 f1 d;
+		showpath b2 b3 FILENAME d d d; {generate plot}
+		SPACE(b1,1) b2 b3 0 1 0dB;
+    end;
+    SAWTOOTH(f1);
+    SINE(f2);
+    COS(f3);
+    GEN1(f4) 0,0 1/3,1 2/3,1 1,0;
+    PULSE(f5);
+    GEN3(f6) 3/4 -1/4;
+
+    note 0 one 2 0dB 440Hz 10 2sec 2sec 11Hz 0;
+
+    sec;
+    ter 4;
+
+This score produces a file called "path.out" which can be viewed,
+for example, on a Visual 550 terminal via the command:
+
+    cat path.out | v550
+
+NOTE:  If the graphics output file is named as above, then only the
+       LAST plot generated will appear on it.  To place more than
+       one plot on the file (e.g., for several notes), then prefix
+       the filename with a single > character, such as ">path.out",
+       making sure there are no blanks in the string that names
+       the file.  This will cause successive paths to be appended
+       to the file, corresponding to the UNIX convention "cmd >>file".
+

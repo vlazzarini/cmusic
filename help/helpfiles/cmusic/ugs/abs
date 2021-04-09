@@ -1,0 +1,5 @@
+abs - absolute value
+
+abs output[b] input[bvpn] ;
+
+The output is equal to the absolute value of the input.

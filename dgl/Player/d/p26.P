@@ -1,0 +1,12 @@
+Player foo()
+{
+	Ps3 = Pi3;
+	P4 = 1.0;
+	P2 += P4;
+	Wait_until(P2 + Now);
+}
+
+M_start()
+{
+	Alias(foo, "baz");
+}

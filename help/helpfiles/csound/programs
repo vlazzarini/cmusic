@@ -1,0 +1,34 @@
+csound programs - a list of all currently available csound programs.  
+
+The number in the first column is an indication as to
+the "relevance" the program has to beginning users, with 0 being
+important, and 9 being relatively unimportant.  The best introduction
+to the csound file system is the tutorial "Introduction to the Csound
+File System" in the CARL Startup Kit available from CME.  All programs
+listed below also have manual pages available with the man command.
+
+0 lsf - list sound files, sound file directories
+0 play - play sound file(s) through DACs
+0 record - record sound file through ADCs
+0 rmsf - remove sound file(s)
+0 sndin - read csound files onto standard output
+0 sndout - write sound files.
+1 cpsf - move sound file
+1 mvsf - move sound file
+2 cdsf - change csound file directory
+2 mksfdir - make a sound file directory
+2 pwsf - print working sound file directory
+3 catsf - concatenate sound files
+4 sdc - print map of csound file usage 
+4 sfck - check sound file system for soundness
+5 sndcmp - compare two sound files.
+5 sndhist  - produce histogram of sound file
+6 reapsf - reclaim sound file storage space
+6 scratchsf - holdsf - keepsf - set storage class of sound files
+6 visf - edit sound file parameters
+9 burpsf - free space compaction for csound file system
+9 dumpsf - dump sound files to tape
+9 locksf, unlocksf - lock/unlock a sound file system
+9 opensf - closesf - user-level commands to open/close sound files.
+9 restorsf - restore sound files from magtape
+9 sfdt - print csound dump statistics

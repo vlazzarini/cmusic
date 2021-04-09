@@ -1,0 +1,14 @@
+Peekcl()
+Setup_p()
+Set_p()
+Set_ps()
+Set_pp()
+Caller()
+Kill()
+Join()
+Index()
+Player_stat has flag P_WRAP 
+* Kill_test()
+* Rhythm(), Pitch(), Key() and friends are not sensitive to Hold directive.
+* P_KEYSIG
+* P_METRONOME, Get_metronome(), use of MM postop, etc.

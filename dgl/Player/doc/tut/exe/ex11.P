@@ -1,0 +1,6 @@
+Player blat(0, 20)
+{
+	P4 = Exprs("2+2 5 {.6 .2}x3");
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,42 @@
+chan - multichannel signal processing with UNIX pipes & parallel processes
+
+DESCRIPTION:
+chan provides multichannel signal processing by demultiplexing its standard
+input, feeding each channel (through pipes) to one of several monophonic 
+processing pipelines which run as parallel processes, remultiplexing the 
+outputs of these processes, and writing the resulting multiplexed data stream
+on the standard output. A typical command form:
+
+  cmusic stereo.sc | chan 2 "reverb .6 1000" "reverb .7 1131" | sndout -c 2
+
+takes the output of cmusic, separates the 2 channels, applies 
+"reverb .6 1000" to the first channel, and "reverb .7 1131" to the second, 
+then recombines the signal and pipes it to sndout.  
+
+The above example may be diagramatically shown as the following:
+
+(channel 1 process)                             / reverb .6 1000 \
+(multiplexed stereo process)  cmusic stereo.sc |                  | sndout -c 2
+(channel 2 process)                             \ reverb .7 1131 /
+
+If only one process is specified for multiple channels, it is applied in 
+parallel to each channel. For example, the command
+
+    cmusic stereo.sc | chan 4 "comb .6 1000" | sndout -c 2
+
+is 
+			 / comb .6 1000 \
+			|/ comb .6 1000 \|
+       cmusic stereo.sc |                | sndout -c 2
+			|\ comb .6 1000 /|
+			 \ comb .6 1000 /
+
+The number of channels must be 2, 3 or 4.  The channel processes must
+be enclosed in quote (") marks, and may themselves be pipes, such as
+
+  cmusic stereo.sc | chan 4 "reverb .6 2131 | comb .6 1000" | sndout -c 2
+
+chan reads and writes floatsams only; it will write them in ASCII on your 
+terminal and as binary data through an output pipe.
+
+SEE ALSO: para

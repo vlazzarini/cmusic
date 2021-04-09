@@ -1,0 +1,17 @@
+Player blat(0.0)
+{
+	Instance double utf_begin;
+	Instance Function *tempo;
+	double utf_dur;
+
+	P_start { 
+		tempo = Gen("gen3 -L100 60 120");
+	}
+	utf_dur = Rhythms("4 8 8 4");
+	if ((P4 = Tempo(tempo, utf_begin, utf_dur, 30.0)) < 0.0) {
+		Kill(Self);
+		Return;
+	}
+	utf_begin += utf_dur;
+	Wait_until(P2 = Abs_time() + P4);
+}

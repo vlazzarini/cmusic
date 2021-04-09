@@ -1,0 +1,8 @@
+out - multichannel signal output
+
+out input[bvpnd]* ;
+
+The number of inputs must be equal to the number of channels.  The
+first input is summed into output channel 0, the second input is summed
+into output channel 1, etc. (Use set to specify the number of
+channels.)

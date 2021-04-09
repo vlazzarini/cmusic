@@ -1,0 +1,20 @@
+shepenv - special generator for Shepard/Risset tone spectral envelopes
+
+	gen T shepenv F   cycles base
+
+shepenv generates a function suitable for use with the illus unit
+generator in the production of Shepard or Risset illusions.  The
+function consists of a "raised inverted cosine" waveform that begins
+and ends with the value 0.0, and attains a single peak of 1.0 in
+between (i.e., on a linear scale, f(x) = .5 * -cos(x) + .5, for 0 <= x
+<= 2pi).  Shepenv scales this function along a logarithmic abscissa, so
+that equal pitch intervals occupy equal intervals along the horizontal
+axis.  Shepenv accepts 2 arguments: the number of logarithmic cycles,
+and the logarithm base.
+
+For example, if the spectral envelope is to be scaled over 6 octaves,
+then cycles would be equal to 6, and base would be equal to 2;  if the
+envelope is to span 7 perfect fifths, then set cycles to 7 and base to
+3/2, etc.
+
+There is a score example that uses shepenv in help file cmusic/ugs/illus.

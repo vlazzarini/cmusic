@@ -1,0 +1,9 @@
+Player reloct(0)
+{
+	P2 = Abs_time();
+	P4 = 1;
+	P5 = Pitches("as b3 css df5 e f fs ff3 bs6 a8 Kill");
+	P6 = Pitches("as4 b3 css3 df5 e5 f5 fs5 ff3 bs6 a8");
+	P7 = Pitches("as -b css++ df e f fs --ff +++bs ++a");
+	Wait_until(P2 + P4);
+}

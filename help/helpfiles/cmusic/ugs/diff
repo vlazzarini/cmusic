@@ -1,0 +1,8 @@
+diff - calculates the difference between successive samples
+
+diff output[b] input[bvpn] temp[dpv] ;
+
+The diff unit generator outputs the differences between successive
+samples of its input.  The temp variable is normally a "d".  If the
+input signal is x(0), x(1), x(2), ..., then then output is x(0)-0,
+x(1)-x(0), x(2)-x(1), ... .

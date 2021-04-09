@@ -1,0 +1,8 @@
+div - divides a signal by another signal or a number
+
+div  output[b] numerator[bvpn] denominator[bvpn] ;
+
+The output of the div generator is equal to the numerator divided by
+the denominator.  Each value of the denominator is checked to see of it
+is equal to 0.0, and if so, a huge value is output (it is up to the
+user to see that this does not happen).

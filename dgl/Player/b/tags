@@ -1,0 +1,28 @@
+Mlexit	lexit.c	/^main()$/
+Mmain	main.c	/^main(ac, av)$/
+Mymain	ymain.c	/^main(argc, argv) $/
+_$bee	instance.c	/^_$beep(i, j)$/
+_beep	instance.c	/^$_beep(i, j)$/
+beep	instance.c	/^beep(_x)$/
+clexer	clexer.c	/^clexer()$/
+divert	dvrt.c	/^divert(base, str)$/
+getpnum	y.tab.c	/^char *getpnum(str)$/
+getsymbol	sym.c	/^getsymbol(str)$/
+hash	hasher.c	/^hash(s)		\/* form hashed index into symbol table *\//
+install	hasher.c	/^install(name, type) $/
+ispfield	yylex.c	/^ispfield(field)$/
+lookup	hasher.c	/^lookup(s)		\/* look for s in hashtab *\/$/
+max	y.tab.c	/^max(x, y)$/
+nl2sp	y.tab.c	/^nl2sp(str)$/
+parse_decl	sym.c	/^parse_decl(decl)$/
+parse_defn	sign_in.c	/^}$/
+phashtab	phashtab.c	/^phashtab()$/
+reset_strsav	strsav.c	/^reset_strsav()$/
+scpy	y.tab.c	/^char *scpy(a)$/
+setup	ymain.c	/^setup()$/
+strcopy	hasher.c	/^char *strcopy(s)		\/* invent and copy a string *\/$/
+strsav	strsav.c	/^strsav(base, string)$/
+undivert	dvrt.c	/^undivert(base, cnt)$/
+yyerror	ymain.c	/^yyerror(s)$/
+yylex	yylex.c	/^yylex()$/
+yyparse	y.tab.c	/^yyparse() {$/

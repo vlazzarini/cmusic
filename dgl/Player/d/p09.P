@@ -1,0 +1,48 @@
+typedef Player * PP;
+
+PP P_qop;
+extern Player qop();
+
+tester()
+{
+	if (Player_status(P_qop) == P_READY) 
+		return(True);
+	return(False);
+}
+
+Player blat(0,30)
+{
+	P_start {
+		Wait_for(tester, ONCE);
+		Wait_until(1000.0);
+		Stop(Self);
+		Return;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player blop(0,20)
+{
+	Player *v;
+	int i;
+
+	P_start {
+		i = Player_status(Self);
+		v = New_player(qop, Beg_time(Self), Dur_time(Self), i);
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player qop()
+{
+	P_start {
+		P_qop = Self;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,20 @@
+Mdlyclc	dlyclc.c	/^main(argc, argv)$/
+Mlprev	lprev.c	/^main(argc, argv)$/
+addaps	revconf.c	/^addaps(str)$/
+addcmb	revconf.c	/^addcmb(str)$/
+addtap	revconf.c	/^addtap(str)$/
+apass	apass.c	/^apass(ibuf, obuf, n, zbuf, zlen, zi, G1, G2)$/
+apassinit	apass.c	/^apassinit()$/
+clear	lprev.c	/^clear(buf, n)$/
+cmbflt	cflt.c	/^cmbflt(ibuf, obuf, len, dly, zlen, zi, G1, G2, x) /
+cmbinit	cflt.c	/^cmbinit()$/
+getibuf	getibuf.c	/^getibuf(buf)$/
+init	lprev.c	/^init()$/
+lprevhelp	lprev.c	/^lprevhelp()$/
+mix	lprev.c	/^mix(ibuf, obuf, n)$/
+revconf	revconf.c	/^revconf(name)$/
+scale	lprev.c	/^scale(buf, coeff, n)$/
+stall	lprev.c	/^stall(ibuf, obuf, n)$/
+stallinit	lprev.c	/^stallinit()$/
+tapdly	tap.c	/^tapdly(ibuf, obuf, n)$/
+tapinit	tap.c	/^tapinit()$/

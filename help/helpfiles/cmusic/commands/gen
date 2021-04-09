@@ -1,0 +1,59 @@
+gen - the cmusic generate command
+
+The cmusic gen command has the general form:
+
+    gen T PROG FUNC DEF ;
+
+where:
+    T    is the action time (such as "0", or "p2"),
+    PROG is the gen program to be used (such as "gen1"),
+    FUNC is the function to be defined (such as "f1"), and
+    DEF  is the definition required by the program being used.
+
+Cmusic constructs a system call from the gen command statement which has
+the form:
+
+    PROG -Ln IDEF
+
+where:
+    PROG is the gen program named in the command,
+    n    is the current function length (supplied as a flag argument), and
+    IDEF is the interpreted definition, i.e., the definition as supplied in
+	 the gen score statement with all arithmetic expressions replaced
+	 by their numerical values.
+
+For instance, the score statement
+
+    gen 0 gen2 f1 0,0 1,2K;
+
+causes cmusic to produce the following system call (assuming the default 
+function length is 1024):
+
+    gen2 -L1024 0 0 1 2048
+
+The gen2 program then is expected to produce 1024 binary float values on its
+standard output.  Cmusic reads these values from a pipe and stores them into 
+them into the memory allocated for function f1.
+
+The user may use the standard gen programs (see "help/cmusic/gens") or
+may supply a special program simply by naming it.  The contents of any 
+string variables in the function definition are copied verbatim to
+the system call, allowing flags to be set in the called program.
+For instance the score statements
+
+    set funclength = 4K;
+    var p2 s1 "-F2 -G3";
+    var p2 s2 "arg";
+    gen p2 ./mygen f2 s1 3,4 s2 5;
+
+cause cmusic to execute the call:
+
+    ./mygen -L4096 -F2 -G3 3 4 arg 5
+
+Presumably the user's "mygen" program knows what to do with the flags and
+other arguments, and it is expected to produce 4096 binary float values 
+on its standard output for use in defining function f2.
+
+The standard gen programs are documented individually.  See
+
+    help cmusic/gens

@@ -1,0 +1,17 @@
+Player beep(0)
+{
+	Instance Player *np;
+	int i, parts;
+
+	if (argc >= 2)
+		parts = atoi(argv[1]);
+	else
+		Pexit(1);
+
+	for (i = 0; i < parts; i++) {
+		np = New_player(part, frand(0.0, 20.0), Forever, P_READY);
+		Set_p(np, 5, (double) i);
+	}
+
+	Kill(Self);
+}

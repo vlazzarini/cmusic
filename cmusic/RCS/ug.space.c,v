@@ -1,0 +1,494 @@
+head	1.1;
+access;
+symbols;
+locks
+	syadegar:1.1; strict;
+comment	@ * @;
+
+
+1.1
+date	2000.03.03.00.33.23;	author syadegar;	state Exp;
+branches;
+next	;
+
+
+desc
+@inittial linux version
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/* Spatial Processing Unit Generator */
+
+#include "mm.head.h"
+#include "ug.head.h"
+#include <stdio.h>
+#include <math.h>
+
+#define UNUSED	1
+#define DBUF	2
+#define DLEN	3
+#define NOW	4
+#define DARRAY	5
+#define CARRAY	6
+#define AARRAY	7
+#define FARRAY	8
+#define XS	9
+#define YS	10
+#define THETAS	11
+#define AMPS	12
+#define BACKS	13
+#define X	14
+#define Y	15
+#define THETA   16
+#define AMP     17
+#define BACK    18
+
+
+#define CI	.00029851	/* 1/335 (meters per second) */
+#define PI2	6.283185308
+#define PI	3.141592654
+#define IPI	.318309886
+#define D270	4.712388981
+#define D90	1.570796327
+#define DIST(x1,y1,x2,y2) sqrt( (double) ( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ) )
+#define TAU	50		/* milliseconds in cross-fade */
+
+space
+
+UGHEAD{
+    UGINIT;
+    float *Out = Outblock, *Grev = Grevblock;
+    float *dbuf;
+    float ***cut, ***delay, ***atten, ***fader, delsamp;
+    float *xs, *ys, *ts, *as, *bs;
+    float x1, y1, x2, y2, t1, t2, fff;
+    float maxdist, maxdelay, d, di, chanval[4], radiant;
+    float ***fp3alloc(), do_delay();
+    int place, change, inside;
+    long dlen, now, j, k, nrv, dim, c, r, s, ns;
+    float fade, rx, ry, dx, dy, dt, phi, getcut(), val, tsn;
+    float RCI = CI*Srate;
+
+    if(STARTNOTE){
+	Spacewason = Spaceon = 1;	/* Turn on global reverberator */
+	maxdist = 0.;
+	for(j=0; j<NAs; j++){ /* Find largest distance in acoustic space */
+	    for(k=0; k<NAs; k++){
+		if(j == k) continue;
+		d = DIST(Ax[j], Ay[j], Ax[k], Ay[k]);
+		if(d > maxdist) maxdist = d;
+	    }
+	}
+	maxdelay = 2.*maxdist;
+	dlen = LVAL(DLEN) = maxdelay*RCI + 0.5;
+	now = LVAL(NOW) = 0;
+	FPTR(DBUF) = (float *) calloc(dlen, sizeof(float));
+	nrv = (narg - X)/5;	/* number of radiation vectors specified */
+	ns = NAs + 1; 	/* Extra surface is for direct path values */
+	FPTR(CARRAY) = (float *) fp3alloc(nrv,ns,Nchan);
+	FPTR(DARRAY) = (float *) fp3alloc(nrv,ns,Nchan);
+	FPTR(AARRAY) = (float *) fp3alloc(nrv,ns,Nchan);
+	FPTR(FARRAY) = (float *) fp3alloc(nrv,ns,Nchan);
+	FPTR(XS) = (float *) calloc(nrv, sizeof(float));
+	FPTR(YS) = (float *) calloc(nrv, sizeof(float));
+	FPTR(THETAS) = (float *) calloc(nrv, sizeof(float));
+	FPTR(AMPS) = (float *) calloc(nrv, sizeof(float));
+	FPTR(BACKS) = (float *) calloc(nrv, sizeof(float));
+    }
+    dbuf = FPTR(DBUF);
+    dlen = LVAL(DLEN);
+    now = LVAL(NOW);
+    cut = (float ***) FPTR(CARRAY);
+    delay = (float ***) FPTR(DARRAY);
+    atten = (float ***) FPTR(AARRAY);
+    fader = (float ***) FPTR(FARRAY);
+    nrv = (narg - X)/5;
+    xs = FPTR(XS);
+    ys = FPTR(YS);
+    ts = FPTR(THETAS);
+    as = FPTR(AMPS);
+    bs = FPTR(BACKS);
+    ns = NAs + 1;
+    fade = 1000./(TAU*Srate);
+    UGLOOP{
+	dbuf[now] = VAL(0); /* install current sample in delay buffer */
+	change = (i==0) ;
+	for(j=0; j<nrv; j++){
+	    place = j*5;
+	    if(xs[j] != VAL(X+place)){change=1; xs[j]=VAL(X+place);}
+	    if(ys[j] != VAL(Y+place)){change=1; ys[j]=VAL(Y+place);}
+	    if(ts[j] != VAL(THETA+place)){change=1; ts[j]=VAL(THETA+place);}
+	    if(as[j] != VAL(AMP+place)){change=1; as[j]=VAL(AMP+place);}
+	    if(bs[j] != VAL(BACK+place)){change=1; bs[j]= VAL(BACK+place);}
+	}
+/*
+ * get the cut, delay, and atten arrays computed for all current
+ * radiation vectors, surface reflection (and direct) paths, and 
+ * channels
+ */
+/* do only one first loop or when something varies */
+/* do direct paths first */
+	if(change){
+	    for(r=0; r<nrv; r++)
+	     for(c=0; c<Nchan; c++){
+		x1 = xs[r]; y1 = ys[r];
+		x2 = Sx[c]; y2 = Sy[c];
+		cut[r][0][c] = getcut(x1,y1,x2,y2);
+		dx = x2 - x1 ;
+		dx *= dx ;
+		dy = y2 - y1 ;
+		dy *= dy ;
+		d = sqrt( (double) ( dx + dy ) ) ;
+		delay[r][0][c] = d*RCI;
+		if ( Direct != 1. )
+		    d = pow( (double) d, (double) Direct ) ;
+		if(bs[r] < 1.0){
+		    dy = y1 - y2;
+		    dx = x1 - x2;
+		    phi = dx ? 
+			atan2( (double) dy, (double) dx) : 
+			(dy > 0 ? D270 : D90 );
+		    tsn = ts[r];
+		    if(tsn > PI)tsn = PI2 - tsn;
+		    dt = tsn - phi;
+		    dt = ( dt >= 0. ? dt : -dt ) ;
+		    if(dt > PI)dt = PI2 - dt;
+		    radiant = 1. + (sqrt( (double) ( bs[r]) - 1. ) )*dt*IPI;
+		    radiant *= radiant;
+/*
+* attenuation depends on amplitude of vector, angle of vector,
+* and distance to vector origin
+*/
+		    atten[r][0][c] = as[r]*radiant/(1. + d) ;
+		} else atten[r][0][c] = as[r]/(1. + d) ;
+	    }
+/* now do surface reflections */
+	    for(r=0; r<nrv; r++)
+	     for(s=1; s<ns; s++)
+	      for(c=0; c<Nchan; c++){
+		x1 = xs[r]; y1 = ys[r];
+		x2 = Sx[c]; y2 = Sy[c];
+		getrefl(x1,y1,x2,y2,s-1,&rx,&ry);
+		cut[r][s][c] = 0.;
+		if( getcut(rx,ry,x2,y2) != 0.)
+		 if(getcut(x1,y1,rx,ry) != 0.) cut[r][s][c] = 1.;
+		dx = x1 - rx ;
+		dx *= dx ;
+		dy = y1 - ry ;
+		dy *= dy ;
+		d = sqrt( (double) ( dx + dy ) ) ;
+		dx = x2 - rx ;
+		dx *= dx ;
+		dy = y2 - ry ;
+		dy *= dy ;
+		d += sqrt( (double) ( dx + dy ) ) ;
+		delay[r][s][c] = d*RCI;
+		if ( Reflect != 1. )
+		    d = pow( (double) d, (double) Reflect ) ;
+		if(bs[r] < 1.0){
+		    dy = y1 - ry;
+		    dx = x1 - rx;
+		    phi = dx ? atan2(dy,dx) : (dy > 0 ? D270 : D90 );
+		    tsn = ts[r];
+		    if(tsn > PI)tsn = PI2 - tsn;
+		    dt = tsn - phi ;
+		    dt = ( dt >= 0. ? dt : -dt ) ;
+		    if(dt > PI)dt = PI2 - dt;
+		    radiant = 1. + (sqrt( (double) ( bs[r]) - 1. ) )*dt*IPI;
+		    radiant *= radiant;
+		    atten[r][s][c] = as[r]*radiant/(1. + d) ;
+		} else atten[r][s][c] = as[r]/(1. + d) ;
+	    }
+	}
+	for(c=0; c<Nchan; c++){
+	    chanval[c] = 0;
+	    for(r=0; r<nrv; r++)
+	     for(s=0; s<ns; s++){
+		d = delay[r][s][c];
+		delsamp = do_delay(dbuf,dlen,now,d);
+		if(s == 0){
+		    if(!within(xs[r],ys[r])){  /* Outside? */
+			*Grev += delsamp * atten[r][s][c];
+			inside = 0;
+		    } else {
+			inside = 1;
+		    }
+		} else if(!inside) 
+			*Grev += delsamp * atten[r][s][c];
+		if(cut[r][s][c] == 1.){ 
+		    fff = fader[r][s][c] ;
+		    if(fff < 1.){
+			fff += fade;
+			if(fff > 1.)fff = 1.;
+			val = delsamp * atten[r][s][c] * fff ;
+			chanval[c] += val;
+			if(inside) *Grev += val;
+		    } else {
+			val = delsamp * atten[r][s][c];
+			chanval[c] += val;
+			if(inside) *Grev += val;
+		    }
+		    fader[r][s][c] = fff ;
+		} else { 
+			fff = fader[r][s][c] ;
+			if(fff > 0.){
+			    fff -= fade;
+			    if(fff < 0.)fff = 0.;
+			    val = delsamp * atten[r][s][c] * fff ;
+			    chanval[c] += val;
+			    if(inside) *Grev += val;
+			}
+		    fader[r][s][c] = fff ;
+		}
+	    }
+	    di = chanval[c];
+	    *Out++ += di ;
+	    val = ( di >= 0 ? di : -di ) ;
+	    if(val > Maxecho)Maxecho = di ;
+	}
+	Grev++;
+	now -= 1;
+	if(now < 0)now = dlen - 1;
+	LVAL(NOW) = now;
+	LVAL(DLEN) = dlen;
+	UGEND(0);
+    }
+    if(ENDNOTE){
+	free(dbuf);
+	fp3free(cut,nrv,ns,Nchan);
+	fp3free(delay,nrv,ns,Nchan);
+	fp3free(atten,nrv,ns,Nchan);
+	fp3free(fader,nrv,ns,Nchan);
+	free(xs);
+	free(ys);
+	free(ts);
+	free(as);
+	free(bs);
+    }
+}
+/*
+ * getcut returns 0.0 if the line defined by x1,x2 and x2,y2 crosses 
+ * (cuts) any surface of the inner room, and 1.0 if it doesn't
+ */
+float getcut(x1,y1,x2,y2) float x1,y1,x2,y2; {
+ register int i;
+ int test1, test2 ;
+ float dx, dy, dinv, t1, t2, lsintheta, lcostheta, lrho ;
+ static float costheta[4], sintheta[4], rho[4] ;
+ static float lx1[4], ly1[4], lx2[4], ly2[4] ;
+ static int horiz[4], vert[4] ;
+ static first = 1 ;
+    if( first ) {
+/*
+ * precompute normal equations for walls
+ */
+	first = 0 ;
+	for( i=0; i<NLs; i++ ) {
+	    lx1[i] = Lx[i] ;
+	    ly1[i] = Ly[i] ;
+	    lx2[i] = Lx[(i+1)%NLs] ;
+	    ly2[i] = Ly[(i+1)%NLs] ;
+	    if( ly1[i] == ly2[i] ) horiz[i] = 1 ; else horiz[i] = 0 ;
+	    if( lx1[i] == lx2[i] ) vert[i] = 1 ; else vert[i] = 0 ;
+	    dx = lx2[i] - lx1[i] ;
+	    dy = ly2[i] - ly1[i] ;
+	    dinv = 1./sqrt( (double) ( dx*dx + dy*dy ) ) ;
+	    sintheta[i] = dy*dinv ;
+	    costheta[i] = dx*dinv ;
+	    rho[i] = ( ly1[i]*lx2[i] - lx1[i]*ly2[i] )*dinv ;
+	}
+    }
+    for( i=0; i<NLs; i++ ) {
+	if( horiz[i] ) {
+/*
+ * if one end of ray touches wall, no cut possible
+ */
+	    if( y1 == ly1[i] ) continue ;
+	    if( y2 == ly2[i] ) continue ;
+	    test1 = y1 > ly1[i] ;
+	    test2 = y2 > ly2[i] ;
+	} else if( vert[i] ) {
+	    if( x1 == lx1[i] ) continue ;
+	    if( x2 == lx2[i] ) continue ;
+	    test1 = x1 > lx1[i] ;
+	    test2 = x2 > lx2[i] ;
+	} else {
+	    t1 = y1*costheta[i] - x1*sintheta[i] ;
+	    if( t1 == rho[i] ) continue ;
+	    test1 = t1 > rho[i] ;
+	    t2 = y2*costheta[i] - x2*sintheta[i] ;
+	    if( t2 == rho[i] ) continue ;
+	    test2 = t2 > rho[i] ;
+	}
+/*
+ * if both ray endpoints on same side of wall, no cut possible
+ */
+	if( test1 == test2 ) continue ;
+/*
+ * come here iff ray endpoints on opposite sides of (infinitely extended) wall
+ * compute normal equation of ray
+ */
+	dx = x2 - x1 ;
+	dy = y2 - y1 ;
+	dinv = sqrt( (double) ( dx*dx + dy*dy ) ) ;
+	if( dinv == 0. ) continue ;
+	dinv = 1./dinv ;
+	lsintheta = dy*dinv ;
+	lcostheta = dx*dinv ;
+	lrho = ( y1*x2 - x1*y2 )*dinv ;
+	t1 = ly1[i]*lcostheta - lx1[i]*lsintheta ;
+/*
+ * if wall endpoint touches ray, no cut possible
+ */
+	if( t1 == lrho ) continue ;
+	test1 = t1 > lrho ;
+	t2 = ly2[i]*lcostheta - lx2[i]*lsintheta ;
+	if( t2 == lrho ) continue ;
+	test2 = t2 > lrho ;
+/*
+ * if wall endpoints also on opposite sides of ray, then cut
+ */
+	if( test1 != test2 )
+	    return( 0. ) ;	/* ray path cut */
+    }
+    return( 1. ) ;	/* ray path not cut */
+}
+/*
+ * within return 1 if point x,y is inside listening space, else 0
+ */
+within(x,y) float x,y;{
+    if(x < Lx[0] && y < Ly[0])
+     if(x > Lx[1] && y < Ly[1])
+      if(x > Lx[2] && y > Ly[2])
+       if(x < Lx[3] && y > Ly[3])
+	return(1);
+    return(0);
+}
+/*
+ * getrefl calculates the reflection point (rx,ry) of a ray path from
+ * source point (sx,sy) to surface s and back to channel output at (cx,cy)
+ */
+getrefl(sx,sy,cx,cy,s,rx,ry)
+ float sx,sy,cx,cy,*rx,*ry; int s;
+{
+ float lx1,lx2,ly1,ly2,d2,s2,c2,r2,x,y,a;
+ float dx1, dy1, dx2, dy2, m1, m2, b1, b2;
+ static float d[]={0.,0.,0.,0.}, sint[4],cost[4],rho[4],sin2t[4],cos2t[4],
+ f1[4], f2[4];
+
+    s = s%NAs;
+    lx1 = Ax[s];
+    ly1 = Ay[s];
+    lx2 = Ax[(s+1)%NAs];
+    ly2 = Ay[(s+1)%NAs];
+/*
+ * find normal equations for walls (needs to be done only once)
+ */
+    if(d[s] == 0.){	
+	d[s] = 1./sqrt( (double) ( (lx2-lx1)*(lx2-lx1) + (ly2-ly1)*(ly2-ly1) ) );
+	sint[s] = (ly2-ly1)*d[s];
+	cost[s] = (lx2-lx1)*d[s];
+	rho[s] = ly1*cost[s] - lx1*sint[s];
+	if(rho[s]>0.){sint[s]= -sint[s]; cost[s]= -cost[s]; rho[s]= -rho[s]; }
+	sin2t[s] = 2.*sint[s]*cost[s];
+	cos2t[s] = 2.*cost[s]*cost[s] - 1.;
+	f1[s] = -2.*rho[s]*sint[s];
+	f2[s] =  2.*rho[s]*cost[s];
+    }
+/*
+ * find phantom source location
+ */
+    x = f1[s] + sy*sin2t[s] + sx*cos2t[s];
+    y = f2[s] - sy*cos2t[s] + sx*sin2t[s];
+/*
+ * calculate and return wall intercept of ray from phantom source to speaker
+ */
+    if( (dx1 = x - cx) != 0.){ 
+	m1 = (y - cy)/dx1; 
+	b1 = y - m1*x; 
+    }
+    if( (dx2 = lx2 - lx1) != 0.){ 
+	m2 = (ly2 - ly1)/dx2; 
+	b2 = ly1 - m2*lx1; 
+    } else { 
+	*ry = m1*lx1 + b1; 
+	*rx = lx1; 
+	return; 
+    }
+    if(dx1 == 0.){ 
+	*ry = m2*x + b2; 
+	*rx = cx; 
+	return; 
+    }
+    *rx = (b2 - b1)/(m1 - m2); 
+    *ry = m1*(*rx) + b1; 
+    return;
+
+/*
+ * alternative method using normal equations (slower)
+ */
+/*
+ *     d2 = 1./sqrt( (double) ( (x-cx)*(x-cx) + (y-cy)*(y-cy) ) );
+ *     s2 = (y-cy)*d2;
+ *     c2 = (x-cx)*d2;
+ *     r2 = y*c2 - x*s2;
+ *     if(r2>0.){s2= -s2; c2= -c2; r2= -r2;}
+ *     a = 1./(sint[s]*c2 - cost[s]*s2);
+ *     dy1 = (r2*sint[s] - rho[s]*s2)*a;
+ *     dx1 = (r2*cost[s] - rho[s]*c2)*a;
+ */
+}
+/*
+ * do_delay looks up a sample delayed by tau samples using interpolation
+ * on a circular buffer of length len with present sample at buf[now]
+ */
+float do_delay(buf,len,now,tau) float buf[]; float tau; long len, now;{
+ register long t1, t2 ;
+    t1 = now + tau;
+    while(t1 >= len)t1 -= len;
+    t2 = t1 + 1;
+    while(t2 >= len)t2 -= len;
+    return(buf[t1] + (tau - ( (int) tau ))*(buf[t2] - buf[t1]));
+}
+/*
+ * fp3alloc allocates memory for a 3-D array, C-style
+ */
+float *** fp3alloc(x,y,z) register int x,y,z; {
+ register float ***fp3; register int i,j;
+    if ((fp3 = (float ***) calloc(x,sizeof(float **))) == NULL){
+	fprintf(stderr,"\nCMUSIC: space generator: fp3alloc failed.\n");
+	exit (-1);
+    }
+    for (i = 0; i < x; i++) {
+	if ((fp3[i] = (float **) calloc(y, sizeof(float *))) == NULL){
+	    fprintf(stderr,"\nCMUSIC: space generator: fp3alloc failed.\n");
+	    exit (-1);
+	}
+	for (j = 0; j < y; j++) {
+	    if ((fp3[i][j] = (float *) calloc(z, sizeof(float))) == NULL){
+		fprintf(stderr,"\nCMUSIC: space generator: fp3alloc failed.\n");
+		exit (-1);
+	    }
+	}
+    }
+    return(fp3);
+}
+/*
+ * fp3free frees memory for a 3-D array, C-style
+ */
+fp3free(fp3,x,y,z) register float ***fp3; register int x,y,z; {
+ register int i,j;
+    for (i = 0; i < x; i++) {
+	for (j = 0; j < y; j++) {
+	    free(fp3[i][j]);
+	}
+	free(fp3[i]);
+    }
+    free(fp3);
+}
+@

@@ -1,0 +1,7 @@
+libcarl - collected libraries of the CARL system
+
+libcarl contains the union of all libraries distributed as separate
+libraries by CARL, including libfrm, libjos, libran, libieee and libsf.
+
+For more information as to the contents of these libraries, say
+"man libfrm", etc.

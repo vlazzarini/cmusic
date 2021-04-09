@@ -1,0 +1,11 @@
+
+Player x(0)
+{
+	char *y = "a b c d e f g Stop";
+	P_start {
+		P4 = 1;
+	}
+	P5 = Keys(y);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

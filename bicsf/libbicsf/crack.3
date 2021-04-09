@@ -1,0 +1,309 @@
+.TH CRACK 3 BICSF "1st Edition" "Berkeley/IRCAM/CARL Sound Filesystem"
+.SH NAME
+crack \- scan command line for flags and files
+.SH SYNOPSIS
+.B char crack(argc, argv, flags, ign)
+.RS .5i
+.B int argc; 
+.br
+.B char **argv;
+.br
+.B char *flags; 
+.br
+.B int ign;
+.RE
+.B extern int arg_index;
+.br
+.B extern char *arg_option;
+.sp
+.B # include <crack.h>
+.fi
+.SH DESCRIPTION
+The purpose of this routine is to make scanning the command line of
+a program painless and consistent with UNIX usage.
+.PP 
+.BR Crack ()
+takes four arguments: the variables 
+.B argc 
+and 
+.B argv 
+from
+the program's main procedure, a list of flags to recognize, and an
+indication whether to ignore unknown flags or not.  
+.PP
+The #include file <crack.h> contains the declaration for 
+.BR crack ()
+and the two external variables.
+.PP
+The action of 
+.BR crack ()
+is to read a command line laid out in the format:
+.sp
+.RS .5i
+% command [flags] [files]
+.RE
+
+A flag consists of a leading minus sign ('-') followed by a character.
+Flags are expected to be of the form, 
+.nf
+.RS .5i
+\-x \-y \-z[option]
+.RE
+or alternatively,
+.RS .5i
+\-xyz[option]
+.RE
+.fi
+.PP
+A flag may have a value, called here the 
+.I option, 
+butted up to the character.  No space may
+appear between any flag and its option.  
+.br
+Flags that do not have optional components may be run
+together, yet still be treated as separate flags.
+
+The first command line
+argument not preceeded by '\-' is taken as the end of the flags and the
+beginning of file names.
+
+.PP
+If we want to have flags a, b, c, and d,
+the 
+.B flags 
+argument to 
+.BR crack ()
+will look like this: "a|b|cd". The call to 
+.BR crack ()
+would be:
+.sp
+.nf
+	char = crack(argc,argv,"a|b|cd",0);
+	
+.fi
+In this example, a and b take (optional!) options, as specified
+by the trailing vertical bar; flags c and d do not take options.  
+The last argument, "0", indicates that only the given flags will
+be accepted; any unknown flags will cause 
+.BR crack ()
+to complain, quit, or do whatever is specified in the "default" case.
+.PP
+When 
+.BR crack ()
+scans a flag, it does several things:
+.br
+First, it sets the integer variable
+.B arg_index 
+to the number of the 
+.B argv 
+variable it is about to scan.  
+.br
+Next, it reads the flag character.  If the flag takes an option,
+then the variable
+.B arg_option 
+is set to point to the first character of the option part.  
+If the flag takes an option, and the option is not present,
+.B arg_option
+is set to NULL.  If the flag does 
+.I not
+take an option,
+.B arg_option 
+is set to NULL.
+If the flag does not take an option, but one is supplied, an error is
+generated and
+.BR crack()
+returns EOF.
+.br
+Finally, if there were no problems, 
+.BR crack ()
+returns the flag character, and 
+.B arg_option 
+points to any accompanying option.
+.PP
+When the next item 
+.BR crack ()
+scans is not a flag, it returns NULL.
+The value of \fBarg_index\fR then points at the first 
+argument after the last flag, which should be the first filename, if
+any.  If there are no arguments, or no more arguments after reading 
+the flags, 
+.B arg_index == argc.
+.PP
+Flags that do not take options
+may be concatenated, for instance, using the flags argument
+given above: \-cd will treat c and d as
+flags.  \-cda[option]
+also works.  However, tacking what you think is
+a flag after another flag that takes an option will cause the flag to
+be lost.  I.e., \-ac will treat c as an option, not a flag.
+.PP
+When the 
+.B ignore 
+argument to 
+.BR crack ()
+is 0,  flags scanned that are not in the 
+.B flags
+variable generate an error message and cause
+.BR crack ()
+to take whatever action is specified in the "default" case.  If 
+.B ignore 
+is
+nonzero, unknown flags do not generate error messages.
+The purpose of ignoring flags is so that more than one part of a
+program can scan the command line without having to know about the
+flags of all the other parts.  For instance, where a program calculates
+a certain duration in samples, it must obtain a sampling rate from one flag 
+and a value in seconds from another. 
+It must search for the sampling rate first, then the time value, so  
+two sets of calls to
+.BR crack ()
+would be required. The first call would scan just for the flag
+setting sampling rate (since it could occur anywhere among the flags, 
+all flags must be read).  The second call 
+would not require the rate flag, 
+but would accept a time value to be used to calculate the duration
+in samples, based on the sampling rate.
+.PP
+NOTE: When making multiple scans of the command line 
+in a program, it
+is necessary to reset 
+.B arg_index 
+to 0 to enable 
+.BR crack ()
+to rescan all arguments again.
+
+.SH Sfexpr()
+There is an expression evaluator,
+.BR sfexpr (),
+which takes an expression, such as an 
+.IR arg_option ,
+and returns a floating point result. 
+Expressions may contain several types of operands and operators,
+but must not include blank spaces.
+Postoperators include "s" (seconds), "S" (samples), "K" (1024), 
+"ms" (milliseconds), "m" (minutes), "dB" (decibels, positive or negative).
+The manual page for expr() explains which operators are available, 
+but 
+.BR sfexpr ()
+does not recognize all of them. Sin() and ln(), for example, are
+not recognized.
+.br
+.I nota bene:
+Parentheses, asterisks, and other special characters must be preceded
+by the backslash "\" so that the shell doesn't try to interpret them as 
+metacharacters.
+.SH EXAMPLE
+.PP
+An example of the use of
+.BR crack ()
+in a program named "cracktest".  There is a working copy of this program
+on line, so you can try it for yourself.
+.RS
+.PP
+# include <stdio.h>
+.br
+# include <crack.h>
+.PP
+main ( argc, argv )
+.br
+.RS 2
+int argc ;
+.br
+char **argv ;
+.RE
+{
+.RS 2
+int c, i ;
+.PP
+while ( c = crack ( argc, argv, "x|a|bc", 0 ) )
+.RS 2
+switch ( c )
+.br
+{
+.RS 2
+case 'x' :
+.RS 2
+printf ( "Flag 'x' value =  '%f'\\n", sfexpr(arg_option,1.0) ) ;
+.RS 2
+.br
+break ;
+.RE
+case 'a' :
+.RS 2
+printf ( "Flag 'a' option '%s'\\n", arg_option ) ;
+.br
+break ;
+.RE
+case 'b' :
+.RS 2
+printf ( "Flag 'b'\\n" ) ;
+.br
+break ;
+.RE
+case 'c' :
+.RS 2
+printf ( "Flag 'c'\\n" ) ;
+.br
+break ;
+.RE
+default :
+.RS 2
+break
+.RE
+.RE
+}
+.RE
+.PP
+for ( i = arg_index ; i < argc ; i++ )
+.RS 2
+printf ( "argv[%d] = %s\\n", i, argv[i] ) ;
+.RE
+.RE
+}
+.RE
+.RE
+.RE
+.PP
+When given this evocative command line:
+.RS .5i
+% cracktest \-x\(mi6dB \-apizza \-h \-bc pomidoro formaggio
+.RE
+.PP
+will respond:
+.RS .5i
+.nf
+Flag 'x' value = .501187
+Flag 'a' option pizza
+cracktest: no such flag: h
+Flag 'b' 
+Flag 'c' 
+
+Argument  5 = pomidoro
+Argument  6 = formaggio
+
+.SH FILES
+libbicsf/crack.c.  
+The location of include files 
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+.SH SEE ALSO
+argscan(3).
+.SH BUGS
+When ignoring unknown flags, if an unknown flag has an option
+associated with it, the option is also ignored.  Care should be excercised
+here because it may be possible that the associated "option" is really
+more concatenated flags.  These, if any, are lost.  The rule is that,
+when ignoring unknown flags, the first instance of an unknown flag
+causes that flag and the rest of that argument to be discarded.  For
+instance, if flags is set to "a|b|cd", and a command line:
+"-zcda" is supplied, c d and a would be ignored because they come
+after z in the same argument.  The point is there is no way to disambiguate
+flags from unknown options when ignoring flags, so concatenating options,
+while nice, is problematical.
+.SH AUTHOR
+Gareth Loy (CARL)

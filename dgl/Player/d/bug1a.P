@@ -1,0 +1,31 @@
+/* fixed */
+/* erreur page 19 tutorial, draft	*/
+
+Player pp()
+{
+	P6 = 0 ;	
+	P2 = Abs_time() ;
+	P4 = 1. ;
+	Wait_until(P2 + P4) ;
+}
+
+typedef Player * Pptr ; /* POUR CORRIGER	*/
+
+Player p(0)
+{
+	Instance Player *np;	 /* <-------NE COMPILE PAS	*/
+	Instance Pptr Np;	 /* <-------COMPILE */
+	register i ;
+	int parts ;
+
+	if ( Argc > 1 ) parts = atoi (Argv [1]) ;
+	else Pexit(1) ;
+
+	for ( i = 0 ; i < parts ; i++) {
+		printf(" je definis %d\n",i) ;
+		np = New_player ( pp, 0.0 , 5.0, P_READY) ;
+		Set_p ( np, 5, (double)i) ;
+	}
+	Kill (Self) ;
+}
+

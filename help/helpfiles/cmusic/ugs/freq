@@ -1,0 +1,9 @@
+freq - general purpose truncating oscillator with unity amplitude
+
+freq output[b] increment[bvpn] table[fvpn] sum[dpv] ;
+
+A truncating, table lookup oscillator.  Dynamic variables are
+recommended for sum locations. Table may be either explicit, or number
+may be given.  If number is n, then function floor(n) is used.  
+NOTE: This unit generator is equivalent to (but faster than) an osc with
+amplitude = 1.

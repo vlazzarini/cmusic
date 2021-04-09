@@ -1,0 +1,18 @@
+map - linear mapping unit generator
+
+map  output[b] in[bvpn] imin[bvpn] imax[bvpn] omin[bvpn] omax[bvpn] clip[vpn] ;
+
+The input signal is considered to lie in the range [imin, imax].  The
+output signal has the same shape as the input mapped into the range
+[omin, omax].  The mapping rule is linear, meaning that if the input
+signal value lies p% of the way from imin to imax, then the
+corresponding output will lie p% of the way from omin to omax according to
+the relation
+
+                                             (in-imin)
+                output = omin + (omax-omin)* ---------
+                                            (imax-imin)
+
+If clip is nonzero, then input signal values are first clipped to the input 
+range--if clip is zero, no such clipping is done (note that clip must be a 
+constant).

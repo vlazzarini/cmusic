@@ -1,0 +1,38 @@
+fltfiles - format for digital filter files (as well as being one)
+
+# This is a filter file. It specifies the order and coefficients of
+# an order 4 IIR filter. 
+#
+# Note that `#' means that the rest of the line is a comment.
+# The very first non-comment word in a filter file must be `filter'.
+# All other parameters may be omitted to obtain their default values.
+# In all commands, case is not important. 
+#
+# Here is a complete filter specification:
+#
+
+Filter;		# Mandatory first word 
+NICoeffs = 4;	# Number of Input Coefficients (default = 1)
+NOCoeffs = 2;	# Number of OutputCcoefficients (default = 1)
+ICoeffs =  	# Input coefficients. Note that newlines are ignored.
+  .917123407e-01  .332813461e+00  .454923451e+00  .332813561e+00
+;		# Actually semicolons are not required nor are the = signs.
+Type = TDL;	# Tapped Delay Line filters are the only type at present.
+OCoeffs = 1.0  -0.9; 	# The first Output Coefficient must ALWAYS be 1.
+
+# This concludes the general example of a filter file.
+# Actually, when rolling our own by hand, we would be more likely to say simply:
+ 
+# filter;  ni 4 no 2
+# ic .917123407e-01  .332813461e+00  .454923451e+00  .332813561e+00
+# oc 1 -.9
+# But of course without the preceding `#' signs.
+ 
+# In general, commands (such as IC) are terminated by any character
+# other than the alphabet, and values (such as 5) are terminated by anything
+# other than the alphabet or numbers 0 through 9 or "+-." .
+# Commands may be abbreviated as long as they are unambigous. 
+ 
+# The subroutine which reads this filter file is called `getflt'.
+# An example of a main program
+# which calls getflt and actually uses the filter is filter.c .

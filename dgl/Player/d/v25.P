@@ -1,0 +1,42 @@
+/*
+ * In all examples so far, with the exception of rests, each note of a voice
+ * followed exactly on the completion of the previous one.  It is often
+ * desirable to have overlaps for legato, or "underlaps" for staccato, without
+ * affecting the basic pulse.  
+ * In voice blah, an overlap duration is calculated as a fraction of the
+ * total duration.  Each note lasts .01 times longer than the begin time
+ * of the next note, causing an overlap which varies with the size of the
+ * duration.  This is generally not as useful as having a constant overlap,
+ * which is provided in voice blot.  Staccato is provided in voice blonk.
+ */
+
+
+Player blah(0)
+{
+	double dur, overlap = .01;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Stop");
+	P4 = dur + dur * overlap;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player blot(0)
+{
+	double dur, overlap = .05;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Stop");
+	P4 = dur + overlap;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player blonk(0)
+{
+	double dur, underlap = .5;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8 Stop");
+	P4 = dur * underlap;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

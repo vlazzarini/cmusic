@@ -1,0 +1,17 @@
+impulse - generates an impulse signal
+
+DESCRIPTION:
+impulse is simple command for generating a digital impulse signal:
+
+	impulse 100
+    
+will generate a floating 1.0 followed by 99 0.0's at its standard output.
+These will appear in ASCII if the standard output is connected to a
+terminal, otherwise they will be binary.  
+
+The following example would generate the impulse response of a filter
+called test.flt, designed by the fir program (cf "help fir"), and store
+it on file imp.resp, which could be plotted on the VT55 terminal with
+plotf:
+
+    impulse 1000 | filter test.flt > imp.resp

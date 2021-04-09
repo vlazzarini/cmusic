@@ -1,0 +1,31 @@
+typedef Player * Pptr;
+Pptr n;
+
+Player note(500)
+{
+	register int now = Now;
+
+	P_start {
+		P1 = 100;
+		n = Self;
+	}
+
+	fprintf(1, "note %d\n", P1);
+	Wait_until(now + 1000);
+}
+
+Player stuff(1000)
+{
+	register int	now = Now;
+
+	P_start {
+		P1 = 33;
+		if (Set_p(n, 1, 333L) != 0) {
+			fprintf(1, "Set_p error\n");
+			Print_stat("stuff");
+		}
+	}
+
+	fprintf(1, "stuff %d\n", P1);
+	Wait_until(now + 1000);
+}

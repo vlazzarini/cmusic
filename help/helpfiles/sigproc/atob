@@ -1,0 +1,8 @@
+atob - convert ASCII encoded float to binary float
+
+DESCRIPTION:
+atob converts ASCII to BINARY. It reads numbers encoded in ascii
+on the standard input and writes floating-point on the standard
+output.
+
+SEE ALSO: btoa

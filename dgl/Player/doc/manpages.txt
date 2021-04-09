@@ -1,0 +1,1848 @@
+
+
+
+PLAYER(1carl)     UNKNOWN SECTION OF THE MANUAL     PLAYER(1carl)
+
+
+
+NAME
+     Player - Player language compiler
+
+SYNOPSIS
+     Player [ -P ] [ -c ] [ -L ] [ -o _o_u_t_p_u_t ] [ -g ] [ -v ] [ -r
+     ] [ -i ] [ -l ] [ -h ] _f_i_l_e_n_a_m_e ...
+
+     -P   run Player preprocessor only
+     -c   run preprocessor and C compiler only
+     -L   run preprocessor, C compiler and nm, do not run ld
+     -oX  name the output file X (default: a.out)
+     -g   load symbol table (-go: load old symbol table format.)
+     -v   print actions on stderr
+     -r   do not remove temporary C files: tmPlayer.[co]
+     -i   compile integer-only Player programs
+     -lX  load library X.
+     -h   print this message
+
+
+DESCRIPTION
+     _P_l_a_y_e_r is the compiler which translates programs written  in
+     the   Player   programming  language  into  executable  load
+     modules, or into relocatable binary programs for  subsequent
+     loading  with  the  _l_d  (1)  linker.   It can compile Player
+     source programs,  C  language  programs,  assembly  language
+     programs,  and  load  the relocatable code together with any
+     named object modules and libraries into an  executable  pro-
+     gram.
+
+     In addition to the  many  options,  _P_l_a_y_e_r  accepts  several
+     types  of files.  Files whose names end with ._P are taken to
+     be Player source programs;  they  are  translated  into  the
+     equivalent  C source program, then passed to the C compiler,
+     _c_c (1) for compilation.  Each resulting C source program  is
+     left  in  the  current  directory, with the same name as the
+     source file, except that the ._P suffix is  replaced  by  ._c.
+     Files  whose names end with ._c are taken to be C source pro-
+     grams; they are passed to the C compiler, and each resulting
+     object  program  is  left in the current directory, with the
+     same name as the source file, except that the ._c  suffix  is
+     replaced  by ._o. In the same way, files whose names end with
+     ._s are taken to be assembly source programs and  are  assem-
+     bled, producing a ._o file.
+
+     Other arguments are taken to be  Player  preprocessor  argu-
+     ments,   loader   option   arguments,  object  programs,  or
+     libraries of object programs. These programs and  libraries,
+     together  with the results of any compilations or assemblies
+     specified, are loaded (in the order  given)  to  produce  an
+     executable  program named _a._o_u_t. The name _a._o_u_t can be over-
+     ridden with the loader's -o _n_a_m_e option.  If a single Player
+     program is compiled and loaded all at once, the intermediate
+
+
+
+Sun Release 2.0         Last change: CARL                      55
+
+
+
+
+
+
+PLAYER(1carl)     UNKNOWN SECTION OF THE MANUAL     PLAYER(1carl)
+
+
+
+     ._c and ._o file is deleted.
+
+     The actions of the compiler on a source program can be  bro-
+     ken into several phases as follows.
+
+          1)   Player source programs are passed  through  the  C
+               preprocessor.
+
+          2)   The  output  is  piped  through  a  program  which
+               translates  Player  constructs  into  equivalent C
+               language constructs, and passes  C  language  con-
+               structs  untouched.   This  program, named _P_l_a_y_e_r_y
+               (1carl), was written in _y_a_c_c (1)
+
+          3)   _P_l_a_y_e_r_y produces additional  code  which  will  be
+               used  to  generate  instance  data  storage from a
+               class template at  run-time.   Also,  an  #include
+               statement  is put at the top to include the Player
+               header file (see FILES below) when the  translated
+               program is compiled with the C compiler.
+
+          4)   The resulting C program is  compiled  with  the  C
+               compiler,  again going through the C preprocessor.
+               Any other C or assembly programs named on the com-
+               mand line are also compiled or assembled.
+
+          5)   The symbol table  of  all  object  programs  being
+               linked  is  searched  with _n_m (1) for Player class
+               and  instance  declarations.   A  temporary   code
+               module  named  _t_m_P_l_a_y_e_r._c  is generated which will
+               dynamically  link  the  Players  declared  in  the
+               object programs to the run-time symbol table. This
+               module is then compiled.
+
+          6)   All object modules are  loaded  along  with  three
+               libraries,  one  of which contains the Player run-
+               time environment (including a simple  main()  sub-
+               routine if none is supplied by the user).  The two
+               other libraries  routinely  loaded  are  _l_i_b_c_a_r_l._a
+               (3CARL) and
+
+               (_3), the standard math library.  If the -g or  -go
+               flags  are specified, the loader is also given the
+               -lg flag to  load  the  symbol  table.   _L_i_b_c_a_r_l._a
+               (3CARL),  is  documented elsewhere.  It contains a
+               multitude of routines for handling _f_l_o_a_t_s_a_m files,
+               expression  evaluation, stochastic functions, sig-
+               nal processing routines, etc.
+
+          7)   The temporary code modules, _t_m_P_l_a_y_e_r.[_c_o] from (5)
+               are  deleted.  If  only  one Player source file is
+               being compiled, its ._c and ._o files  are  deleted.
+
+
+
+Sun Release 2.0         Last change: CARL                      56
+
+
+
+
+
+
+PLAYER(1carl)     UNKNOWN SECTION OF THE MANUAL     PLAYER(1carl)
+
+
+
+               The  result  is usually an a.out file made execut-
+               able by the loader if there were no errors.
+
+FLAGS
+     Some of the steps above may be skipped.   Supplying  the  -P
+     flag  does  only  steps (1), (2) and (3) above.  The -c flag
+     does steps (1) through (4).  The  -L  flag  does  steps  (1)
+     through  (6).   The  -r flag suppresses the deletion of tem-
+     porary files.  The -v flag prints the actions of  _P_l_a_y_e_r  on
+     the  _s_t_d_e_r_r.   The  -i  flag  expects to compile and load an
+     integer-only Player program.
+
+FILES
+     libplayer.a
+          contains runtime subroutines.
+
+     libcarl.a
+          miscellaneous runtime subroutines.
+
+     tmPlayer.[co]
+          is generated to initialize  the  run-time  environment.
+          Ordinarily   deleted   at  the  end  of  the  compiling
+          sequence, the -r flag leaves it.
+
+     Playery
+          Player program translator.
+
+     <carl/Player.h>
+          contains macros, structures and externs.
+
+SEE ALSO
+     _P_l_a_y_e_r - _E_x_t_e_n_s_i_o_n_s _t_o _t_h_e _C _P_r_o_g_r_a_m_m_i_n_g _L_a_n_g_u_a_g_e _f_o_r _P_a_r_a_l_-
+     _l_e_l  _P_r_o_c_e_s_s_i_n_g _R_u_n-_t_i_m_e _M_u_s_i_c _S_y_n_t_h_e_s_i_s _C_o_n_t_r_o_l,  by Gareth
+     Loy, CARL Technical Memorandum.
+
+AUTHOR
+     Gareth Loy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                      57
+
+
+
+
+
+
+PLAYER(1carl)     UNKNOWN SECTION OF THE MANUAL     PLAYER(1carl)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                      58
+
+
+
+
+
+
+
+
+
+PLAYERY(1)                USER COMMANDS                PLAYERY(1)
+
+
+
+NAME
+     Playery - the Player language preprocessor
+
+SYNOPSIS
+     Playery [ -i ] < _P_l_a_y_e_r-_p_r_o_g_r_a_m > _C-_p_r_o_g_r_a_m
+
+DESCRIPTION
+     _P_l_a_y_e_r_y is the Player language preprocessor which is invoked
+     as the first pass of any Player compilation using the _P_l_a_y_e_r
+     (1CARL) command.  The input to _P_l_a_y_e_r_y is presumed to  be  a
+     Player  program,  and/or  a  program  written in C.  _P_l_a_y_e_r_y
+     translates the Player program into an equivalent  C  program
+     which,  when  compiled  and loaded with the appropriate run-
+     time environment, will behave according to the  Player  pro-
+     gram execution paradigm.
+
+OPTIONS
+     -i   Produce an output program designed to  be  used  on  an
+          integer-arithmetic-only processor.
+
+FILES
+     /_u_s_r/_i_n_c_l_u_d_e/_c_a_r_l/_P_l_a_y_e_r._h
+                    The program produced by Playery will have  an
+                    ``include''  statement  for  this file as its
+                    first line.
+
+SEE ALSO
+     Player(1CARL), cc(1), cpp(1).
+
+DIAGNOSTICS
+     The error messages produced by _P_l_a_y_e_r_y are  intended  to  be
+     self-explanatory.   The line number where the error occurred
+     is printed along with the diagnostic.
+
+BUGS
+     Line numbers accompanying diagnostics are generally  not  to
+     be trusted.
+
+     _P_l_a_y_e_r_y accepts newlines in string constants.
+
+     The _I_n_s_t_a_n_c_e storage class of _P_l_a_y_e_r_y only  accepts  single-
+     word  type  specifiers.   Use _t_y_p_e_d_e_f to get multi-word type
+     specifiers and structure declarations into _I_n_s_t_a_n_c_e data.
+
+     _P_l_a_y_e_r_y does not distinguish between
+               Player beep();
+     and
+               Player beep() {}
+
+AUTHOR
+     Gareth Loy
+
+
+
+
+Sun Release 2.0   Last change: 26 November 1985                 1
+
+
+
+
+
+
+PLAYERY(1)                USER COMMANDS                PLAYERY(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0   Last change: 26 November 1985                 2
+
+
+
+
+
+
+
+
+
+Abs_time(3)                SUBROUTINES                Abs_time(3)
+
+
+
+NAME
+     Abs_time,   Beg_time,    Dur_time,    End_time,    Rel_time,
+     Set_beg_time,  Set_dur_time,  Tempo  -  Player time status &
+     control
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+     P_TYPE Abs_time ()
+
+     Return absolute current time in global variable Now.  Note,
+     it's quicker just to get the value of Now directly.  This
+     routine is useful where one wants to guarantee that Now is
+     only being referenced by user code.  P_TYPE is defined as
+     double on machines with floating point, otherwise it is
+     long.
+
+
+     P_TYPE Beg_time (x)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+
+     Return begin time of Player instance
+
+     Sets Player_stat to P_NULL_PTR if x == NULL, and returns 0.
+
+     P_TYPE is defined as double on machines with floating point,
+     otherwise it is a long.
+
+
+     P_TYPE Dur_time (x)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+
+     Return duration of Player instance
+
+     Sets Player_stat to P_NULL_PTR if passed a null pointer, and
+     returns 0.
+
+     Note, P_TYPE is defined as double on machines with floating
+     point, otherwise it is long.
+
+
+     P_TYPE End_time (x)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+
+     Return end time of Player.
+
+     Sets Player_stat to P_NULL_PTR if x == NULL and returns 0.
+     P_TYPE is defined as double on machines with floating point,
+     otherwise it is long.
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+Abs_time(3)                SUBROUTINES                Abs_time(3)
+
+
+
+     P_TYPE Rel_time (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _p_o_i_n_t_e_r */
+
+     Return relative elapsed time of Player instance
+
+     Returns elapsed time, taking the begin time of the player as
+     0, and a duration expressed as a fraction in the [0,1-_e_p_s_i_-
+     _l_o_n] interval.
+
+     Sets Player_stat to P_NULL_PTR if no Player instance data.
+
+     As the Player calling Rel_time progresses from its stated
+     begin time to its end time, the value returned by Rel_time
+     will go from [0 to 1-_e_p_s_i_l_o_n].  If the Player has its dura-
+     tion disabled (by supplying Forever _a_s _a _d_u_r_a_t_i_o_n _v_a_l_u_e, _o_r
+     _b_y _n_o_t _h_a_v_i_n_g _s_p_e_c_i_f_i_e_d _a _d_u_r_a_t_i_o_n _a_s _a_n _i_m_p_l_i_c_i_t _a_r_g_u_m_e_n_t),
+     _t_h_e _l_a_r_g_e_s_t _p_o_s_i_t_i_v_e _v_a_l_u_e _i_s _s_u_b_s_t_i_t_u_t_e_d.  _P__T_Y_P_E is
+     defined as double on machines with floating point, otherwise
+     it is long.
+
+
+     void Set_beg_time (x, beg)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+          register P_TYPE beg;          /* _b_e_g_i_n _t_i_m_e _t_o _s_e_t */
+
+     Set begin time of Player
+
+     Sets Player_stat to P_NULL_PTR if no Player instance data.
+     P_TYPE is defined as double on machines with floating point,
+     otherwise it is long.
+
+
+     Set_dur_time (x, dur)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+          register P_TYPE dur;          /* _d_u_r_a_t_i_o_n */
+
+     Set duration of Player.
+
+     Sets Player_stat to P_NULL_PTR if no Player instance data.
+
+     P_TYPE is defined as double on machines with floating point,
+     otherwise it is long.
+
+
+     double Tempo (tempofun, abstart, absdur, limit)
+          register Function *tempofun;       /* _f_u_n_c_t_i_o_n _o_f _t_i_m_e, monotonic in x */
+          register double *abstart;          /* _u_n-_t_e_m_p_o-_f_a_c_t_o_r_e_d _s_t_a_r_t _t_i_m_e */
+          register double     absdur;             /* _u_n-_t_e_m_p_o-_f_a_c_t_o_r_e_d _d_u_r_a_t_i_o_n */
+          register double     limit;              /* _l_i_m_i_t _o_f _d_i_f_f_e_r_e_n_t_i_a_l */
+
+     Compute tempo by integrating a function of time.
+
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+Abs_time(3)                SUBROUTINES                Abs_time(3)
+
+
+
+     Returns tempo-factored time.
+
+
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       3
+
+
+
+
+
+
+Abs_time(3)                SUBROUTINES                Abs_time(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       4
+
+
+
+
+
+
+
+
+
+Func(3)                    SUBROUTINES                    Func(3)
+
+
+
+NAME
+     Func, Func_length, Gen, Read_func, Rel_func - Player Func-
+     tion routines
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+     double Func (f, x)
+          register Function *f;         /* _F_u_n_c_t_i_o_n _t_o _b_e _i_n_d_e_x_e_d */
+          register double x;       /* _f_l_o_a_t_i_n_g-_p_o_i_n_t _i_n_d_e_x */
+
+     Return the y-value for the value on the Function at x.
+
+     Returns value of function at that index.  If x has a frac-
+     tional part, linear interpolation is used to find the value.
+     Works for both H_MONO_IN_X and H_XY_PAIRS.
+
+
+     long Func_length (f)
+          register Function *f;
+
+     Return the length of a Function.
+
+
+     Function *Gen (cmd)
+          register char *cmd;
+
+     Get Function from pipe.
+
+     Takes complete command string to pass to popen(2).  Typi-
+     cally used to synthesize functions with gen(1carl) commands.
+
+     Returns NULL on errors otherwise, the desired Function.
+
+     Name element of Function structure will contain the command
+     that generated the Function.  Default type is H_MONO_IN_X.
+
+
+     Function *Read_func (name, type)
+          register char  *name,
+          *type;
+
+     Read named Function file.
+
+     type specifies method of interleaving: H_MONO_IN_X, or
+     H_XY_PAIRS, which stand for ``monotonic in x'', and ``x,y
+     pairs''.
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+Func(3)                    SUBROUTINES                    Func(3)
+
+
+
+     _N_o_t_e, must include <carl/defaults.h> to get these macros.
+
+     Creates and fills a Function structure with data in file,
+     interpreted according to header on the file being read, or
+     in the absence of a header, according to the type argument.
+
+     Returns Pointer to Function structure, NULL if not found, or
+     error.
+
+
+     double Rel_func (f, x)
+          register Function *f;         /* _F_u_n_c_t_i_o_n _t_o _i_n_d_e_x */
+          register double x;       /* _f_l_o_a_t_i_n_g-_p_o_i_n_t _i_n_d_e_x */
+
+     Index a Function by unit interval index.
+
+     Returns value of function at that index, or 0 on errors.
+
+     Sets Player_stat to P_NULL_PTR if f == NULL, and returns
+     0.0.
+
+     The function is taken as having a range of [0,1-_e_p_s_i_l_o_n].
+     Function value computed by linear interpolation as neces-
+     sary.  Indicies outside the [0,1) interval are truncated.
+
+
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+Func(3)                    SUBROUTINES                    Func(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       3
+
+
+
+
+
+
+
+
+
+P(3)                       SUBROUTINES                       P(3)
+
+
+
+NAME
+     P, Pp, Ps, Set_p, Set_pp, Set_ps, Setup_p, Setup_pp,
+     Setup_ps - Player P-field status, value & control
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+     P_TYPE P (vp, n)
+          register Player     *vp; /* pointer to Player instance data,
+          register int   n;        /* _P-_f_i_e_l_d _i_n_d_e_x */
+
+     Fetch P-field from a Player instance.
+
+     Returns value of P-field.
+
+     Sets Player_stat to P_NO_PARAM if no such P-field, and
+     returns 0.  Sets Player_stat to P_NULL_PTR if no such
+     Player, and returns 0.
+
+     char * Pp (vp, n)
+          register Player *vp;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _d_a_t_a */
+          register int n;               /* _P_p _f_i_e_l_d _i_n_d_e_x */
+
+     Fetch Pp-field from a Player instance.
+
+     Returns value of Pp-field.
+
+     Sets Player_stat to P_NO_PARAM if no such Pp-field, to
+     P_NULL_PTR if no Player instance data, and returns NULL.
+
+
+     char * Ps (vp, n)
+          register Player     *vp;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _d_a_t_a */
+          register int   n;        /* _i_n_d_e_x */
+
+     Fetch Ps field from a Player instance
+
+     Returns value of Ps-field.
+
+     Sets Player_stat to P_NO_PARAM if no such Ps-field, to
+     P_NULL_PTR if no Player instance data, and returns NULL.
+
+
+     Set_p (vp, n, val)
+          register Player *vp;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _d_a_t_a */
+          register int n;               /* _P _f_i_e_l_d _i_n_d_e_x */
+          register P_TYPE val;          /* _v_a_l_u_e */
+
+     Set P-field in a Player instance.
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+P(3)                       SUBROUTINES                       P(3)
+
+
+
+     Returns 0 on success, -1 on error.  Sets Player_stat to
+     P_NO_PARAM if no such P-field, to P_NULL_PTR if no such
+     Player, and returns -1.
+
+
+     Set_pp (vp, n, val)
+          register Player *vp;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _d_a_t_a */
+          register int n;               /* _i_n_d_e_x */
+          register char *val;      /* _v_a_l_u_e */
+
+     Set Pp-field in a Player instance.
+
+     Returns 0 on success, -1 otherwise.
+
+     Sets Player_stat to P_NO_PARAM if no such Pp-field, to
+     P_NULL_PTR if no Player instance data, and returns -1.
+
+
+     Set_ps (vp, n, val)
+          register Player *vp;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _d_a_t_a */
+          register int n;               /* _i_n_d_e_x */
+          register char *val;      /* _v_a_l_u_e */
+
+     Set Ps field in a Player instance.
+
+     Returns 0 on success, -1 on error.
+
+     Sets Player_stat to P_NO_PARAM if no such Ps-field, to
+     P_NULL_PTR if no Player instance data, and returns -1.
+
+
+     Setup_p (x, plen)
+          Player *x;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+          int plen;      /* _l_e_n_g_t_h _o_f _P _a_r_r_a_y */
+
+     Allocate memory for Player instance P fields.
+
+     Returns 0 on success, -1 if P-array already allocated.
+
+
+     Setup_pp (x, plen)
+          Player *x;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+          int plen;      /* _l_e_n_g_t_h _o_f _P_p _a_r_r_a_y */
+
+     Allocate memory for Player instance Pp fields.
+
+     Returns 0 on success, -1 if array already allocated.
+
+
+     Setup_ps (x, plen)
+          Player *x;          /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+          int plen;      /* _l_e_n_g_t_h _o_f _P_s _a_r_r_a_y */
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+P(3)                       SUBROUTINES                       P(3)
+
+
+
+     Allocate memory for Player instance Ps array.
+
+     Returns 0 on success, -1 if array already allocated.
+
+
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       3
+
+
+
+
+
+
+P(3)                       SUBROUTINES                       P(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       4
+
+
+
+
+
+
+
+
+
+Pitches(3)                 SUBROUTINES                 Pitches(3)
+
+
+
+NAME
+     Pitches, Keys, Rhythms, Oct_pts, Exprs, Strings, Index,
+     Pitch, Key, Rhythm, Oct_pt, Expr, Octave, Scale, Direction,
+     Get_list, Get_metronome, Get_keysig, Get_timesig, Motive,
+     Peekcl, Read_list, Read_lists - Player cyclic list routines
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+Pitches(3)                 SUBROUTINES                 Pitches(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+NAME
+     Pmain, Pexit, Alias, Caller, Hipn, Player_status,
+     Print_stat, Instances, Psleep, Rest, Resting, Silent, Start,
+     Stop, Unrest, Unsilent - Player general status & control
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+     void Pmain (ac, av)
+          int  ac;
+          char **av;
+
+     Invoke Player environment.
+
+     Takes command line arguments from user's main().
+
+     Side effects: Copies its arguments from the shell to global
+     variables argc, and argv.  Examines flags on command line.
+     Cueues Players (installs Player class templates, instan-
+     tiates all static Players).  In timesharing version, if
+     stdin is a file or pipe, instantiates a builtin Player,
+     read_stdin, to read input for cmusic note list style input.
+     In timesharing version, instantiates builtin Player
+     poll_waits.  Runs startup user subroutine M_start().  Runs
+     the scheduler, and when it returns, runs the shutdown user
+     subroutine M_ter(), and returns.
+
+
+     Pexit (x)
+
+     The proper way to exit a Player program.
+
+     Takes a status to exit with.  For timesharing version, this
+     just calls exit(2).  For realtime version, it does some
+     extra housecleaning.
+
+
+     Alias (cp, name)
+          register Player     (*cp) ();      /* _a_d_d_r_e_s_s _o_f _t_h_e _P_l_a_y_e_r _s_u_b_r_o_u_t_i_n_e */
+          char      *name;              /* _t_h_e _n_a_m_e _t_o _a_d_d _a_s _a_l_i_a_s. */
+
+     Add alternate name by which Player class is to be known.
+
+     The symbol table is augmented to contain a pointer to this
+     class of Player for this name.  Exits on failure.
+
+     This routine is useful when reading cmusic-style note lists
+     to drive Players where more than one instrument name is to
+     be mapped to the same Player.  The Player instantiated in
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+     response to an aliased note statement name will retain the
+     unaliased class name.  The aliased name will appear in Pi3,
+     which can be assigned to Ps3 to effect the printing of the
+     aliased name for cmusic output formatting, if needed.
+
+     Player * Caller (x)
+          Player *x;          /* _p_o_i_n_t_e_r _t_o _i_n_s_t_a_n_c_e _d_a_t_a. */
+
+     Get pointer to instance data of parent
+
+     Returns pointer to parent's instance data, else NULL if no
+     parent.
+
+     Side effects: Sets P_NULL_PTR in Player_stat and returns
+     NULL if x is a null pointer.
+
+
+     Hipn (x, n)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _p_o_i_n_t_e_r */
+          register int   n;        /* _i_n_d_e_x _o_f _n_e_w _h_i_g_h_e_s_t _p_a_r_a_m_e_t_e_r */
+
+     Set highest referenceable parameter in Player instance
+
+     Returns previous value, or -1 if n is greater than previous
+     value.
+
+     Sets Player_stat to P_NULL_PTR if x == NULL, and returns -1.
+
+     This is used to reduce the highest addressable P, Ps, or Pp,
+     field that will be printed when producing cmusic note-list
+     output.  Also, Set_P(), etc., may no longer address them.
+     P-fields above this index continue to be accessable to the
+     Player instance for which they are local.
+
+     Does not free any memory.  If n < 0, just return current
+     value.
+
+
+     Player_status (x)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e */
+
+     Return status of Player instance.
+
+     Returns status, as follows, P_READY, P_RUNNING, P_STOPPED,
+     P_KILLED.
+
+     Sets Player_stat to P_NULL_PTR if no such Player, and
+     returns P_NOSTAT.
+
+
+     Print_stat (fd, msg)
+          FILE *fd;      /* _f_i_l_e _d_e_s_c_r_i_p_t_o_r _f_o_r _o_u_t_p_u_t */
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+          char *msg;          /* _s_t_r_i_n_g _m_e_s_s_a_g_e _t_o _p_r_e_p_e_n_d _t_o _d_i_a_g_n_o_s_t_i_c _o_u_t_p_u_t */
+
+     Pretty-print bit-fields of Player_stat.
+
+     Player    * Instances (proc)
+          register Player (*proc) ();
+
+     Return list of instances for a Player class
+
+     Takes pointer to Player procedure.
+
+     Returns address of linked list of Player instances of this
+     class.
+
+     List can be traversed, e.g., to stop all instances of a
+     class:
+          Player    *p;
+
+          for (p = Instances(procname); p != NULL; p = Next_instance(p))
+               Stop(p);
+     Next_instance is a macro that returns the next instance on
+     the list.
+
+
+     Psleep (interval)
+          float interval;
+
+     Floating point sleep routine for 4.2BSD
+
+     Takes time in real seconds (including fractional time), pre-
+     cise down to microseconds, accurate only to system clock
+     rate.
+
+     Note, if interval == 0, the timer is disabled, and Psleep
+     hangs.
+
+
+     Rest (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Temporarily defeat Player cmusic output
+
+     Returns 0 on success, -1 on failure.
+
+     Sets Player_stat to P_NULL_PTR if no such Player.
+
+     Effect is to set a flag on instance data to cause cmusic
+     output routine to skip printing this time.  Cmusic output
+     routine clears flag.
+
+
+     Resting (x)
+
+
+
+Sun Release 2.0         Last change: CARL                       3
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Test and then clear Player rest status flag.
+
+     Returns old status.  Note this can be used to test the
+     effect of scanning a cyclic list to facilitate such things
+     as:
+               P5 = Pitches(str);
+               if (Resting(Self))
+                    P5 = 33;
+     cmusic output will not be blocked by rests, and P5 will be
+     printed with a value of 33.
+
+
+     Silent (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Permanently suppress cmusic output from this Player
+     instance.
+
+     Returns 0 on success, -1 on failure.
+
+     Sets Player_stat to P_NULL_PTR if no such Player, and
+     returns -1.
+
+
+     Start (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Make Player instance runnable immediately.
+
+     Returns previous instance status.
+
+     Sets Player instance running status to P_READY.  Sets Player
+     instance time to be run to value of Now.  Schedules Player
+     instance to run immediately.  If no such Player, sets
+     Player_stat to P_NULL_PTR and returns P_NOSTAT.
+
+
+     Stop (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Stop Player instance immediately.
+
+     Returns previous status.
+
+     Sets Player_stat to P_NULL_PTR if no such Player, and
+     returns P_NOSTAT.
+
+     The scheduler will delete any entries associated with a
+     stopped Player.  Thus, schedule entries made for this Player
+     via either Wait_until() or Wait_for() will be voided as they
+
+
+
+Sun Release 2.0         Last change: CARL                       4
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+     arise.
+
+
+     Unrest (x)
+          register Player *x;      /* _P_l_a_y_e_r _i_n_s_t_a_n_c_e _s_t_r_u_c_t_u_r_e _a_d_d_r_e_s_s */
+
+     Reenable cmusic output disabled by Rest().  Returns 0 on
+     success, -1 on failure.
+
+     Sets Player_stat to P_NULL_PTR if no such Player, and
+     returns -1.
+
+
+     Unsilent (x)
+          register Player *x; /* Player instance structure address.
+
+     Reenable cmusic output disabled by Silent().
+
+     Returns 0 on success, -1 on failure.
+
+     Sets Player_stat to P_NULL_PTR if no such Player, and
+     returns -1.
+
+
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       5
+
+
+
+
+
+
+Pmain(3)                   SUBROUTINES                   Pmain(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       6
+
+
+
+
+
+
+
+
+
+Wait_until(3)              SUBROUTINES              Wait_until(3)
+
+
+
+NAME
+     Wait_until, Wait_for, Unwait_for, Join, Kill, Kill_test,
+     New_player - Player scheduling routines
+
+SYNOPSIS
+     Player file.P
+     #include <carl/Player.h>
+
+
+DESCRIPTION
+     void Wait_until (time)
+          register P_TYPE time;
+
+     Schedule Player to run at a certain time
+
+     Takes:
+
+                       Self              picked up globally,
+
+                       time              in absolute seconds;
+                                         beginning at 0.
+
+     Note:             Backwards time references are updated to
+                       the current value of Now.
+
+     Diagnostics:      In timesharing version only: ``Wait_until:
+                       backwards time reference''.
+
+     void Wait_for (proc, status)
+          register int (*proc) ();
+          register int status;
+
+     Cause Player to wait for an event.
+
+     Takes:
+
+     Self picked up globally.
+
+     proc address of decision procedure.
+
+     status
+          one-shot or continuous:
+
+          ONCE              wait for event one time.
+
+          CONTINUOUS        wait for event continuously.
+
+     Returns:  void
+
+     Side effects:
+          (Timesharing version) If no waits in progress, start
+          builtin Player poll_waits.  Link to list of all
+
+
+
+Sun Release 2.0         Last change: CARL                       1
+
+
+
+
+
+
+Wait_until(3)              SUBROUTINES              Wait_until(3)
+
+
+
+          Wait_for elements.
+
+     Unwait_for (proc)
+          register int (*proc) ();
+
+     Cause Player to no longer wait for an event.
+
+     Takes:
+
+                       Self              picked up globally.
+
+                       proc              address of decision pro-
+                                         cedure.
+
+     Returns:          -1 if proc not found, otherwise 0 on suc-
+                       cess.
+
+     Side effects:     Removes proc from linked list of Wait_for
+                       elements.
+
+     Join (flag)
+          int flag;      /* _c_o_n_d_i_t_i_o_n _f_o_r _r_e_s_c_h_e_d_u_l_i_n_g */
+
+     Cause the current Player instance to be awakened when chil-
+     dren expire.
+
+     flag may be:
+
+          ALL_CHILDREN
+                    run only when all childern have been
+                    Kill()'ed.
+
+          EACH_CHILD
+                    run when each child is Kill()'ed.
+
+     Kill (x)
+          register Player *x;      /* _p_o_i_n_t_e_r _t_o _P_l_a_y_e_r _i_n_s_t_a_n_c_e */
+
+     Terminate a Player instance with extreme prejudice.
+
+     Takes pointer to Player instance to be killed.
+
+     Returns 0 on success, -1 on errors.
+
+     If a parent process is waiting to be notified of the termi-
+     nation of children, that parent is scheduled to run.  See
+     Join() for an explanation of conditions for this.  The
+     parent's status field, indicating the request to be run on
+     child termination, will be cleared if there are no more
+     children to wait on.
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       2
+
+
+
+
+
+
+Wait_until(3)              SUBROUTINES              Wait_until(3)
+
+
+
+     void Kill_test (predicate)
+          int predicate;
+
+
+     Set kill test predicate
+
+     Takes:
+
+     P_GT      Player will be terminated when it requests to be
+               run at time > begin_time + duration.
+
+     P_GE      Player will be terminated when it requests to be
+               run at time >= begin_time + duration.
+
+     Player * New_player (proc, beg, dur, stat)
+          register Player (*proc) ();        /* _a_d_d_r_e_s_s _o_f _P_l_a_y_e_r _p_r_o_c_e_d_u_r_e */
+          register P_TYPE beg, /* _b_e_g_i_n _t_i_m_e */
+          dur;           /* _d_u_r_a_t_i_o_n */
+          register int stat;            /* _r_u_n_n_i_n_g _s_t_a_t_u_s */
+
+     Instantiate new Player.
+
+     Running status of Player instance is typically P_READY or
+     P_STOPPED.
+
+     Returns address of new Player instance data structure.
+
+     Links instance to list of Player instances of this class.
+     Queues it to run at the stated begin time if status is
+     P_READY.
+
+     Diagnostics:
+               New_player: no class template for <Player>.
+               New_Player: backward time reference=<TIME> for
+               Player <PLAYER>.
+
+
+SEE ALSO
+DIAGNOSTICS
+BUGS
+AUTHOR
+     Gareth Loy, CARL sdcarl!dgl
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 2.0         Last change: CARL                       3
+
+
+

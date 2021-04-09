@@ -1,0 +1,5 @@
+neg - output the negative of the input signal
+
+neg output[b] input[bvpn] ;
+
+The output is equal to minus the input.

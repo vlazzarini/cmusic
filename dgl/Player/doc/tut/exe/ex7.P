@@ -1,0 +1,7 @@
+Player blat(0, 100)
+{
+	P4 = 1.0;
+	P5 = Rel_time(Self);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

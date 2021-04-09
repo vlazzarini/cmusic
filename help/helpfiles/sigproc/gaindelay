@@ -1,0 +1,12 @@
+gaindelay - simple inline program to scale and delay a digital signal
+
+DESCRIPTION:
+gaindelay  reads samples from stdin, scales them by the gain factor
+supplied as its first argument, delays them by the number of samples
+specified by its second argument, and writes the scaled, delayed values
+on stdout.  It is intended to be included in pipes with programs such
+as para, chan, sndin, cmusic, impulse, etc. The following example
+generates an impulse signal 54 samples long, consisting of 4 zero
+values, followed by .707, followed by 49 zero values:
+
+	impulse 50 | gaindelay -3dB 4

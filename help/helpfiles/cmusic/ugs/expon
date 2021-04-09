@@ -1,0 +1,8 @@
+expon - exponentiates a signal
+
+expon  output[b] in[bvpn] ;
+
+The output of the expon generator is equal to e (=2.71828...) raised
+to the power of the input, i.e.,
+
+                          output = exp( in )

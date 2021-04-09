@@ -1,0 +1,4 @@
+vln1not: as a a b c gs g3 Stop;
+vln1rhy: 4 8 8 12 12 12 1;
+vln1num: -6dB sin(.707) ln(2) 48K;
+vln1str: "f1" "amp" "skew";

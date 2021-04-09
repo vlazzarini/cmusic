@@ -1,0 +1,7 @@
+Fix description of ex18 to use malcpy to copy Pitch/Rhy strings.
+	# define malcpy(x)(char *)strcpy(malloc(strlen(x)+1), x)
+In example of Join(), make sure children are Kill()ed, not Stopped, and say why.
+Poutproc -> Print_notes
+The a-- jazz really ought to allow --a and a--, etc., and have the
+same meaning as C.
+Fix argc and argv to be Argc and Argv.

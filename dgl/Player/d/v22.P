@@ -1,0 +1,24 @@
+/*
+ * Labels may appear at the head of regular cyclic lists as well as in
+ * files of lists.  In the example below, the label motive1 is defined
+ * in the notes statement for P5.  It is referred to again in the
+ * notes statement for P6.  The construct <label_name> <colon> is used to
+ * define a motive.  The construct <at-sign> <label_name> is used to
+ * refer to an existing motive.  The entire motive, complete with repeats
+ * and possible references to other motives, is copied into the right
+ * place in the list being formed.  The expanded note sequence for P6 will be:
+ * a as a c cs d e d e f as a c cs d e d e f b end.
+ */
+
+Player bleep(0)
+{
+	P_start {
+		Pp5 = "Hz";
+		P4 = 1;
+	}
+
+	P5 = Pitches("motive1: a c cs {d e}x2 f");
+	P6 = Pitches("a {as @motive1}x2 b Stop");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

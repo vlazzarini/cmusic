@@ -1,0 +1,32 @@
+typedef Player * PP;
+
+PP Pqop;
+
+tester()
+{
+	if (P(Pqop, 2) > 20.0) 
+		return(True);
+	return(False);
+}
+
+Player blat(0,30)
+{
+	P_start {
+		Wait_for(tester, ONCE);
+		Stop(Self);
+		return(*Self);
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player qop(0,30)
+{
+	P_start {
+		Pqop = Self;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

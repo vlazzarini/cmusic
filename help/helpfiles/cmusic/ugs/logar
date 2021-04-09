@@ -1,0 +1,10 @@
+logar - logarithm of a signal
+
+logar  output[b] in[bvpn] ;
+
+The output of the logar generator is equal to the logarithm (to the
+natural logarithmic base e = 2.71828...) of the input.  
+
+                           output = ln( in )
+
+If the input is not greater than 0.0, chaos is guaranteed to result.

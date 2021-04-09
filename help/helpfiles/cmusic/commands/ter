@@ -1,0 +1,26 @@
+ter - the cmusic terminate command
+
+This command has the general form:
+
+    ter T;
+
+or just:
+
+    ter;
+
+If given with a time T which is greater than the ending time of any
+note, extra silence is generated up to time T.  If no time is given, or
+if T is less than the ending time of any current note, all notes are
+first finished.
+
+Example:
+    .
+    .
+    .
+    note 3 toot 4 ... 
+    note 4 honk 1 ...
+    sec;		{ends section at time 7}
+    note 0 toot 1 ...   {starts new section at time 7}
+    note 1 honk 2 ...   {sounds 8 seconds after beginning}
+    sec;
+    ter 2;		{generates 2 seconds of silence at the end}

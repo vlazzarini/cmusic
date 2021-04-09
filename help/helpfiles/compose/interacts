@@ -1,0 +1,53 @@
+interacts -interactive score writing program, using /usr/new/lib/insts/*
+
+This program interacts should take care any questions which usr might ask 
+ --by typing a question mark after the instruction. 
+
+To get list of instrument type "?" or <return> after the prompt sign. When you
+desided which instrument to use just simply give names, for example, 
+    Name of instruments : ins1 ins2 .. insN (can be more than one) <return>
+
+A few hint for note statements
+
+        Frequency :
+		   Any input which can be allowed in CMUSIC or
+		   A(N)  B(N) .. G(N)  etc. where N is octave ( A(0) =440Hz ).
+				An(0) A natural ( same as A(0) )
+				As(0) A sharp
+				Ab(0) A flat
+		   C0(N) C1(N) .. C19(N) are note scale in which octave are 
+					 divided into 20 intervals.
+	Amplitude :
+		   any input which can be allowed in CMUSIC or
+		   pppp ppp pp p mp mf f ff fff ffff
+                   -30dB  to -3dB  with interval of 3dB. 
+	Tempo setting : 
+		Tempo can be set at the bigining of a note. 
+		Type 't' when the program asked a attack time. 
+		MM 4.=50 gives 50 dotted quarter note in one minute.
+	Duration  :
+		Any positive floating number. 2.5 gives 2.5 second of sound.
+		If you have sellected tempo notation( by typing 't' at
+		attack time), You could use 1,2,4,.. for a whole note,
+		half note and etc. as well as dotted note and triplet. 
+		Type "?" for more detail.
+
+If equal sign appears in prompt, it means suggested value --anything 
+followed by "?" will become the value if <return> is typed after.
+If any other value is typed, it will over write the suggested value.
+For example,  Parameter?2.0  will give a value 2.0 by typing <return>.
+
+It is more than welcome for anyone to add some interesting instruments to the
+directory.
+
+Any suggestion or bug report are welcome.
+					 	masa
+
+A list of instruments available by this program is listed in 
+	/usr/new/lib/insts/MEMBER  
+MACRO used by this program is listed in 
+	/usr/new/lib/insts/MACRO/*
+
+If you want to quit this program type <del>.
+
+For more information read   /usr/new/lib/insts/README

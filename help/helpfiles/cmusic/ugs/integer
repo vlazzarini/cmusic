@@ -1,0 +1,5 @@
+integer - calculates integer part of a signal
+
+integer output[b] input[bvpn] ;
+
+The output is equal to the integer part of the input.

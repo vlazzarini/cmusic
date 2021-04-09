@@ -1,0 +1,39 @@
+nres - 2-pole, 2-zero filter with normalized, constant resonance gain
+
+nres output[b] input[bvpn] gain[bvpn] cf[bvpn] bw[bvpn] 
+    t1[dpv] t2[dpv] t3[dpv] t4[dpv] t5[dpv] 
+    t6[dpv] t7[dpv] t8[dpv] t9[dpv] t10[dpv] ;
+
+nres is a simple resonator which automatically adjusts its gain while
+bandwidth and center frequency change according to:
+
+   y[n] = gain*scale*(x[n] - r*x[n-2]) + c1*y[n-1] + c2*y[n-2]
+
+where:
+    gain is given in the unit generator statement as shown above,
+    cf (center frequency) is specified in units of Hz,
+    bw (bandwidth) is specified in units of Hz,
+    r = exp(-PI*bw/R), where R is the sampling rate in Hz,
+    scale = 1 - r
+    c1 = 2*r*cos(2*PI*cf/R)
+    c2 = -r*r
+A macro is defined in the <carl/cmusic.h> file for use with this filter:
+
+#define NRES(out,in,gain,cf,bw) nres out in gain cf bw d d d d d d d d d d
+
+which allows this resonator to be used as shown in the following example:
+
+    #include <carl/cmusic.h>
+    ins 0 test;
+    {sweep} 	osc  b2 1 p7 f2 d;
+    {carrier} 	osc  b1 p5 p6 f1 d;
+		NRES(b1,b1,1.,b2,15Hz);
+		out b1;
+    end;
+    SAWTOOTH(f1);
+    GEN4(f2) 0,400Hz 4 .5,1600Hz -4 1,400Hz; {define freq sweep}
+    note 0 test 4 0dB 200Hz p4sec; {sweep center freq over 4 seconds}
+    ter;
+
+Reference:  This filter is based on the Smith-Angell algorithm described in
+the CMJ v6n4, pp 36-40.

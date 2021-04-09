@@ -1,0 +1,36 @@
+typedef Player * Pptr;
+
+Pptr P_beep;
+
+Player blat()
+{
+	Instance int seq;
+
+	P2 = Now;
+	P4 = 5.0;
+
+	if (seq == 0) {
+		P5 = P(P_beep, 5) * 2.0;
+		Wait_until(P2 + P4);
+		seq++;
+	} else {
+		P5 = P5 * 2.0;
+		Wait_until(HUGE);	/* kills us */
+	}
+}
+
+Player beep(0, 1)
+{
+	Instance float dur;
+	Instance Pptr nv;
+
+	P_start {
+		P_beep = Self;
+	}
+
+	P2 = Now;
+	P4 = Rhythms("4");
+	P5 = Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	nv = New_player(blat, Now, P4+1, P_READY);
+	Wait_until(P2 + P4);
+}

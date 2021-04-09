@@ -1,0 +1,11 @@
+sah - sample and hold generator
+
+sah output[b] input[b] hold_time[bvpdn] temp1[vpnd] temp2[vpnd] ;
+
+This sample-and-hold unit generator looks at its input and holds it for
+hold_time samples.  For instance, for an input sequence x0, x1, x2, x3,
+etc., setting hold_time to 1.0 will cause it to output x0, x0, x2, x2,
+x4, x4, etc.  hold_time is the length of time to hold, in samples, and
+may be set to zero.  A negative hold_time is treated like a zero
+hold_time.  The "ms" postoperator may be used to specify the hold_time
+in milliseconds.

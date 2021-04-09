@@ -1,0 +1,21 @@
+# IIR filter
+#
+#To see its response, type:
+#	impulse 128 | filter filter_file | show
+#
+#To see its spectrum, type:
+#	impulse 1024 | filter filter_file | spect -f
+#
+#(where filter_file is this file)
+#
+filter;
+NIcoeffs = 1
+NOcoeffs = 17
+ICoeffs = 
+ 1.00
+OCoeffs = 
+ 1.0000000000e+00 
+ 2.4675080776e+00  -2.6970076561e+00 2.0101397038e+00  -1.4540417194e+00
+ 1.0659841299e+00  -3.7572208047e-01 -6.7717909813e-01 1.0483300686e+00 
+ -4.6653303504e-01 -2.3948097229e-01 3.5382187366e-01  -9.6672542393e-02
+ 2.4760498106e-01  -4.1116079688e-01 7.9532071948e-02  8.1988081336e-02 

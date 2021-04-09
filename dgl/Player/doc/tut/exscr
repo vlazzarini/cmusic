@@ -1,0 +1,20 @@
+num=1;
+while true
+do
+ed Player.tut <<!
+/\.NQ/
+?\.DS?
+.,/\.DE/ w ex/ex$num
+.,/\.DE/d
+.a
+.so ex/ex$num
+.
+w
+q
+!
+if test ! -s ex/ex$num
+then
+	exit
+fi
+num=`expr $num + 1`;
+done

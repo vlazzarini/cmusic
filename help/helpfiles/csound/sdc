@@ -1,0 +1,23 @@
+sdc - map of csound disk cylinder usage
+
+DESCRIPTION:
+
+Usage: sdc [/dev][/user]
+
+sdc prints a map of the csound disk cylinder usage on your
+terminal screen (i.e., on its standard output).  If no argument is
+given, your "home" csound disk is used, 
+and your own
+sound files are specially indicated.  The argument may be either a
+csound device (/snd or /snd1, currently), or a user name (preceded
+with a slash, according to csound program conventions), or both (concatenated
+together).
+
+Examples:
+
+% sdc			- lists user's own files on user's default device
+% sdc /snd 		- lists user's files on device /snd
+% sdc /rusty		- lists rusty's files on user's default device
+% sdc /snd1/dgl		- lists dgl's files on device /snd1
+
+FILES: ~frm/progs/sdc.c

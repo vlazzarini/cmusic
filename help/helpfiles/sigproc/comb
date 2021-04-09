@@ -1,0 +1,28 @@
+comb - comb filter for piped signals
+
+DESCRIPTION:
+A simple, monophonic comb filtering program which has gain g and delay d
+may be included in signal processing pipes as:
+	comb <g> <d>
+The gain must be less than 1.0, and the delay (in samples) must be less than
+100,000.  The time it takes for the tail of this (tape-loop-like) echo to
+die down by a factor of 60 dB is approximately
+
+	                      (60 * sampling rate)
+	T =                    ------------------   seconds
+	                         (d * 20*log(g) )
+    (logarithm to the base 10)
+
+The following signal processing pipe
+    sndin file1 | comb .7 2143 | sndout
+is equivalent to the flow diagram:
+                   ___         _____________________________
+                  /   \        |                           |
+  sndin | ----->-|  +  |----->-|    delay (2143 samples)   |---:--> | sndout
+ (file1)          \___/        |___________________________|   |      (test)
+                    |                                          |
+                    ^                  /|                      |
+                    |________________/  |______________________|
+                                     \  | (gain .7)
+				       \| 
+SEE ALSO: reverb

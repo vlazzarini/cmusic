@@ -1,0 +1,43 @@
+Player note()
+{
+	Instance int sequence; 
+	Instance int key, chan;
+	int vel, next;
+
+	chan = P5;
+	key = P6;
+	vel = P7;
+	fprintf(1, "%d\t%d\t%d\t%d\n", next, chan, key, vel);
+	next = Now + P4;
+	Wait_until(next);
+}
+
+typedef Player * Pptr;
+# define IHUGE 0x7fffffff
+
+
+Player track(0) 
+{
+	Pptr	v;
+	int	dur, chan, key, vel;
+
+	P_start {
+		dur = 1000;
+		chan = 0;
+		key = 60;
+		vel = 64;
+	}
+
+	fprintf(1, "calling New_player\n");
+	if ((v = New_player(note, (long)Now, (long)IHUGE, (int)P_READY)) == NULL) {
+		fprintf(0, "New_player failed\n");
+		exit(1);
+	}
+	fprintf(1, "calling Set_p\n");
+	Set_p(v, 4, dur);
+	Set_p(v, 5, chan);
+	Set_p(v, 6, key);
+	Set_p(v, 7, vel);
+	fprintf(1, "calling Join\n");
+	Join(ALL_CHILDREN);
+}

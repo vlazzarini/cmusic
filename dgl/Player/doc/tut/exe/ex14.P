@@ -1,0 +1,19 @@
+M_start() {
+	int i;
+	printf("set 0 srate = 33.3K;\n");
+	for (i = 0; i < 12; i++)
+		Scale[i] /= 2.0;
+}
+
+M_ter() {
+	printf("ter;\n");
+}
+
+Player blat(0, 5)
+{
+	P_start {
+		P4 = 1;
+	}
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

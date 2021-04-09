@@ -1,0 +1,37 @@
+zdelay - interpolating dynamic signal delay
+
+zdelay output[b] input[bvpn] maxtime[vpn] table[vpnd] tlength[vpnd] pos[vpnd] 
+	[ gain[bvpn] delay[bvpn] ]*;
+
+zdelay output is equal to its input delayed by delay seconds and scaled
+by gain.  An arbitrary number of gain/delay taps may be given - the
+output is the sum of all tap outputs.  (It is therefore an arbitrary
+FIR (i.e., tapped delay-line) filter with continuously adjustable
+taps.) Since the amount of delay is continuously and dynamically
+variable, zdelay is useful for effects such as pitch shifting,
+flanging, etc.  The maximum allowable delay is set by the user in
+maxtime (also given in seconds).  It is an error for any delay time to
+exceed the value given in maxtime for any given note (negative delays
+are also illegal).  The table, tlength, and pos arguments are typically
+dynamic variables.  Note that while the gain and delay values may be
+dynamic signals or constants (b, v, p, or n), maxtime MUST be a
+constant (v, p, or n).
+
+Simple score example:
+    #include <carl/cmusic.h>
+    set stereo;
+
+    ins 0 one;
+    {env}	seg  b1 p5 f2 d 0;
+    {carrier} 	osc  b2 1 p6 f1 d;
+		    { out in maxtime table tlength pos gain delay *; }
+		    {       (seconds)                      (seconds) }
+		zdelay b1 b2    1      d     d      d   .5   .25;
+		out  b1 b2;
+    end;
+
+    SINE(f1);
+    ENV(f2);
+
+    note 0 one 1 0dB 1Hz;
+    ter;

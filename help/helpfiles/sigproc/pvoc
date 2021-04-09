@@ -1,0 +1,415 @@
+pvoc - phase vocoder
+
+DESCRIPTION
+
+	pvoc [-flags] < floatsams > floatsams
+
+	pvoc is the program which actually implements the phase vocoder.  
+The phase vocoder is a signal processing technique which can
+be used to produce very high fidelity modifications of an arbitrary
+input sound.  It can be used as an analysis-synthesis system to
+independently modify duration and pitch, or it can be used simply to
+perform analysis, with the data being subsequently utilized in cmusic or
+elsewhere.  The one drawback to the phase vocoder is that it requires
+considerable amounts of computation time and of soundfile disk space;
+however, intelligent selection of parameter values can do much to
+alleviate this problem.
+
+	The phase vocoder can be viewed as a bank of bandpass filters,
+but with one additional complication:  whereas the output of a normal
+bandpass filter is simply a bandpass-filtered version of its input, 
+the outputs of the phase vocoder bandpass filters are the time-varying
+amplitude and frequency of the bandpass-filtered signal.  For example,
+if the input signal is a tone of well defined pitch, and if the phase
+vocoder bandpass filters are set up so that exactly one harmonic of the
+input signal lies within each filter bandpass, then the outputs of the
+phase vocoder will be the instantaneous amplitudes and frequencies of
+each harmonic.
+
+	Actually, this only describes the analysis part
+of the phase vocoder; much of the attraction of the phase vocoder is
+that it can also recombine the analysis data to produce a perfect
+resynthesis of the original input.  In addition, it can modify the
+analysis data to produce resyntheses of arbitrary duration without altering
+the pitch.  In fact, very high fidelity time-scale modification can
+often be obtained even when the pitch is unknown (or not well defined)
+or even when the input is polyphonic.  The key requirement is simply
+that the phase vocoder have enough filters (of narrow enough bandwidth)
+so that the entire spectrum of the input is covered, but never with
+more than a single harmonic in any one filter bandpass.
+
+USAGE
+
+	At present, there are two different ways in which the phase vocoder
+is being used at CARL:  1) analysis-synthesis (i.e., sound input and sound
+output) for time-scaling or pitch-scaling,  2) analysis only (i.e.,
+sound input and analysis-data output) for modification and resynthesis
+via cmusic.  In both cases, it is STRONGLY recommended that the input
+sampling rate by 16K (as opposed to 48K).  The highest sampling rate is
+reasonable for FINAL production runs, but there is absolutely no need for
+it in simply learning to use the phase vocoder.  Not only will 16K jobs
+run three times as fast, but they will require only 1/3 the number of
+filters for the same resolution.
+
+Analysis-Synthesis
+
+	Analysis-synthesis provides a means for changing the duration or pitch
+by a constant factor.  (It is also possible to make time-varying changes,
+but this is not currently implemented due to lack of an appropriate
+mechanism for specifying the variation to pvoc.)  The basic format for
+performing analysis-synthesis with pvoc is:
+
+	sndin file1 | pvoc | sndout file2
+
+In this example, pvoc will use all default parameter settings, and the
+contents of file2 will be identical to the contents of file1 (within
+numerical roundoff error).  This illustrates the fact that the phase
+vocoder is an analysis-synthesis identity (i.e., output equals input)
+in the absence of any modifications.  
+
+A. Time-scale modification
+
+	To implement a time-scale change, the -T flag must be used. 
+For example, the command:
+
+	sndin file1 | pvoc -T2 | sndout file2
+
+will produce a factor of two time-expansion of the sound in filename1.
+In practice, there are two other parameters which may have to be
+specified.  The first of these is the number of filters (-N), and the
+second is the amount of overlap (-W) in frequency of adjacent filters.
+
+1) number of filters (-N)
+
+	The number of filters is of fundamental importance in using
+the phase vocoder for time-scaling.  If this number is too small, then
+more than one harmonic will fall within a given filter bandpass; this
+will lead to interference (beating) between the offending harmonics.
+This beating is an indication that the phase vocoder has failed in its
+basic goal (the separation of harmonics) and that the corresponding 
+time-scaling will not be correctly performed.  On the other hand, 
+there is no benefit to having more filters than required for separation
+of harmonics.
+
+	For harmonic tones, the required number of filters can be
+determined by dividing the sampling rate by the lowest fundamental frequency
+in the phrase being analyzed.  The phase vocoder filters are always spaced out
+equally across the entire spectrum, so a 16K sample rate and 256 filters will
+result in filters centered at 0 Hz, 64 Hz, 128 Hz, ..., 8K Hz.  This
+choice of -N would be appropriate for a phrase in which the lowest
+pitch is no less than 64 Hz.
+
+	For inharmonic tones, the number of filters may need to be
+considerably higher because there is no guarantee that "inharmonics"
+will always be separated by at least 64 Hz.  The ideal approach would
+be to use "spect" to actually get some idea of the closest spacing
+of adjacent inharmonics, and then to choose -N based on this.
+
+	In analysis-synthesis, the -N obtained via the above calculations
+is really only a minimum.  In practice, it is desirable to choose a -N 
+which is a power of two, because this will compute more quickly.  Thus,
+-N1024 is a very common value which (for a 16K sample rate) gives filters
+centered at every 16 Hz and works in a wide variety of situations.  The
+command line for this would look like
+
+	sndin file1 | pvoc -N1024 -T2 | sndout file2
+
+2) overlap of filters (-W)
+
+	When a time-expansion does not sound as good as might be hoped,
+and once it is established that the number of filters is adequate, the 
+most powerful remaining parameter is the amount of filter overlap.
+At present, there are basically four choices:
+
+	-W0	minimal overlap  (rarely used for analysis-synthesis)
+	-W1	moderate overlap (may be useful on steady tones with noise)
+	-W2	normal overlap   (this is the default)
+	-W3	extreme overlap  (may give the best transient reproduction)
+
+If -W0 and -W3 both give unsatisfactory results, it is quite possible that
+you have reached the limits of the phase vocoder as it is currently 
+understood.  Not all sounds can be modified with equally good results;
+the phase vocoder performance definitely depends significantly on the
+sound source material, and upon the extent of the modification.
+
+3) summary of time-scaling
+
+	The following are typical command lines for performing time-scaling
+with the phase vocoder:
+
+	sndin file1 | pvoc -N1024 -W3 -T7.9 | sndout file2
+
+	sndin file1 | pvoc -N512  -W1 -T.5  | sndout file2
+
+B. Pitch-transposition
+
+	Pitch-transposition can be performed directly by the phase vocoder
+using the -P flag.   For example
+
+	sndin file1 | pvoc -P2 | sndout file2
+
+produces an output file (file2) which is the same duration as the input
+(file1) but a factor of two (one octave) higher in pitch.  Unfortunately,
+performing pitch-transposition inside the phase vocoder is a little more
+tricky than time-scaling.  
+
+	The problem is that the phase vocoder can only perform time-scaling
+and pitch transposition by factors which are ratios of certain integers.
+For time-scaling, this restriction is not very perceptually significant;
+but for pitch changes it can be a real problem.  For example, to transpose
+up a half step, a -P of 1.0595 (the twelfth root of two) would be
+specified.  However, the phase vocoder might have trouble obtaining this
+as a ratio of two integers. Worse, still, the phase vocoder might be able
+to match this ratio in one part of the program but not in another; this
+is indicated by a cryptic warning stating that T and P are not equal.
+
+	If the result of an attempted pitch-transposition is not satisfactory,
+there are basically two options.  One is to try the run again with a larger
+-N (and perhaps an N that is not a power of two, just for variety).  The
+second is to specify a -T with the desired pitch-transposition factor, and
+then to perform a sample rate conversion outside of the phase vocoder.  For
+example, a -T2 would produce an output twice as long as the input and at 
+the same pitch.  Playing the output at a sampling rate which is a factor of
+two too high (e.g., 32K vs 16K) would raise the pitch an octave and compress
+the duration back to that of the original.  So the output is really a 32K
+file which should be sample-rate-converted to 16K. 
+
+1) straight pitch transposition (-P)
+
+	sndin file1 | pvoc -N1024 -P2 | sndout file2
+
+	sndin file1 | pvoc -N1024 -T2 | sndout temp
+	sndin temp  | srconv 1 2 %  | sndout file2
+
+	sndin file1 | pvoc -N1024 -P1.0595 | sndout file2
+
+	sndin file1 | pvoc -N1024 -T1.0595 | sndout temp
+	sndin temp  | resamp -f.944 | sndout file2
+
+2) spectral envelope warping (-w)
+
+	An experimental feature of the phase vocoder that can be used with
+no guarantees is the spectral envelope warping (-w).  The normal way to use
+this would be in conjunction with -P to shift the pitch of the input without
+shifting the formants (resonances) of the input.  For example
+
+	sndin file1 | pvoc -N1024 -P2 -w2 | sndout file2
+
+would be the recommended to way transpose the pitch of speech up one octave
+without destroying the intelligibility.
+
+Analysis Only
+
+	The second major use of the phase vocoder is to produce analysis
+data which can be used to perform arbitrary modifications and resynthesis
+within cmusic.  The basic format for doing this is
+
+	sndin file1 | pvoc -A -V | sndout file1.i
+
+The -A flag tells the phase vocoder to write the analysis data out to
+sndout and to skip the resynthesis.  The output soundfile will consist
+of N+2 channels where channel #1 is the amplitude vs. time from the
+first (zero center frequency) filter, channel #2 is the frequency vs.
+time from that same filter, channel #3 is the amplitude from the second
+filter, channel #4 is the frequency from the second filter, ..., etc.
+up to channels N+1 and N+2 which are amplitude and frequency respectively
+for the filter centered at half the input sampling rate.  Hence, odd
+channels are amplitude data and even channels are frequency data.  Since
+all of this data is interleaved, it is traditional to name the output
+file something.i.
+
+	The -V flag instructs the phase vocoder to write out a summary
+file which is an ordinary UNIX text file.  If a filename is given as
+the final argument to the phase vocoder, that name will be used for
+the summary file; otherwise, the name "pvoc.s" will be used.  The 
+summary file can be very useful for deciding which filters contain
+significant amounts of energy which should be included in the resynthesis.
+
+1) the fundamental frequency (-F)
+
+	In the absence of any other flags, the phase vocoder will use
+the default setting of 256 filters.  However, if the sound being analyzed
+consists of a single pitch, it may be desirable to choose N so that 
+exactly one harmonic falls within each filter bandpass.  This can be
+done either by calculating the value of N as described above for time
+scaling, or - alternatively - by using the -F flag to explicitly specify
+the fundamental frequency; in the latter case, the phase vocoder will
+simply calculate N itself by dividing the input sampling rate by F.
+For example, to extract the harmonics of a middle C played on the piano,
+the following command line could be used
+
+	sndin piano | pvoc -F260 -A -V piano.s | sndout piano.i
+
+The command "lsf -f piano.i" would then show "piano.i" to be a many-channel
+soundfile with a sampling rate which is only a fraction of the sampling
+rate of the input file "piano".  This occurs because the phase vocoder
+analysis data changes comparatively slowly, and it is therefore written
+out at a significantly lower sampling rate.
+
+2) overlap of filters (-W)
+
+	All of the comments above regarding filter overlap still apply,
+except that the -W0 setting may actually be useful for analysis.  One
+way to determine whether a narrower filter bandwidth is required is to
+get a graph of several of the analysis channels (one at a time) vs. time.
+This can be done on a visual 550  by a command like
+
+	sndin -c4 piano.i | btoa | graph -a | v550
+
+or on the lgp by a command like
+
+	sndin -c4 piano.i | btoa | graph -a | lplot | lgp
+
+If the filters were set up properly  (i.e., if the proper -F was specified),
+then this command would display the frequency of the fundamental vs. time.
+Typically, the frequency will be very well behaved wherever the associated
+amplitude is large, and the frequency will be very noisy wherever the
+amplitude is small.  However, if the frequency (and/or amplitude) also
+shows a rapid (i.e., greater than 15Hz) modulation, it is very likely that
+the filter bandwidth is too large.  If this result was obtained with -W0
+(the narrowest setting), then the only recourse is to increase the number
+of channels.  For example, the following sequence of commands might be
+typical:
+
+	sndin piano | pvoc -F260 -W0 -A -V piano.s | sndout piano.i
+
+	sndin -c4 piano.i | btoa | graph -a | lplot | lgp
+
+	sndin piano | pvoc -F130 -W0 -A -V piano.new.s | sndout piano.new.i
+
+3) cmusic resynthesis
+
+	The sample score below shows how phase vocoder analysis data can
+be used in cmusic to resynthesize with arbitrary modifications.  Resynthesizing
+with cmusic (as opposed to the phase vocoder) introduces some imperfections
+because cmusic uses only a linear interpolator to interpolate the analysis
+data back up to the output sampling rate.  (The phase vocoder does this 
+interpolation almost perfectly.)  However, this degradation is frequently
+inaudible; furthermore, when distortion is audible, it can almost
+always be eliminated by rerunning the analysis with narrower bandwidth
+filters.
+
+	Unfortunately, the time required for cmusic resynthesis can be
+considerable.  However, this time can be kept to a minimum by working
+as much as possible with only a limited number of harmonics, and then 
+using a large number (e.g., 40) only for the final production run.
+
+4) sample score
+
+# include <carl/cmusic.h>
+
+/* This is an example of a cmusic score for resynthesizing phase
+ * 	vocoder analysis data.  To use it as a template for your
+ *	own resynthesis, simply copy this file, and make whatever
+ *	changes you wish.  At the very least, you will have to
+ *	change FILE to the filename of your analysis data, and
+ *	PV_D to the decrement (D) value for your analysis.  You will
+ *	also probably want to change the duration DUR and the
+ *	number of note statements.
+ */
+
+/*
+ * RATE is the cmusic output sampling rate.
+ */
+
+# define RATE	(16K)
+
+/*
+ * PV_D is given in the summary file as D.  This value is used
+ * 	to determine the number of values which will be (linearly)
+ * 	interpolated between successive analysis values.  Setting
+ * 	PV_D to some value other than the D used in the analysis
+ * 	will have the effect of performing time-scaling.  The fact
+ *	that this interpolation is linear (as opposed to ideal) is
+ *	the major source of error in cmusic resynthesis.
+ */
+
+# define PV_D	(40)
+
+/*
+ * DUR is the duration of the original sound which was analyzed
+ * 	by the phase vocoder.  
+ */
+
+# define DUR	(6)
+
+/*
+ * TIMEVAR is the time change factor.  (Higher numbers expand time,
+ * 	lower numbers contract time, and TIMEVAR=1 leaves it unaltered.)
+ * 	To expand by a factor of two, set TIMEVAR=2.
+ */
+
+# define TIMEVAR	(1)
+
+/*
+ * PITCHVAR is the pitch change factor.  (Higher numbers increase pitch,
+ * 	lower numbers decrease pitch, and PITCHVAR=1 leaves it unaltered.)
+ * 	To raise pitch by one half step, set PITCHVAR=1.06.
+ */
+
+# define PITCHVAR	(1)
+
+/*
+ * FILE is the soundfile with the interleaved analysis data from the
+ * 	phase vocoder.
+ */
+
+# define FILE	"/sndb/rusty/voice.i"
+
+/*
+ * ARATE is the analysis sampling rate.
+ */
+
+# define ARATE	((RATE/PV_D)/TIMEVAR)
+
+# define INC	(ARATE/RATE)
+
+var 0 s1 FILE ;
+
+set rate = RATE ;
+
+/*
+ * The instrument pv resynthesizes a single channel of phase vocoder
+ * 	analysis data.  The first sndfile reads the amplitude data, and
+ * 	second sndfile reads the frequency data.  Hence, p5 will always
+ * 	be an odd number and p6 will always be that number plus one.
+ *	As a rule, the amplitude and frequency from the filter centered
+ *	at zero frequency can be omitted from the resynthesis.
+ */
+
+ins 0 pv ;
+/*	out	amp	inc	file	chan	start	end	d	d ; */
+sndfile	b1	1	INC	s1	p5	0	-1	d	d ;
+sndfile	b2	1	INC	s1	p6	0	-1	d	d ;
+
+/*	out	in	in */
+mult	b3	b2	(PITCHVAR)Hz ;
+
+/*	out	amp	inc	table	d ; */
+osc	b4	b1	b3	f1	d ;
+
+out	b4 ;
+end ;
+
+/*
+ * f1 is a sine wave of amplitude .5; a sine wave of amplitude 1 may
+ * cause samples out of range depending on the bandwidth of the analysis
+ * filters - if the filters overlap significantly, they may appear to
+ * contain more energy than the original signal.
+ */
+
+GEN5(f1) 1, 0.5, 0 ;
+
+/* 	p3	p4		p5		p6		p7	*/
+note 0	pv	DUR*TIMEVAR	3		4 ;
+note 0	pv	DUR*TIMEVAR	5		6 ;
+note 0	pv	DUR*TIMEVAR	7		8 ;
+note 0	pv	DUR*TIMEVAR	9		10 ;
+note 0	pv	DUR*TIMEVAR	11		12 ;
+note 0	pv	DUR*TIMEVAR	13		14 ;
+note 0	pv	DUR*TIMEVAR	15		16 ;
+note 0	pv	DUR*TIMEVAR	17		18 ;
+note 0	pv	DUR*TIMEVAR	19		20 ;
+note 0	pv	DUR*TIMEVAR	21		22 ;
+
+ter ;

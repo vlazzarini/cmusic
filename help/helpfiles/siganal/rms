@@ -1,0 +1,10 @@
+rms - simple inline program to find the rms value of a digital signal
+
+DESCRIPTION:
+rms reads samples from stdin and calculates the rms (root-mean-square)
+value of the digital signal.  It prints this value after all samples
+have been read.  It writes samples on stdout if it is a file or a pipe. 
+The following examples determine the rms value in sound file boom:
+
+	sndin boom | rms
+	sndin boom | rms | sndout boom2

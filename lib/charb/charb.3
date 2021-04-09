@@ -1,0 +1,148 @@
+.TH CHARB 3
+.SH NAME
+cballoc, cbrealloc, fgetcb, makcb, cbbuf, cbmax, cbcat, cbncat, cbcpy, cbncpy \- operations for variable length strings
+.SH SYNOPSIS
+.nf
+.PP
+.B #include <local/charb.h>
+.PP
+.B charb *cballoc(n)
+.B unsigned int n;
+.PP
+.B charb *cbrealloc(cb, n)
+.B charb *cb;
+.B unsigned int n;
+.PP
+.B fgetcb(cb, stream)
+.B charb *cb;
+.SM
+.B FILE *stream;
+.PP
+.B charb *makcb(str)
+.B char *str;
+.PP
+.B cbbuf(cb)
+.B charb *cb;
+.PP
+.B cbmax(cb)
+.B charb *cb;
+.PP
+.B charb *cbcat(cb1, cb2)
+.B charb *cb1, *cb2;
+.PP
+.B charb *cbncat(cb1, cb2, n)
+.B charb *cb1, *cb2;
+.PP
+.B char *cbcpy(cb1, cb2)
+.B charb *cb1, *cb2;
+.PP
+.B char *cbncpy(cb1, cb2, n)
+.B charb *cb1, *cb2;
+.fi
+.SH DESCRIPTION
+These functions operate on variable length strings whose
+type is
+.IR charb .
+The definition of
+.I charb
+is in the include file.
+In the cases of copying or concatenation the target
+.IR charb 's
+string buffer size is increased, if necessary, so
+that the result will fit.
+In all cases (except for
+.IR cbncpy ,
+see below) the
+.IR charb 's
+string buffer is null terminated.
+.PP
+.I cballoc
+returns a pointer to a
+.I charb
+whose string buffer is of size
+.IR n .
+.I cbrealloc
+returns a pointer to a
+.I charb
+whose string buffer's size is changed to
+.IR n,
+the previous contents of the string buffer
+are unchanged.
+.PP
+.I fgetcb
+reads a line of characters, up to and and including
+the newline from the
+.I stream
+into
+.IR cb .
+.PP
+.I makcb
+returns a pointer to a
+.I charb
+whose string buffer contains the string pointed
+to by
+.IR str .
+.PP
+.I cbbuf
+yields the string buffer of
+.IR cb .
+.I cbmax
+yields the size of the string buffer of
+.IR cb ,
+this is not necessarily the same as the
+length of the string therein.
+.I cbbuf
+would be used, for example, when one wants
+to
+.B printf(3)
+the
+.IR charb .
+.I cbmax
+isn't normally needed but is provided for
+diagnostice purposes.
+Both are macros.
+.PP
+.I cbcat
+appends a copy of
+.I cb2
+to the end of
+.IR cb1 .
+.I cbncat
+copies at most
+.I n
+characters.
+Both return
+.IR cb1 .
+.PP
+.I cbcpy
+copies
+.I cb2
+to
+.I cb1,
+stopping after the null character has been moved.
+.I cbncpy
+copies exactly
+.I n
+characters,
+truncating or null-padding
+.I cb2;
+the target may not be null-terminated if the size
+of
+.I cb2
+is
+.I n
+or more.
+Both return
+.IR cb1 .
+.SH "SEE ALSO"
+fgets(3), malloc(3), string(3)
+.SH DIAGNOSTICS
+All routines that return a pointer to a
+.I charb
+return NULL upon error (usually running out of memory).
+.I fgetcb
+returns EOF upon end of file or error, otherwise 0.
+.SH BUGS
+The maximum size of a
+.I charb
+string buffer is limited to 65535.

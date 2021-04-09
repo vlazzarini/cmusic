@@ -1,0 +1,16 @@
+/*
+ * Another place Argv variables can be used is in determining the
+ * begin times of voices.  An appropriate command line might be:
+ * % scr 0 10
+ */
+
+
+Player blah(atof(Argv[1]),atof(Argv[2]))
+{
+	double dur, percent_overlap = .01;
+
+	dur = Rhythms("4 4 4 4 8 8 8 8");
+	P4 = dur + dur * percent_overlap;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

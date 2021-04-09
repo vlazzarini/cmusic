@@ -1,0 +1,40 @@
+Player blat()
+{
+	Instance int cnt;
+
+	P2 = Now;
+	P4= Rhythms("4");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P6 = cnt++;
+	Wait_until(P2 + P4);
+}
+
+Player bavoom()
+{
+	Instance int cnt;
+
+	P2 = Now;
+	P4= Rhythms("4");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P6 = cnt++;
+	Wait_until(P2 + P4);
+}
+
+
+typedef Player * Pptr;
+
+Pptr nv1, nv2;
+
+Player beep(0)
+{
+	fprintf(stderr, "beep:Now=%f\n", Now);
+	nv1 = New_player(blat, 1.0, 10.0, P_READY);
+	nv2 = New_player(bavoom, 2.0, 10.0, P_READY);
+	Stop(Self);
+}
+
+Player ribbit(4.0)
+{
+  	Stop(nv1);
+  	Stop(Self);
+}

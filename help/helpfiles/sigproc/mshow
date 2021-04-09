@@ -1,0 +1,12 @@
+mshow - a crude CRT display hack for comparing sample data files
+
+mshow operates like show, but allows display of up to  
+16 files or multiplexed channels to be displayed
+simultaneously for comparison.  They are all presented on the same
+graph, with successive files being plotted by the letters 'A', 'B', 'C',
+etc.  
+
+Note: for a more complete discussion of the various flags and options,
+say
+
+% help mshow

@@ -1,0 +1,32 @@
+genraw - read raw floating point functions into cmusic
+
+     genraw is an implementation of a "gen" function call for
+     cmusic(1carl). The action of genraw is to read the named
+     file, which must contain binary floating point numbers
+     (called floatsams at CARL).  The floatsams are then written
+     on its standard output. If called from inside cmusic, this
+     will cause the contents of the file to be copied into a
+     function in cmusic. In this way one can use e.g., results of
+     the analysis of natural sounds as waveforms or envelopes in
+     cmusic.
+
+     Here is a sample call from a shell:
+          % genraw -L1024 filename
+     and a sample statement in a cmusic score:
+          var 0 s1 "filename";
+          gen 0 genraw f1 s1;
+
+     genraw will force the number of floatsams it writes to its
+     standard output to equal the number specified in len_flag by
+     linearly interpolating the number of floatsams in the input
+     file to stretch or shrink the file to fit.  This guarantees
+     that cmusic will get as many points as it wants, but may
+     have side effects of altering the character of the function
+     if the stretching or shrinking are extreme.
+
+     For more information say
+
+	% man genraw
+
+See Also:
+     cmusic(1carl)

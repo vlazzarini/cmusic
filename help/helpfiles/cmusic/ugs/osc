@@ -1,0 +1,7 @@
+osc - general purpose truncating oscillator
+
+osc output[b] amplitude[bvpn] increment[bvpn] table[fvpn] sum[dpv] ;
+
+A truncating, table lookup oscillator.  Dynamic variables are
+recommended for sum locations. Table may be either explicit, or number
+may be given.  If number is n, then function floor(n) is used.

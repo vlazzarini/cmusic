@@ -1,0 +1,10 @@
+peak - simple inline program to find the peak value of a digital signal
+
+DESCRIPTION:
+peak reads samples from stdin and looks for the largest in magnitude (most
+negative or most positive), and prints this value after all samples
+have been read.  It writes samples on stdout if it is a pipe or a file. 
+The following examples determine the maximum value in sound file boom:
+
+	sndin boom | peak
+	sndin boom | peak | sndout boom2

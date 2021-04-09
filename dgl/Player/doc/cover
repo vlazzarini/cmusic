@@ -1,0 +1,56 @@
+.TL
+PLAYER
+.AU
+Gareth Loy
+.AI
+Computer Audio Research Laboratory
+Center for Music Experiment and Related Research, Q-037
+University of California, San Diego
+La Jolla, California 92093
+(619) 452-4383
+ucbvax!sdcarl!dgl
+.AB 
+\fIPlayer\fP is a set of language
+extensions and set of runtime routines added
+to the \fIC\fP programming language which provide for
+modelling parallelism, hierarchy, and time flow in music.
+\fIPlayer\fP is
+a convenient language for specifying music data representations,
+compositional algorithms, music synthesizer hardware control,
+and realtime interaction with performers.
+.PP
+Contained in this set of documents are a tutorial, a formal
+presentation of the language, and manual pages.
+.AE
+.LP
+.sp 2.5i
+.ce
+TABLE OF CONTENTS
+.sp
+.nf
+.ta 6iR
+State of the implementation 2
+.br
+Tutorial introduction to Player 3
+.br
+Player manual 31
+.br
+Manual pages 57
+.bp
+.so state/state
+.bp
+.so tut/Player_tut.nr
+.ds LH
+.ds RH
+.ds CF
+.bp
+.so doc/Player_doc.nr
+.ds LH
+.ds RH
+.ds CF
+.bp
+.sp 3i
+.TL
+MANUAL PAGES
+.LP
+.bp

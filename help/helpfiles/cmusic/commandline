@@ -1,0 +1,25 @@
+commandline - command line options for cmusic
+
+    cmusic [flags] [score_file] > floatsams
+
+Flags given on the command line OVERRIDE set options in the score_file:
+
+    -v   sets the verbose option; -v- turns it off (default = off).
+    -n   sets the notify option; -n- turns it off (default = off).
+    -t   sets the timer option; -t- turns it off (default = off).
+    -q   turns off any verbose, timer, or notify options set elsewhere.
+    -Rx  sets the sampling rate to x (default = 16K).
+    -Lx  sets the default function length to x (default default = 1K).
+    -Bx  sets the io block length to x (default = 256).
+
+Flags may not be combined, i.e., "-tn" will not work, but "-t -n" will.
+
+If no score_file is given, cmusic reads its standard input.  If the
+standard output is connected to a terminal, cmusic generates ASCII
+sample values on the screen; if not, binary float sample values
+(floatsams) are produced.  Score errors cause sample synthesis to stop
+- the remainder of the score is scanned for further errors, if possible.
+
+Running two or more cmusic jobs at once takes longer than running one
+at a time.  If you need to run more than one, place the cmusic commands
+one after another into a shell script file and execute it with "csh".

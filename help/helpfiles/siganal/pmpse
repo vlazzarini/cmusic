@@ -1,0 +1,18 @@
+pmpse - estimate power spectral density and autocorrelation of a signal 
+
+estimate power spectral density and autocorrelation of a signal 
+
+The PMPSE program from the IEEE Programs for Digital Signal Processing
+is no longer being maintained.  The same result can now be obtained with
+the spect program by using the -a flag to average the spectrum over a
+number of finite overlapping sections of an input signal.  This is a
+good idea when the signal is noisy because noise will tend to be 
+uncorrelated in successive sections.  Hence, the averaging process will
+smooth the noise spectrum while enhancing whatever deterministic 
+components may be present.  The tradeoff is that each section should be
+as long as possible to maximize spectral resolution; but as many segments
+as possible should be averaged to reduce variance.  Since the signal
+(or at least the portion of interest) is presumably of finite length
+(and since the overlapping should always be by 50%), this produces a
+fundamental conflict.
+

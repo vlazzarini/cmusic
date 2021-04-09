@@ -1,0 +1,53 @@
+fir - design finite impulse response digital filters
+
+finite impulse response (FIR) digital filter design. 
+
+This is the program EQFIR from the IEEE Programs for Digital Signal
+Processing.  It designs optimal FIR filters of a variety of types.
+However, it is not really intended for the naive user.  The novice
+is strongly encouraged to use the program easyfir.
+
+Being an old FORTRAN program, fir takes all its input specifications
+interactively from the terminal.  The first and most critical
+specification is the number of coefficients (i.e., the length of
+the filter impulse response).  If this number is too small, then
+the algorithm will typically degrade in a very ungraceful manner.
+However, unless the discrepancy is extreme, the program will not
+realize that it is having any trouble.  Hence, it is essential to
+check each filter immediately upon completion of the program.
+
+(The way to see what your filter looks like is to plot an FFT of its
+impulse response. One path to this result is to type 
+
+impulse 1024 | filter filterfile | spect -d -f
+
+This should really be done on a graphics terminal in which case the
+output of spect can be piped to
+
+btoa | graph -a -y -100 0 | v550
+
+or whatever.)
+
+On the other hand, if the number of coefficients is large computation
+time is needlessly wasted.  (However, this is not too big of an issue
+in practice because the program has a hard-wired upper limit of 128.)
+A general rule of thumb is that the number of coefficients must be at
+least 1 / transition_width where transition_width is expressed as a
+fraction of the sample rate.
+
+Another important point about the number of coefficients is that this
+number should probably be odd unless the filter is a differentiator.
+This is particularly true if the filter is a hilbert transform or a
+highpass.  An even number of coefficients is incompatible with a zero
+DC gain unless the filter is antisymmetric.  However, all multiband
+filters in fir are hardwired to be symmetric.
+
+The only other tricky part of the design (assuming that the transition
+bandwidth is appropriate for the specifed number of coefficients) is
+the weighting which is applied to the ideal frequency response.  As a
+general rule, a weighting of one is sufficient for passbands, but a
+weighting of at least 50 should be used for stopbands.
+
+The best reference for understanding this program is Chapter 3 of Theory
+and Application of Digital Signal Processing by Rabiner and Gold.
+

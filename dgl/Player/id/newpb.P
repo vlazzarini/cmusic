@@ -1,0 +1,78 @@
+
+M_ter()
+{
+	stop_ptm();
+	exit(0);
+}
+
+int	key;
+
+keydown()
+{
+	int	ch;
+
+	if (nb_acia_read(0, &ch) != 0) {
+		acia_write(0, ch);
+		key = ch;
+		return(TRUE);
+	} else
+		return(FALSE);
+}
+
+int ter;
+
+Player keytest(0)
+{
+	P_start {
+		ter = 0;
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	switch (key) {
+		case '.':
+			M_ter();
+		default:
+			/* printf("%d\t%c\n", Now, key); */
+			acia_write(0, key);
+			break;
+	}
+}
+
+Player note()
+{
+	/* fprintf(1, "note: %d\t%d\t%d\t%d\n",
+		P4, P5, P6, P7); */
+	Kill(Self);
+}
+
+typedef Player * Pptr;
+# define FOREVER -1
+
+
+Player track(0) 
+{
+	Pptr	v;
+
+	if ((v = New_player(note, Now, FOREVER, P_READY)) == NULL) {
+		fprintf(1, "New_player failed\n");
+		M_ter();
+	}
+	v->pn[4] = 4;
+	v->pn[5] = 5;
+	v->pn[6] = 6;
+	v->pn[7] = 7;
+# ifdef notdef
+	if (Set_p(v, 4L, 4L))
+		Print_stat("4");
+	if (Set_p(v, 5L, 5L))
+		Print_stat("5");
+	if (Set_p(v, 6L, 6L))
+		Print_stat("6");
+	if (Set_p(v, 7L, 7L))
+		Print_stat("7");
+# endif notdef
+	/* fprintf(1, "%d\t%d\t%d\t%d\n",
+		v->pn[4], v->pn[5], v->pn[6], v->pn[7]); */
+	Join(ALL_CHILDREN);
+}

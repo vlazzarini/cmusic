@@ -1,0 +1,76 @@
+/*
+ * Players that have no action times, as in the case of blot and bleat
+ * below, are not automatically run by the scheduler.  Instead, they
+ * serve as templates for instances of themselves which can be caused to
+ * run by the action of other Players.  The routine New_player() is used
+ * to invoke a new instance of a Player.  It establishes the template
+ * for the instance, sets its action times, and its running status.
+ * 
+ * Player blot plays for 5 seconds by itself, then
+ * starts Player blat.  The two play together.
+ * It brings in Player bleat at 10 seconds and all three
+ * play until 15 seconds, whereupon blot stops blat and bleat and finishes
+ * up solo to 20 seconds.
+ * 
+ * More about floating point:  the only place you MUST have a fractional
+ * part to numeric constants is in procedure calls.  C does no type
+ * checking for the arguments to procedures.  ccmp procedures, with one
+ * exception which we will come to later, all use floating point where
+ * a number is called for.  In other situations, such as in assignment
+ * statements like
+ *	P4 = 1;
+ * C  will coerce the integer 1 into 1.0, because it knows P4 is a floating
+ * point register.  Likewise, in
+ * 	if (P4 == 5)
+ * the 5 is coerced into 5.0.  But when in doubt, use floating point.
+ */
+Player blat()
+{
+	P_start {
+		P4 = 1.0;
+	}
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player bleat()
+{
+	P_start {
+		P4 = 1.0;
+	}
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+typedef Player * foo;
+
+Player blot(0,20)		/* c does type coercion here */
+{
+	Instance int sequence;
+	Instance foo i_blat, i_bleat;
+
+	P_start {
+		P4 = 1;	/* c does type coercion here too */
+		if ((i_blat = New_player(blat, Now, HUGE, P_STOPPED)) == NULL)
+			fprintf(stderr, "blot: New_player failed\n");
+		if ((i_bleat = New_player(bleat, Now, HUGE, P_STOPPED)) == NULL)
+			fprintf(stderr, "blot: New_player failed\n");
+	}
+	P2 = Now;
+	if (sequence == 0 && P2 >= 5) {		/* here too */
+		sequence++;
+		fprintf(stderr, "i_blat = %x\n", i_blat);
+		Start(i_blat);
+	}
+	if (sequence == 1 && P2 >= 10) {
+		sequence++;
+		fprintf(stderr, "i_bleat = %x\n", i_bleat);
+		Start(i_bleat);
+	}
+	if (sequence == 2 && P2 >= 15) {
+		sequence++;
+		Stop(i_blat);
+		Stop(i_bleat);
+	}
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,7 @@
+Player xyzzy()
+{
+	Ps5 = Pi5;
+	Ps6 = Pi6;
+	Ps7 = Pi7;
+	Ps4 = Pi4;
+}

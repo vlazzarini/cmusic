@@ -1,0 +1,13 @@
+smooth - first order lowpass smoothing filter
+
+smooth  output[b] in[bvpn] tau[bvpn] temp[d] ;
+
+The output is a smoothed version of the input according to the lowpass
+filter relation:
+
+    y(n) = x(n) + tau*y(n-1)
+    output = y(n)*(1 - tau)
+
+The output is scaled by (1-tau) in order to approximate a DC gain of 1.0.
+Obviously, tau should normally be less than 1.  The temp location is used
+to hold the previous output.

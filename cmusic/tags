@@ -1,0 +1,543 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/darren@hiebert.com/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://darren.hiebert.com/ctags/	/official site/
+!_TAG_PROGRAM_VERSION	3.2	/with C, C++, Eiffel, Fortran, and Java  support/
+A	ug.trans.c	11;"	d	file:
+A	ug.version.c	14;"	d	file:
+A0	ug.flt.c	9;"	d	file:
+A1	ug.flt.c	10;"	d	file:
+A2	ug.flt.c	11;"	d	file:
+AARRAY	ug.space.c	14;"	d	file:
+ACTION	ug.test.c	8;"	d	file:
+AFAC	ug.band.c	8;"	d	file:
+ALLOC	m.defs.h	5;"	d
+AMP	ug.band.c	7;"	d	file:
+AMP	ug.blp.c	6;"	d	file:
+AMP	ug.delay.c	8;"	d	file:
+AMP	ug.iosc.c	7;"	d	file:
+AMP	ug.osc.c	7;"	d	file:
+AMP	ug.rah.c	6;"	d	file:
+AMP	ug.ran.c	6;"	d	file:
+AMP	ug.seg.c	7;"	d	file:
+AMP	ug.sndfile.c	9;"	d	file:
+AMP	ug.space.c	24;"	d	file:
+AMP	ug.splice.c	6;"	d	file:
+AMP	ug.version.c	10;"	d	file:
+AMP	ug.white.c	5;"	d	file:
+AMPIN	ug.illus.c	10;"	d	file:
+AMPOUT	ug.illus.c	8;"	d	file:
+AMPS	ug.space.c	19;"	d	file:
+Ax	m.globs.h	/^float Ax[]={50.,-50.,-50.,50.};	\/* Acoustic space x-coordinates *\/$/;"	v
+Ay	m.globs.h	/^float Ay[]={50.,50.,-50.,-50};	\/* Acoustic space y-coordinates *\/$/;"	v
+B	ug.version.c	15;"	d	file:
+B1	ug.flt.c	12;"	d	file:
+B2	ug.flt.c	13;"	d	file:
+BACK	ug.janus.c	8;"	d	file:
+BACK	ug.space.c	25;"	d	file:
+BACKS	ug.space.c	20;"	d	file:
+BARE0	m.defs.h	6;"	d
+BARE1	m.defs.h	7;"	d
+BEGCNT	ug.fltdelay.c	32;"	d	file:
+BINOPS	mm.expr.c	8;"	d	file:
+BW	ug.nres.c	12;"	d	file:
+Barefile	m.globs.h	/^FILE *Barefile;		\/* Bare file *\/$/;"	v
+Barefilename	m.globs.h	/^char *Barefilename;	\/* Name of Bare file *\/$/;"	v
+Bflag	m.globs.h	/^int  Bflag;		\/* Nonzero if B flag was given on command line *\/$/;"	v
+Blocks	m.globs.h	/^float *Blocks;		\/* I\/O blocks *\/$/;"	v
+Bmax	m.globs.h	/^long Bmax;		\/* Max index of any B in any instrument *\/$/;"	v
+Bp	m.globs.h	/^float *Bp;		\/* Spare i\/o block pointer *\/$/;"	v
+C	ug.version.c	16;"	d	file:
+C1	ug.airabsorb.c	13;"	d	file:
+C1	ug.nres.c	21;"	d	file:
+C2	ug.airabsorb.c	14;"	d	file:
+C2	ug.nres.c	22;"	d	file:
+CARRAY	ug.space.c	13;"	d	file:
+CF	ug.nres.c	11;"	d	file:
+CHANNEL	ug.sndfile.c	12;"	d	file:
+CHANNEL	ug.splice.c	9;"	d	file:
+CHANNEL	ug.version.c	13;"	d	file:
+CI	ug.space.c	28;"	d	file:
+CLIP	ug.map.c	10;"	d	file:
+CMD	m.defs.h	8;"	d
+COEF	ug.fltdelay.c	29;"	d	file:
+CONDITION	ug.test.c	7;"	d	file:
+COUNT	ug.sah.c	8;"	d	file:
+Clip	m.exts.h	/^int Clip;		\/* Whether to clip output to range [-1,+1] *\/$/;"	v
+Clip	m.globs.h	/^int Clip = 1;		\/* Whether to clip output to range [-1,+1] *\/$/;"	v
+Clipped	m.globs.h	/^long Clipped;		\/* Number of samples clipped *\/$/;"	v
+D	ug.version.c	17;"	d	file:
+D270	ug.space.c	32;"	d	file:
+D90	ug.space.c	33;"	d	file:
+DARRAY	ug.space.c	12;"	d	file:
+DBUF	ug.fltdelay.c	25;"	d	file:
+DBUF	ug.space.c	9;"	d	file:
+DBUF	ug.zdelay.c	9;"	d	file:
+DEAD	test.defs.h	5;"	d
+DEADSIG	test.defs.h	3;"	d
+DECAY	ug.fltdelay.c	15;"	d	file:
+DEFERFLAG	m.defs.h	67;"	d
+DEL	ug.fltdelay.c	28;"	d	file:
+DENOM	ug.div.c	6;"	d	file:
+DIST	ug.space.c	34;"	d	file:
+DLEN	ug.fltdelay.c	26;"	d	file:
+DLEN	ug.space.c	10;"	d	file:
+DLEN	ug.zdelay.c	10;"	d	file:
+DPTR	ug.defs.h	52;"	d
+DTIME	ug.zdelay.c	13;"	d	file:
+DURCNT	ug.fltdelay.c	30;"	d	file:
+Deferflag	m.globs.h	/^int Deferflag;		\/* Defer note processing until last flag *\/$/;"	v
+Direct	m.globs.h	/^float Direct = 1.;	\/* Direct path distance amplifier *\/$/;"	v
+Dtempo	m.globs.h	/^float *Dtempo;		\/* Delta tempo of piece *\/$/;"	v
+ENDFLAG	ug.defs.h	73;"	d
+ENDLIST	m.defs.h	11;"	d
+ENDNOTE	ug.defs.h	75;"	d
+ERR1	cmusic.c	12;"	d	file:
+ERX1	cmusic.c	13;"	d	file:
+EXCESS	m.defs.h	12;"	d
+EXTEND	m.defs.h	13;"	d
+Endtime	m.globs.h	/^float Endtime;		\/* Duration of piece *\/$/;"	v
+Error	m.globs.h	/^long Error;		\/* Error flag *\/$/;"	v
+FAC	ug.band.c	11;"	d	file:
+FARRAY	ug.space.c	15;"	d	file:
+FEND	ug.sndfile.c	14;"	d	file:
+FEND	ug.splice.c	11;"	d	file:
+FILTR	ug.fltdelay.c	21;"	d	file:
+FINAL	ug.fltdelay.c	18;"	d	file:
+FMAX	ug.illus.c	16;"	d	file:
+FMIN	ug.illus.c	15;"	d	file:
+FNAME	ug.showpath.c	8;"	d	file:
+FNAME	ug.sndfile.c	11;"	d	file:
+FNAME	ug.splice.c	8;"	d	file:
+FNAME	ug.version.c	12;"	d	file:
+FORLIST	m.defs.h	15;"	d
+FPLOC	ug.defs.h	64;"	d
+FPOS	ug.version.c	22;"	d	file:
+FPT	ug.defs.h	53;"	d
+FPTR	ug.defs.h	51;"	d
+FRAME	ug.sndfile.c	15;"	d	file:
+FRAME	ug.splice.c	12;"	d	file:
+FREQIN	ug.illus.c	11;"	d	file:
+FREQOUT	ug.illus.c	9;"	d	file:
+FROM	ug.rah.c	9;"	d	file:
+FROM	ug.ran.c	9;"	d	file:
+FRONT	ug.janus.c	7;"	d	file:
+FSTART	ug.sndfile.c	13;"	d	file:
+FSTART	ug.splice.c	10;"	d	file:
+FTYPE	m.defs.h	16;"	d
+FUNC	m.defs.h	19;"	d
+First	m.globs.h	/^float First;		\/* Current synthesis target time *\/$/;"	v
+Floatout	m.globs.h	/^long Floatout = 1;	\/* Floating output flag *\/$/;"	v
+Future	m.globs.h	/^float Future;		\/* Greatest time mentioned so far *\/$/;"	v
+GAIN	ug.flt.c	8;"	d	file:
+GAIN	ug.nres.c	10;"	d	file:
+GAIN	ug.zdelay.c	12;"	d	file:
+GEN	m.defs.h	22;"	d
+Grevblock	m.globs.h	/^float *Grevblock;	\/* Pointer to global reverb output block *\/$/;"	v
+Greverb	mm.sndout.c	/^Greverb(){$/;"	f
+HELD	ug.sah.c	7;"	d	file:
+Header	m.globs.h	/^long Header = 1;	\/* Header flag *\/$/;"	v
+ILLEG	m.defs.h	25;"	d
+IMAX	ug.map.c	7;"	d	file:
+IMAX	ug.quant.c	8;"	d	file:
+IMIN	ug.map.c	6;"	d	file:
+IMIN	ug.quant.c	7;"	d	file:
+IN	ug.abs.c	6;"	d	file:
+IN	ug.airabsorb.c	6;"	d	file:
+IN	ug.diff.c	5;"	d	file:
+IN	ug.expon.c	6;"	d	file:
+IN	ug.flt.c	7;"	d	file:
+IN	ug.fltdelay.c	13;"	d	file:
+IN	ug.integ.c	5;"	d	file:
+IN	ug.integer.c	6;"	d	file:
+IN	ug.inv.c	5;"	d	file:
+IN	ug.janus.c	6;"	d	file:
+IN	ug.logar.c	6;"	d	file:
+IN	ug.lookup.c	8;"	d	file:
+IN	ug.map.c	5;"	d	file:
+IN	ug.neg.c	5;"	d	file:
+IN	ug.nres.c	9;"	d	file:
+IN	ug.quant.c	6;"	d	file:
+IN	ug.sah.c	5;"	d	file:
+IN	ug.signum.c	5;"	d	file:
+IN	ug.smooth.c	5;"	d	file:
+IN	ug.sqroot.c	6;"	d	file:
+IN	ug.square.c	5;"	d	file:
+IN	ug.zdelay.c	7;"	d	file:
+INC	ug.defs.h	69;"	d
+INCA	ug.band.c	9;"	d	file:
+INCB	ug.band.c	10;"	d	file:
+INCORIG	ug.version.c	20;"	d	file:
+INCR	ug.freq.c	7;"	d	file:
+INCR	ug.iosc.c	8;"	d	file:
+INCR	ug.osc.c	8;"	d	file:
+INCR	ug.rah.c	7;"	d	file:
+INCR	ug.ran.c	7;"	d	file:
+INCR	ug.seg.c	10;"	d	file:
+INCR	ug.sndfile.c	10;"	d	file:
+INCR	ug.splice.c	7;"	d	file:
+INCR	ug.version.c	11;"	d	file:
+INCR1	ug.blp.c	7;"	d	file:
+INCR2	ug.blp.c	8;"	d	file:
+INP	ug.delay.c	7;"	d	file:
+INS	m.defs.h	26;"	d
+IPI	ug.space.c	31;"	d	file:
+IPOS	ug.version.c	21;"	d	file:
+Infile	m.globs.h	/^FILE *Infile;		\/* Input file *\/$/;"	v
+Infilename	m.globs.h	/^char *Infilename;	\/* Name of Input file *\/$/;"	v
+Junk	m.globs.h	/^char Junk[1024];$/;"	v
+LAST	ug.diff.c	6;"	d	file:
+LAST	ug.div.c	7;"	d	file:
+LASTO	ug.version.c	23;"	d	file:
+LASTOUT	ug.smooth.c	7;"	d	file:
+LASTX	ug.showpath.c	10;"	d	file:
+LASTY	ug.showpath.c	11;"	d	file:
+LBW	ug.nres.c	13;"	d	file:
+LCF	ug.nres.c	14;"	d	file:
+LEN	ug.defs.h	68;"	d
+LENGTH	ug.delay.c	10;"	d	file:
+LEVEL	ug.fltdelay.c	17;"	d	file:
+LEVEL	ug.test.c	10;"	d	file:
+LIM	ug.integ.c	6;"	d	file:
+LINK	m.defs.h	29;"	d
+LOC	ug.defs.h	66;"	d
+LOOKUP	ug.defs.h	71;"	d
+LPTR	ug.sndfile.c	16;"	d	file:
+LPTR	ug.splice.c	13;"	d	file:
+LPTR	ug.version.c	24;"	d	file:
+LRPN	mm.expr.c	6;"	d	file:
+LVAL	ug.defs.h	55;"	d
+LX	ug.airabsorb.c	9;"	d	file:
+LY	ug.airabsorb.c	10;"	d	file:
+Lblocks	m.globs.h	/^long Lblocks = 256;	\/* Length of i\/o blocks (default) *\/$/;"	v
+Lflag	m.globs.h	/^int  Lflag;		\/* Nonzero if L flag was given on command line *\/$/;"	v
+Lfuncs	m.globs.h	/^long Lfuncs = 1024;	\/* Length of functions (default) *\/$/;"	v
+Listfile	m.globs.h	/^FILE *Listfile;		\/* Listing file *\/$/;"	v
+Listfilename	m.globs.h	/^char *Listfilename;	\/* Name of Listing file *\/$/;"	v
+Lout	m.globs.h	/^long Lout;		\/* Output buffer length (Ngen*Nchan) *\/$/;"	v
+Lx	m.globs.h	/^float Lx[]={4.,-4.,-4.,4.}; \/* Listening space x-coordinates *\/$/;"	v
+Ly	m.globs.h	/^float Ly[]={4.,4.,-4.,-4.}; \/* Listening space y-coordinates *\/$/;"	v
+MAX	ug.lookup.c	10;"	d	file:
+MAXTIME	ug.zdelay.c	8;"	d	file:
+MIN	ug.lookup.c	9;"	d	file:
+Maxamp	m.globs.h	/^float Maxamp;		\/* Maximum amplitude generated *\/$/;"	v
+Maxecho	m.globs.h	/^float Maxecho;		\/* Maximum echo amplitude generated *\/$/;"	v
+Maxreverb	m.globs.h	/^float Maxreverb;	\/* Maximum reverb amplitude generated *\/$/;"	v
+Mergeflag	m.globs.h	/^int Mergeflag;		\/* Merge flag *\/$/;"	v
+Merging	m.globs.h	/^int Merging;		\/* Merge-in-progress flag *\/$/;"	v
+N	ug.blp.c	9;"	d	file:
+NAs	m.globs.h	/^int   NAs = 4;		\/* Number of acoustic space surfaces *\/$/;"	v
+NCF	mm.sndout.c	73;"	d	file:
+NEWNODE	m.defs.h	32;"	d
+NL	m.defs.h	33;"	d
+NLs	m.globs.h	/^int   NLs = 4;		\/* Number of listening surfaces *\/$/;"	v
+NOICNT	ug.fltdelay.c	31;"	d	file:
+NOISE	ug.fltdelay.c	22;"	d	file:
+NOW	ug.fltdelay.c	27;"	d	file:
+NOW	ug.space.c	11;"	d	file:
+NOW	ug.zdelay.c	11;"	d	file:
+NUM	ug.div.c	5;"	d	file:
+Nb	m.structs.h	/^    int  Nb, bmax;  		\/* no. io blocks used, max index of any block *\/$/;"	m	struct:ins_struct
+Nc	m.structs.h	/^    int  Nc;        		\/* no. called funcs used *\/$/;"	m	struct:ins_struct
+Nchan	m.globs.h	/^long Nchan = 1;		\/* Number of channels (default) *\/$/;"	v
+Nd	m.structs.h	/^    int  Nd, dmax;  		\/* no. dynamic vars used, max index of any *\/$/;"	m	struct:ins_struct
+Nf	m.structs.h	/^    int  Nf, fmax;  		\/* no. stored funcs used, max index of any *\/$/;"	m	struct:ins_struct
+Ngen	m.globs.h	/^long Ngen;		\/* Samples to generate at 1 time (<= Lblocks) *\/$/;"	v
+Nins	m.globs.h	/^long Nins;		\/* Number of instruments currently defined *\/$/;"	v
+Nn	m.structs.h	/^    int  Nn;			\/* no. literal constants used *\/$/;"	m	struct:ins_struct
+Nooutput	m.globs.h	/^long Nooutput;		\/* Nooutput flag *\/$/;"	v
+Notify	m.globs.h	/^long Notify;		\/* Notification flag *\/$/;"	v
+Now	m.globs.h	/^float Now;		\/* Synthesis complete time *\/$/;"	v
+Np	m.structs.h	/^    int  Np, pmax;  		\/* no. params used, max index of any param *\/$/;"	m	struct:ins_struct
+Nparams	m.globs.h	/^long Nparams = 20;	\/* Number of note parameters (default) *\/$/;"	v
+Ns	m.structs.h	/^    int  Ns, smax;  		\/* no. string vars used, max index of any *\/$/;"	m	struct:ins_struct
+Nsamp	m.globs.h	/^long Nsamp;		\/* Samples\/synthesis run *\/$/;"	v
+Nug	m.structs.h	/^    int  Nug;       		\/* no. unit generators used *\/$/;"	m	struct:ins_struct
+Nv	m.structs.h	/^    int  Nv, vmax;  		\/* no. static vars used, max index of any *\/$/;"	m	struct:ins_struct
+Nvars	m.globs.h	/^long Nvars = 20;	\/* Number of static variables (default) *\/$/;"	v
+OLD	ug.splice.c	14;"	d	file:
+OLDER	ug.splice.c	15;"	d	file:
+OLDEST	ug.splice.c	16;"	d	file:
+OLDIN	ug.fltdelay.c	39;"	d	file:
+OLDOUT	ug.fltdelay.c	38;"	d	file:
+OLDPIT	ug.fltdelay.c	36;"	d	file:
+OLDVAL	ug.fltdelay.c	37;"	d	file:
+OMAX	ug.map.c	9;"	d	file:
+OMIN	ug.map.c	8;"	d	file:
+ONSET	ug.fltdelay.c	19;"	d	file:
+OS	m.defs.h	34;"	d
+OUT	ug.defs.h	49;"	d
+Offset	m.globs.h	/^float *Offset;		\/* Offset of piece *\/$/;"	v
+Outblock	m.globs.h	/^float *Outblock;	\/* Output buffer *\/$/;"	v
+Outfile	m.globs.h	/^FILE *Outfile;		\/* Output file *\/$/;"	v
+Outfilename	m.globs.h	/^char *Outfilename;	\/* Name of Output file *\/$/;"	v
+Outptr	m.globs.h	/^float *Outptr;		\/* Spare output buffer pointer *\/$/;"	v
+P2	mm.merge.c	4;"	d	file:
+P4	mm.merge.c	5;"	d	file:
+PERIOD	ug.sah.c	6;"	d	file:
+PI	ug.space.c	30;"	d	file:
+PI2	ug.space.c	29;"	d	file:
+PIPEPTR	ug.showpath.c	9;"	d	file:
+PITCH	ug.fltdelay.c	14;"	d	file:
+PInfile	m.globs.h	/^FILE *PInfile;		\/* Saved Input file *\/$/;"	v
+PLACE	ug.fltdelay.c	20;"	d	file:
+PLACE	ug.trans.c	8;"	d	file:
+PLOC	ug.defs.h	58;"	d
+PLOC	ug.defs.h	62;"	d
+POS	ug.delay.c	11;"	d	file:
+POS	ug.rah.c	8;"	d	file:
+POS	ug.ran.c	8;"	d	file:
+POSTOPS	mm.expr.c	9;"	d	file:
+PROUT	m.defs.h	37;"	d
+PVAL	ug.defs.h	57;"	d
+PVAL	ug.defs.h	61;"	d
+Params	m.globs.h	/^float *Params;		\/* Note parameters *\/$/;"	v
+Pi	m.globs.h	/^double Pi; 			\/* Computed to working accuracy *\/$/;"	v
+Pi2	m.globs.h	/^double Pi2;			\/* Computed to working accuracy *\/$/;"	v
+Pmax	m.globs.h	/^long Pmax;		\/* Max index of any referenced P *\/$/;"	v
+Pp	m.globs.h	/^float *Pp;		\/* Spare note parameter pointer *\/$/;"	v
+R	ug.airabsorb.c	11;"	d	file:
+R	ug.nres.c	19;"	d	file:
+RATIO	ug.illus.c	13;"	d	file:
+RORIG	ug.version.c	19;"	d	file:
+Reflect	m.globs.h	/^float Reflect = 1.;	\/* Reflected path distance amplifier *\/$/;"	v
+Revscale	m.globs.h	/^float Revscale=.08;	\/* Global reverb input scale *\/$/;"	v
+Revthresh	m.globs.h	/^float Revthresh=.0001;	\/* Reverb tail cancellation threshold *\/$/;"	v
+Rflag	m.globs.h	/^int  Rflag;		\/* Nonzero if R flag was given on command line *\/$/;"	v
+S1	m.defs.h	56;"	d
+S2	m.defs.h	57;"	d
+S3	m.defs.h	58;"	d
+SBRK	m.defs.h	40;"	d
+SCALE	ug.airabsorb.c	12;"	d	file:
+SCALE	ug.nres.c	20;"	d	file:
+SDELAY	ug.fltdelay.c	35;"	d	file:
+SEGLEN	ug.trans.c	7;"	d	file:
+SEGNO	ug.trans.c	6;"	d	file:
+SEMIC	m.defs.h	41;"	d
+SEQ	m.defs.h	42;"	d
+SFINC	m.defs.h	48;"	d
+SFLD	m.defs.h	50;"	d
+SHRINK	ug.fltdelay.c	33;"	d	file:
+SIGNAL	ug.test.c	9;"	d	file:
+SIGS	m.defs.h	53;"	d
+SKIP	m.defs.h	54;"	d
+SLOC	ug.defs.h	67;"	d
+STARTFLAG	ug.defs.h	72;"	d
+STARTNOTE	ug.defs.h	74;"	d
+STEPS	ug.quant.c	9;"	d	file:
+STIFF	ug.fltdelay.c	23;"	d	file:
+STORE	m.defs.h	55;"	d
+STRTCH	ug.fltdelay.c	34;"	d	file:
+SUM	ug.freq.c	9;"	d	file:
+SUM	ug.integ.c	7;"	d	file:
+SUM	ug.iosc.c	10;"	d	file:
+SUM	ug.osc.c	10;"	d	file:
+SUM	ug.seg.c	9;"	d	file:
+SUM	ug.shape.c	8;"	d	file:
+SUM	ug.version.c	25;"	d	file:
+SUM1	ug.blp.c	10;"	d	file:
+SUM2	ug.blp.c	11;"	d	file:
+SVAL	ug.defs.h	65;"	d
+Sampout	m.globs.h	/^short *Sampout;		\/* Sample output buffer pointer *\/$/;"	v
+Sfbsize	m.globs.h	/^long Sfbsize = 4*1024;	\/* Soundfile buffer size *\/$/;"	v
+Spaceon	m.globs.h	/^int Spaceon;		\/* Spatial processing flag *\/$/;"	v
+Spacereset	m.globs.h	/^int Spacereset;		\/* Spatial processing reset flag *\/$/;"	v
+Spacewason	m.globs.h	/^int Spacewason;		\/* Spatial processing souvenir *\/$/;"	v
+Srate	m.globs.h	/^long Srate = LDEFSR;	\/* Sampling rate (samples\/second\/channel) (default) *\/$/;"	v
+Strmax	m.globs.h	/^long Strmax;		\/* Max index of any referenced S *\/$/;"	v
+Strp	m.globs.h	/^char **Strp;		\/* Spare static string pointer *\/$/;"	v
+Strvars	m.globs.h	/^char **Strvars;		\/* Pointers to static string variables *\/$/;"	v
+Sx	m.globs.h	/^float Sx[]={4.,-4.,-4.,4.}; \/* Speaker x-coordinates *\/$/;"	v
+Sy	m.globs.h	/^float Sy[]={4.,4.,-4.,-4.}; \/* Speaker y-coordinates *\/$/;"	v
+T	ug.trans.c	9;"	d	file:
+T60mult	m.globs.h	/^float T60mult=.83;	\/* T60 multiplier *\/$/;"	v
+TABLE	ug.band.c	12;"	d	file:
+TABLE	ug.delay.c	9;"	d	file:
+TABLE	ug.fltdelay.c	16;"	d	file:
+TABLE	ug.freq.c	8;"	d	file:
+TABLE	ug.illus.c	14;"	d	file:
+TABLE	ug.iosc.c	9;"	d	file:
+TABLE	ug.lookup.c	7;"	d	file:
+TABLE	ug.osc.c	9;"	d	file:
+TABLE	ug.seg.c	8;"	d	file:
+TABLE	ug.shape.c	7;"	d	file:
+TAU	ug.smooth.c	6;"	d	file:
+TAU	ug.space.c	35;"	d	file:
+TAU	ug.version.c	18;"	d	file:
+TEMP	ug.test.c	12;"	d	file:
+TERM	test.defs.h	4;"	d
+THETA	ug.space.c	23;"	d	file:
+THETAS	ug.space.c	18;"	d	file:
+TIME	ug.band.c	13;"	d	file:
+TIME	ug.test.c	11;"	d	file:
+TO	ug.rah.c	10;"	d	file:
+TO	ug.ran.c	10;"	d	file:
+TWOPI	m.defs.h	59;"	d
+TYPE	ug.defs.h	70;"	d
+Tempo	m.globs.h	/^float *Tempo;		\/* Tempo of piece *\/$/;"	v
+Time	m.globs.h	/^float Time;		\/* Current action time *\/$/;"	v
+Timer	m.globs.h	/^long Timer;		\/* Timer flag *\/$/;"	v
+UG	m.defs.h	60;"	d
+UGEND	ug.defs.h	47;"	d
+UGHEAD	ug.defs.h	35;"	d
+UGINIT	ug.defs.h	42;"	d
+UGLOOP	ug.defs.h	45;"	d
+UNLINK	m.defs.h	31;"	d
+UNOPS	mm.expr.c	7;"	d	file:
+UNREC	m.defs.h	63;"	d
+UNUSED	ug.space.c	8;"	d	file:
+USAGE	m.defs.h	64;"	d
+V	ug.trans.c	10;"	d	file:
+VAL	ug.defs.h	54;"	d
+Vars	m.globs.h	/^float *Vars;		\/* Static variables *\/$/;"	v
+Verbose	m.globs.h	/^long Verbose;		\/* Verbosity flag *\/$/;"	v
+Vmax	m.globs.h	/^long Vmax;		\/* Max index of any referenced V *\/$/;"	v
+Vp	m.globs.h	/^float *Vp;		\/* Spare static variable pointer *\/$/;"	v
+WHERE	ug.janus.c	9;"	d	file:
+WHICH	ug.illus.c	12;"	d	file:
+X	ug.airabsorb.c	7;"	d	file:
+X	ug.showpath.c	6;"	d	file:
+X	ug.space.c	21;"	d	file:
+XM1	ug.airabsorb.c	15;"	d	file:
+XM1	ug.flt.c	14;"	d	file:
+XM1	ug.nres.c	15;"	d	file:
+XM2	ug.airabsorb.c	16;"	d	file:
+XM2	ug.flt.c	15;"	d	file:
+XM2	ug.nres.c	16;"	d	file:
+XS	ug.space.c	16;"	d	file:
+Y	ug.airabsorb.c	8;"	d	file:
+Y	ug.showpath.c	7;"	d	file:
+Y	ug.space.c	22;"	d	file:
+YM1	ug.airabsorb.c	17;"	d	file:
+YM1	ug.flt.c	16;"	d	file:
+YM1	ug.nres.c	17;"	d	file:
+YM2	ug.airabsorb.c	18;"	d	file:
+YM2	ug.flt.c	17;"	d	file:
+YM2	ug.nres.c	18;"	d	file:
+YS	ug.space.c	17;"	d	file:
+a_index	m.structs.h	/^    int  a_index; 		\/* index, if any (e.g., 3 for p3) *\/$/;"	m	struct:ug_adesc
+a_type	m.structs.h	/^    char a_type; 		\/* arg type [bvdpfc] *\/$/;"	m	struct:ug_adesc
+allpass	mm.sndout.c	/^float allpass(n,x) int n; float x; {$/;"	f
+arg_c	m.structs.h	/^    int (*arg_c)(); 		\/* ptr to function call for this ug *\/$/;"	m	struct:ug_list
+arg_list	m.structs.h	/^    struct ug_adesc *arg_list; 	\/* ptr to arg descriptor list for this ug *\/$/;"	m	struct:ug_list
+arg_ptr	ug.defs.h	/^union arg_ptr{ \/* args may be float or function pointers, etc. *\/$/;"	u
+askname	m.askname.c	/^askname(question, answer) char *question, *answer;{$/;"	f
+bc	m.globs.h	/^long bc;$/;"	v
+bmax	m.structs.h	/^    int  Nb, bmax;  		\/* no. io blocks used, max index of any block *\/$/;"	m	struct:ins_struct
+catch	mm.merge.c	/^catch(){$/;"	f
+cleanmrg	mm.merge.c	/^cleanmrg(){$/;"	f
+comb	mm.sndout.c	/^float comb(n,x) int n; float x; {$/;"	f
+discsamp	ug.version.c	161;"	d	file:
+discsamp	ug.version.c	68;"	d	file:
+dlist	m.structs.h	/^    float *dlist;		\/* pointer to dynamic (linear) list *\/$/;"	m	struct:note_struct
+dmax	m.structs.h	/^    int  Nd, dmax;  		\/* no. dynamic vars used, max index of any *\/$/;"	m	struct:ins_struct
+do_delay	ug.space.c	/^float do_delay(buf,len,now,tau) float buf[]; float tau; long len, now;{$/;"	f
+dp	ug.defs.h	/^    double **dp; $/;"	m	union:arg_ptr
+errno	ug.trans.c	/^int	errno ;$/;"	v
+expr	mm.expr.c	/^float expr(string) char *string;{$/;"	f
+f	ug.defs.h	/^    float (*f)();$/;"	m	union:arg_ptr
+f_index	m.structs.h	/^    int f_index;		\/* index of function *\/$/;"	m	struct:func_struct
+f_len	m.structs.h	/^    float f_len;		\/* length of function *\/$/;"	m	struct:func_struct
+f_vals	m.structs.h	/^    float *f_vals;		\/* pointer to values *\/$/;"	m	struct:func_struct
+field	mm.field.c	/^field(string, iglist,  brklist) char *string, *iglist, *brklist;{$/;"	f
+fileptr	ug.defs.h	/^    FILE **fileptr;$/;"	m	union:arg_ptr
+fld	m.globs.h	/^char fld[1024], sfld[1024], ugn[1024], *sp;$/;"	v
+flt_bug	ug.flt.c	/^int flt_bug = -1;$/;"	v
+fmax	m.structs.h	/^    int  Nf, fmax;  		\/* no. stored funcs used, max index of any *\/$/;"	m	struct:ins_struct
+fp	m.globs.h	/^struct func_struct *fp;$/;"	v
+fp	ug.defs.h	/^    float **fp; $/;"	m	union:arg_ptr
+fp3alloc	ug.space.c	/^float *** fp3alloc(x,y,z) register int x,y,z; {$/;"	f
+fp3free	ug.space.c	/^fp3free(fp3,x,y,z) register float ***fp3; register int x,y,z; {$/;"	f
+fplist	m.globs.h	/^struct func_struct *fplist;	\/* Functions *\/$/;"	v
+func_struct	m.structs.h	/^struct func_struct {		\/* entry in (linked) function list *\/$/;"	s
+generator	mm.gen.c	/^generator(){$/;"	f
+getcut	ug.space.c	/^float getcut(x1,y1,x2,y2) float x1,y1,x2,y2; {$/;"	f
+getfield	m.getfield.c	/^getfield(infile, string, iglist,  brklist, listfile)$/;"	f
+getp2	m.getp2.c	/^float getp2(s)$/;"	f
+getp4	m.getp4.c	/^float getp4(s)$/;"	f
+getrefl	ug.space.c	/^getrefl(sx,sy,cx,cy,s,rx,ry)$/;"	f
+gettime	m.gettime.c	/^gettime(){return(time(0));}$/;"	f
+init	cmusic.c	/^init(){$/;"	f
+ins	m.globs.h	/^struct ins_struct *ins;$/;"	v
+ins_name	m.structs.h	/^    char *ins_name; 		\/* string ptr to name of instrument *\/$/;"	m	struct:ins_struct
+ins_struct	m.structs.h	/^struct ins_struct {		\/* entry in (linked) instrument list *\/$/;"	s
+inslist	m.globs.h	/^struct ins_struct *inslist;	\/* Instrument definitions *\/$/;"	v
+instrument	mm.ins.c	/^instrument(){$/;"	f
+jonty	ug.sndfile.c	/^int	jonty=0;$/;"	v
+l	ug.defs.h	/^    long  *l;$/;"	m	union:arg_ptr
+log2e	ug.trans.c	/^static float	log2e	= 1.4426950408889634073599247 ;$/;"	v	file:
+main	cmusic.c	/^main(argc,argv,envp) int argc; char *argv[], **envp;{$/;"	f
+maxf	ug.trans.c	/^static double	maxf	= 10000 ;$/;"	v	file:
+merge	mm.merge.c	/^char *merge(){$/;"	f
+mfn	mm.merge.c	/^char mfn[16];$/;"	v
+mkmrgfn	mm.merge.c	/^char *mkmrgfn(fn, n) char fn[]; int n; {$/;"	f
+n_arg	m.structs.h	/^    int n_arg;         		\/* no. args to be supplied to this ug *\/$/;"	m	struct:ug_list
+n_dur	m.structs.h	/^    float n_dur;		\/* duration *\/$/;"	m	struct:note_struct
+n_end	m.structs.h	/^    float n_end;		\/* ending time *\/$/;"	m	struct:note_struct
+n_flags	m.structs.h	/^    int n_flags;		\/* action flags *\/$/;"	m	struct:note_struct
+n_ins	m.structs.h	/^    char *n_ins;		\/* instrument *\/$/;"	m	struct:note_struct
+n_list	m.structs.h	/^    float *n_list;		\/* ptr to (linear) literals list *\/$/;"	m	struct:ins_struct
+n_start	m.structs.h	/^    float n_start;		\/* starting time *\/$/;"	m	struct:note_struct
+next_fp	m.structs.h	/^    struct func_struct *next_fp;\/* link to next function definition *\/$/;"	m	struct:func_struct
+next_ins	m.structs.h	/^    struct ins_struct *next_ins;\/* link to next instrument definition *\/$/;"	m	struct:ins_struct
+next_note	m.structs.h	/^    struct note_struct *next_note;\/* link to next note definition *\/$/;"	m	struct:note_struct
+next_uarg	m.structs.h	/^    struct ug_adesc *next_uarg;	\/* link to next arg descriptor *\/$/;"	m	struct:ug_adesc
+next_ug	m.structs.h	/^    struct ug_list *next_ug; 	\/* link to next ug descriptor *\/$/;"	m	struct:ug_list
+nflag	m.globs.h	/^int  nflag;		\/* Nonzero if n flag was given on command line *\/$/;"	v
+nlist	m.structs.h	/^    float *nlist;		\/* pointer to number (linear) list *\/$/;"	m	struct:note_struct
+note	m.globs.h	/^struct note_struct *note;$/;"	v
+note_struct	m.structs.h	/^struct note_struct {		\/* entry in (linked) note list *\/$/;"	s
+notelist	m.globs.h	/^struct note_struct *notelist;	\/* Notes *\/$/;"	v
+nparams	m.structs.h	/^    int nparams;		\/* length of parameter list *\/$/;"	m	struct:note_struct
+offset	mm.offset.c	/^offset(){$/;"	f
+oflag	m.globs.h	/^int  oflag;		\/* Nonzero if -o flag was given on command line *\/$/;"	v
+p0	ug.trans.c	/^static double	p0	= .2080384346694663001443843411e7 ;$/;"	v	file:
+p1	ug.trans.c	/^static double	p1	= .3028697169744036299076048876e5 ;$/;"	v	file:
+p2	ug.trans.c	/^static double	p2	= .6061485330061080841615584556e2 ;$/;"	v	file:
+play	mm.play.c	/^play(){$/;"	f
+plist	m.structs.h	/^    float *plist;		\/* pointer to parameter (linear) list *\/$/;"	m	struct:note_struct
+pmax	m.structs.h	/^    int  Np, pmax;  		\/* no. params used, max index of any param *\/$/;"	m	struct:ins_struct
+print	mm.print.c	/^print(string) char *string;{$/;"	f
+printout	mm.printout.c	/^printout(){$/;"	f
+q0	ug.trans.c	/^static double	q0	= .6002720360238832528230907598e7 ;$/;"	v	file:
+q1	ug.trans.c	/^static double	q1	= .3277251518082914423057964422e6 ;$/;"	v	file:
+q2	ug.trans.c	/^static double	q2	= .1749287689093076403844945335e4 ;$/;"	v	file:
+s	ug.defs.h	/^    char  *s;$/;"	m	union:arg_ptr
+section	mm.sec.c	/^section(){$/;"	f
+set	mm.set.c	/^set(){$/;"	f
+sfd	ug.defs.h	/^    struct sndesc **sfd;$/;"	m	union:arg_ptr
+sfield	m.sfield.c	/^sfield(input,string,iglist,brklist) char **input, *string, *iglist, *brklist;{$/;"	f
+sfld	m.globs.h	/^char fld[1024], sfld[1024], ugn[1024], *sp;$/;"	v
+smax	m.structs.h	/^    int  Ns, smax;  		\/* no. string vars used, max index of any *\/$/;"	m	struct:ins_struct
+snd	ug.defs.h	/^    struct sndesc **snd;$/;"	m	union:arg_ptr
+sndout	mm.sndout.c	/^sndout(){$/;"	f
+sp	m.globs.h	/^char fld[1024], sfld[1024], ugn[1024], *sp;$/;"	v
+sqrt2	ug.trans.c	/^static double	sqrt2	= 1.4142135623730950488016887 ;$/;"	v	file:
+sqz0s	mm.merge.c	/^sqz0s(s) char s[];{$/;"	f
+ssinsert	mm.expr.c	/^ssinsert(s,a,b,new) char *s, *a, *b, *new;{$/;"	f
+synthesize	mm.synth.c	/^synthesize(){$/;"	f
+tempo	mm.tempo.c	/^tempo(){$/;"	f
+terminate	mm.ter.c	/^terminate(){$/;"	f
+tersim	mm.tersim.c	/^tersim(){$/;"	f
+tflag	m.globs.h	/^int  tflag;		\/* Nonzero if t flag was given on command line *\/$/;"	v
+trans	m.trans.c	/^trans(a, alpha, b, n, output) $/;"	f
+transexp	ug.trans.c	/^float transexp(arg) float arg ; {$/;"	f
+uarg	m.globs.h	/^struct ug_adesc *uarg;$/;"	v
+ug	m.globs.h	/^struct ug_list *ug;$/;"	v
+ug_adesc	m.structs.h	/^struct ug_adesc {		\/* ug argument descriptor *\/$/;"	s
+ug_arglist	ug.defs.h	/^    char *ug_arglist;		\/* symbolic argument list description *\/$/;"	m	struct:ug_desc
+ug_call	ug.defs.h	/^    int  (*ug_call)();		\/* pointer to ug code *\/$/;"	m	struct:ug_desc
+ug_desc	ug.defs.h	/^struct ug_desc{			\/* unit generator table entry *\/$/;"	s
+ug_flags	m.structs.h	/^    long *ug_flags;		\/* pointer to ugflag (linear) list *\/$/;"	m	struct:note_struct
+ug_list	m.structs.h	/^struct ug_list {		\/* ug entry in instrument list *\/$/;"	s
+ug_name	ug.defs.h	/^    char *ug_name;		\/* ug symbolic name *\/$/;"	m	struct:ug_desc
+ug_vec	ug.globs.h	/^struct ug_desc ug_vec[] = {$/;"	v
+ugn	m.globs.h	/^char fld[1024], sfld[1024], ugn[1024], *sp;$/;"	v
+ugp	m.structs.h	/^    struct ug_list *ugp; 	\/* ptr to unit generator list for this ins *\/$/;"	m	struct:ins_struct
+up	m.globs.h	/^struct ug_desc *up;		\/* Unit generator descriptions *\/$/;"	v
+v	ug.defs.h	/^    float *v; $/;"	m	union:arg_ptr
+variable	mm.var.c	/^variable(){$/;"	f
+vflag	m.globs.h	/^int  vflag;		\/* Nonzero if v flag was given on command line *\/$/;"	v
+vmax	m.structs.h	/^    int  Nv, vmax;  		\/* no. static vars used, max index of any *\/$/;"	m	struct:ins_struct
+within	ug.space.c	/^within(x,y) float x,y;{$/;"	f

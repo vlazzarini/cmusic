@@ -1,0 +1,98 @@
+libfrm - frm's library: expr, polish, getfloat, putfloat, etc.
+
+DESCRIPTION:
+To access routines in libfrm, just include "-lfrm" with the "cc"
+command.  Many of these routines use math library routines, so you may
+also need "-lm" after the "-lfrm".  You should also put the statement
+    #include <carl/frm.h>
+at the head of your program.  Routines available are:
+
+asciifile - a little program for determining if a file is ascii or not.
+
+	    Synopsis:      asciifile(fpt)
+		           FILE *fpt;
+
+	    fpt must point to a file which is already open for
+	    reading.  asciifile returns a 1 if the file is ascii and a
+	    0 otherwise.  It does this by looking at the first several
+	    (100) characters in the file with the isascii() function
+	    (see "man ctype(3)"). It leaves the file in a rewound state
+	    so that the next read will start at the beginning of the
+	    file.
+
+polish - a general purpose reverse polish list parser (say "man polish" for
+	details)
+
+expr   - a general purpose arithmetic expression evaluator.
+
+	Synopsis:	extern int exprerr;
+			float expr(string)
+			 char *string;
+
+	The string may be any null-terminated expression consisting of
+	numbers (all are interpreted as floats whether they have decimal
+	points or not), parentheses, or any of the following operators:
+	The external variable exprerr is set to a non-zero value should
+	expr detect an error in the expression.
+
+	Unary operators:
+	sin() cos() atan() ln() exp() floor() abs() sqrt() rand()
+	    (all functions are from the UNIX math library except for rand, 
+	    which returns a random value between zero and its argument).
+	-
+	    (unary minus)
+
+	Binary operators:
+	^ % 
+	    ("a^b" means "a to the power of b"; "a%b" means "a modulo b")
+	* / 
+	    (multiplication and division)
+	+ - 
+	    (addition and subtraction)
+
+	Post operators:
+	dB 
+	    ("0dB" is defined as 1.0, "-6dB" is defined as 0.5, etc)
+
+getfloat and putfloat - routines to read and write one float value at a
+			time from stdin and stdout, efficiently
+
+	Synopsis:	int getfloat(floatptr)
+			     float *floatptr;
+
+			int putfloat(floatptr)
+			     float *floatptr;
+			
+			int flushfloat()
+
+			int fgetfloat(floatptr, stream)
+			     float *floatptr;
+			     FILE *stream;
+
+	These routines either get a single float value from stdin (or
+	from in input stream associated with a file or pipe), or put a
+	single float value on stdout in an efficient manner (they are
+	more efficient than fread and fwrite, for example).  They
+	return a positive value if successful, 0 on EOF (getfloat), and
+	a negative value on error.  Note that getfloat, fgetfloat and
+	putfloat require a pointer to a single float as their
+	argument.  flushfloat should be called after the final call to
+	putfloat (or at any other time) to flush the final, possibly
+	partial, buffer.
+
+trans - interpolation routine with transition parameter
+
+	Synopsis:	trans(a, alpha, b, n, output) 
+			    float a, alpha, b, *output; 
+			    int n;
+
+	Trans computes a transition from a to b in n steps according to
+	transition parameter alpha. It stores the resulting n values
+	starting at the location pointed to by output. alpha = 0 will
+	yield a straight line; alpha < 0 will yield an exponential
+	transition, alpha > 0 will yield an inverse exponential
+	transition, according to the formula:
+
+    output[i] = a + (b - a)*(1 - exp( i*alpha/(n-1) )) / (1 - exp(alpha)) 
+
+	for 0 <= i < n .

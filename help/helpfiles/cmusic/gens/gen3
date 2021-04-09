@@ -1,0 +1,15 @@
+gen3 - simple line segment function generator similar to the MUSIC V GEN 3:
+
+	gen T gen3 F  v1 v2 ... vN ;
+
+The arbitrarily long list of values v1, ..., vN specify relative amplitude
+at equally spaced points along a (closed) function. Thus
+
+	gen 0 gen3 f2    0 1 1 0 ;
+
+specifies a trapezoidal function which has 3 parts: the first rises in a
+straight line from 0 to 1, the second is steady at 1, and the third falls
+from 1 to 0.  If all values are positive, the function is scaled to be 
+only positive.  All negative values result in an all negative function.  
+Values may be both positive and negative, resulting in a function which 
+ranges between +1 and -1.

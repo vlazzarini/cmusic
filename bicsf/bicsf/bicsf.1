@@ -1,0 +1,76 @@
+.TH BICSF 1 BICSF "1st Edition" "Berkely/IRCAM/CARL Sound Filesystem"
+.SH NAME
+BICSF \- Berkeley/IRCAM/CARL Sound Filesystem Description
+.SH SYNOPSIS
+.nf
+aireset \- reset the MTU Digisound-16 converters
+catsf, sndcat \- joins soundfiles sequentially
+cdsf \- change soundfile directory
+chgrpsf \- change soundfile group permissions
+chmodsf \- change soundfile protection
+chownsf \- chagen soundfile ownership
+cpsf \- copy soundfile(s)
+createsf, sfcreate \- create soundfile with header, or change existing header
+dsrecord, record \- record sound from Digital Sound Corp. DSC-200 ADC converters 
+fromsf, sndin \- write samples from a soundfile into a pipe.
+gainsf, sndgain \- variable gain scale of a soundfile
+lsf \- list contents of soundfile directories
+mkdirsf \- make soundfile directory
+monitor, aimonitor \- check amplitude of MTU Digisound-16 ADC output
+mvsf \- move soundfile
+normsf, sndnorm \- rescales the amplitude of a soundfile 
+pansf, sndpan \- pans a monophonic soundfile between two output channels 
+peaksf, sndpeak  \- find the maximum amplitude in a soundfile.
+play, aiplay \- play a soundfile with MTU Digisound\-16 DACs
+play, dsplay \- play UNIX soundfile(s) through Digital Sound Corp. DSC-200 DACs 
+pwdsf \- print working soundfile directory
+querysf, sndinfo \- reports the information stored in soundfile header 
+record, airecord \- record a soundfile using MTU Digisound-16 ADCs
+restorsf \- reads CARL "dumpsf" format tapes into UNIX soundfiles. 
+retrosf, sndreverse \- write out a soundfile backwards.
+rmdirsf \- remove soundfile directory
+rmsf \- remove soundfile(s) 
+scalesf, sndscale, \- rescale soundfile and add offset to avoid IRCAM DAC noise
+setsf, sndset \- edit a soundfile header.
+sndawk \- signal processing language
+swabsf \- swap bytes between shortsam input and output.
+tarsf \- tape archiver for either CARL or UNIX soundfiles
+tosf, sndout \- write samples from a pipe into a soundfile.
+transpsf, transpsf \- variable soundfile transposition using breakpoint functions
+xdrin  \- converts data from another machine into a header and samples
+xdrout  \- converts a procom header and samples into external data representation
+.SH DESCRIPTION
+The programs listed above implement a soundfile system based on the Berkeley
+Fast Filesystem.  
+.LP
+BICSF was developed to address three distinct weaknesses which UNIX has in recording, 
+storing, manipulating and playing back high quality digital sound. The
+problems are data volume, data bandwidth and bookkeeping.
+Each of these problems goes beyond what can be handled 
+conveniently by the regular file system, so a special file 
+system just for sound has been constructed, called the csound
+file system.
+.LP
+The commands which make up the system are described above in
+the SYNOPSIS.  Manual pages exist for them all.  There is a
+tutorial as well.  
+.SH "SEE ALSO"
+Marshall Kirk McKusick, William N. Joy,
+Samuel J. Leffler, Robert S. Fabry, \fIA Fast File System for UNIX\fP, memo. of
+the Computer Systems Research Group
+Computer Science Division
+Department of Electrical Engineering and Computer Science
+University of California, Berkeley.
+.LP
+Gareth Loy,
+\fIIntroduction to BICSF, the Berkeley/IRCAM/CARL Sound Filesystem\fP,
+memo of the Computer Audio Research Laboratory, CME, UCSD, La Jolla, CA.
+.LP
+.SH AUTHORS
+The Berkeley Fast Filesystem was developed by K. McKusic and W. Joy.
+Most of this code was developed by Rob Gross and Dan
+Timis at IRCAM.  Their work was based on the earlier \fIcsound\fP(1carl)
+filesystem developed by Gareth Loy at CARL.  Other contributors
+include Brad Garton, who wrote the ai driver and user software for the
+Digisound-16 converters.  This release of the software was organized by
+Gareth Loy.  Other authors are cited individually in the various manual pages.

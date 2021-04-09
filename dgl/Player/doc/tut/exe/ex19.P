@@ -1,0 +1,25 @@
+Player drawer(0, 10, P_READY, 3)
+{
+	P_start {
+		Silent(Self);
+		P4 = frand(.1, 2.);
+	}
+	P2 = Abs_time();
+	P5 = frand(0., 1.);
+	Wait_until(P2 + P4);
+}
+
+Player looker(0, 10)
+{
+	Player *p;
+	int i = 0;
+
+	P_start { Silent(Self); }
+
+	for (p = Instances(drawer); p != NULL; p = Next_instance(p))
+		printf("%3.3f ", P(p, 5));
+	printf("\n");
+	P2 = Abs_time();
+	P4 = 1.0;
+	Wait_until(P2 + P4);
+}

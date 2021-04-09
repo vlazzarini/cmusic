@@ -1,0 +1,83 @@
+show, fshow, yshow - crude CRT display hacks for sample data
+
+usage: 
+show [flags] < floatsams > text
+fshow [flags] < floatsams > text
+yshow [flags] < floatsams > text
+ Input must be a file or pipe.
+ flags:
+ -lN = set lower bound of display to N (-1)
+ -uN = set upper bound of display to N (+1)
+ -mN = set upper and lower bounds to + and - N ([-1,+1])
+ -RN = show time instead of sample number using sampling rate N
+	(not available with yshow)
+ -aN = display average of N seconds of samples.
+ -eN = display mean squared energy of N seconds of samples
+ -sN = skip output by N seconds worth of samples of input
+ -bN = skip N seconds of input before displaying
+ -EN = end display at time N seconds
+ -dN = display for a duration of N seconds
+ -Cc = show sample value as character c ('*')
+ -Hc = histogram mode using character c ('-')
+ -SN = skip screen display by N character positions on refresh (15)
+	(only available on yshow)
+All durations are in seconds.  Use postop 'S' for sample times.
+Arguments may be expressions.
+
+The show program will crudely plot a waveform on a CRT terminal.  fshow
+is a version of show that uses the curses(3) cursor optimization package
+and is substantially faster than show.  yshow also uses curses, and
+has the peculiarity of scrolling the waveform right to left instead of
+down to up.
+
+Samples read must be binary floating point samples.
+If no range arguments are given, [-1 to +1] is used.  
+These are adjustable with -l and -u.
+The -m flag will set the lower bound to -(upper bound).
+
+Ordinarily, show displays every sample point given it.  This is tedious
+at best for large quantities of input.  You can condense the number of
+points to be displayed by several methods.  The -s flag skips over so
+many samples of data for each one displayed.  It takes an argument
+specifying time in seconds to skip by.  E.g., -s.001 skips by over
+millisecond's worth of input points for every output point.  You can
+take the average of a window of time with -aN, where again N is time in
+seconds.  Lastly, you can take the mean squared of a window size of
+time N with the flag -eN.  Averaging is good to compress waveforms of
+very long wavelength.  Mean squared is good to view the overall
+envelope.  You have to play with the value of N for each situation.
+
+The number of samples in a window is determined by the sampling rate.
+The default rate is 48K (49152) samples/second.  The default window
+size is 2.6 milliseconds.  Change the sampling rate with -RN, where N
+is the new sampling rate, e.g., -R16K.  Change it first before setting
+any other time variables.  yshow does not print sample numbers.
+
+Window size can also be set as samples duration rather than time by the
+use of the 'S' postoperator.  E.g., -e32S  tells show to use an
+averaging window of 32 samples.  (Without the 'S' postop, it would be
+32*49152 samples in size!)  All arguments may be expressions.  In particular,
+operators + - * /, and postoperators S and K are relevant.
+
+Histogram output can be obtained with -Hc  where the character  c
+immediately following the H will be the character used for the bars in
+the graph.  (It defaults to '-'.)  Similarly, you can change the
+character that indicates sample values with -C.
+
+Don't forget to express lower bound as a minus number if that's what
+you really intend.
+
+yshow scrolls 
+horizontally instead of vertically.  This means the sound travels
+right to left instead of bottom to top.  The advantage is that it
+shows 80 samples at a time instead of only 24.  The disadvantage is
+that its y axis quanitzation is only 24 instead of 80.  Thus, it
+is useful for looking at data that you need to view in approximately
+4 times larger chunks.  But you get less precision in what you see.
+Another advantage is that it gets rid of the neck strain involved in
+using show.
+By default, yshow "glitches" the sound across the screen in steps
+of 15 character positions.  This is adjustible by using the -SN flag,
+where N is a number from 1 to 80.  Setting it to 1 scrolls the screen
+left by one sample every time the screen is refreshed, similar to the way
+show scrolls the sound up 1 sample for each refresh.

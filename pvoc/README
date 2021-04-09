@@ -1,0 +1,9 @@
+
+	This directory contains a first release of a phase vocoder
+being developed at CARL.  The subroutine kaiser.f is extracted from
+FWFIR in the IEEE Programs for Digital Signal Processing distribution.
+The file pvoc.st is a sample output from pvoc with the -V option.
+The file pv.sc is a sample cmusic score for resynthesizing from
+phase vocoder analysis data.  The manual page and helpfile are 
+in the standard locations.
+

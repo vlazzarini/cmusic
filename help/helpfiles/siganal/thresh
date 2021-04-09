@@ -1,0 +1,14 @@
+thresh - detect samples exceeding a threshold
+
+usage:
+
+thresh [flags] < floatsams > output
+ flags:
+ -lN	set lower bound to N
+ -uN	set upper bound to N
+ -RN	set sample rate to N
+
+Input must be file or pipe.  If output is a file or pipe, thresh writes
+floatsams exceeding -l and -u values.  If output is terminal, it writes
+sample number, time (re. 48KHz unless changed), and sample value.
+Arguments may be expressions.

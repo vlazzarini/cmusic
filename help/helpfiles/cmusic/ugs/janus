@@ -1,0 +1,27 @@
+janus - smooth attack and decay of signal
+
+janus output[b] in[bvpn] front[vpn] back[vpn] where[d] ;
+
+janus simply copies its input to its output except at the beginning
+and end of a note.  During the first "front" seconds the amplitude
+is smoothed by an S-curve to avoid a click; it is similarly smoothed
+during the final "back" seconds of the note.  This is intended to
+provide a simple enveloping procedure for avoiding clicks at the
+beginning and end of a note, and is more efficient for this simple purpose
+(since it avoids redundant multiplications by 1.0) than other forms of
+enveloping.
+
+EXAMPLE:
+
+The following instrument turns on and off a full-amplitude sinewave without
+a click by smoothing over the initial and final 100 milliseconds.
+
+    #include <carl/cmusic.h>
+    ins 0 tj ;
+	osc		b1 p5 p6 f1 d ;
+	janus		b1 b1 .1 .1 d ;
+	out		b1 ;
+    end ;
+    SINE(f1) ;
+    note 0 tj 1 1 440Hz ;
+    ter ;

@@ -1,0 +1,39 @@
+ins - the cmusic instrument command
+
+The instrument command defines an instrument to be played by subsequent
+note statements in a cmusic score.  It has the general form:
+
+    ins T NAME;
+	UG_STATEMENTS;
+    end;
+
+where:
+    T             is the action time,
+    NAME          is the name of the instrument being defined,
+    UG_STATEMENTS is one or more unit generator statements which define the
+		  instrument, and
+    "end;"        signifies the end of the instrument definition.
+
+Instruments are generally defined at the beginning of the score, at time 0.
+The unit generators themselves are documented under:
+
+    help cmusic/ugs
+
+Example:
+    
+    ins 0 toot;				{define instrument toot}
+	seg	b1 p5 f2 d p7 0 p8;	{amp envelope with shape=f2, amp=p5, 
+					 att=p7, dec=p8}
+	osc	b1 b1 p6 f1 d;		{carrier with waveshape=f1, freq=p6}
+	out	b1;			{monophonic output}
+    end;				{end of definition}
+
+Note that it is illegal to use a p-field in a unit generator argument
+expression, since p-fields are not constants (their value changes from
+note to note).  For instance, the statement "osc  b1 p5 p6*.5 f1 d ;" is
+illegal due to the use of p6 in an expression for the third argument.
+
+It is possible to use bracketed index expressions for unit generator
+arguments, provided the expressions have a constant value.  For example
+the unit generator statement "osc b[1+v1] p[100-v2] p9 f[3+2] d ;" is
+legal and is equivalent to "osc b5 p8 p9 f5 d ;" if v1=4 and v2=92.

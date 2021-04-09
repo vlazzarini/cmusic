@@ -1,0 +1,37 @@
+/* fixed */
+/* bug avec Join ( EACH_CHILD)
+ * je m'attendais a voir imprimer l'heure a laquelle
+ * chaque enfant s'arrete . Au lieu de cela l 'heure finale
+ * d'arret du dermier enfant est imprime'e autant de fois
+ * qu' il existe d'enfants.
+ */
+
+Player pp()
+{
+	P6 = 0 ;	
+	P2 = Abs_time() ;
+	Wait_until(P2 + P4) ;
+}
+
+typedef Player * Pptr ;
+
+Player p(0)
+{
+	Instance Pptr np;
+	register i ;
+	int parts ;
+
+	P_start {
+	if ( Argc > 1 ) parts = atoi (Argv [1]) ;
+	else Pexit(1) ;
+
+	for ( i = 0 ; i < parts ; i++) {
+		np = New_player ( pp, 0.0 ,  2. + 2. * (double) i, P_READY) ;
+		Set_p ( np, 5, (double) i) ;/* pour distinguer les enfants*/
+		Set_p ( np, 4, 0.7 + (double)i) ;/* duree */
+	}
+	Join( EACH_CHILD) ;
+	}
+	printf("heure %f\n",Abs_time());
+}
+

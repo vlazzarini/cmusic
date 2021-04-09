@@ -1,0 +1,21 @@
+/*
+ * The "Stop" expression in the Rhythms statement will cause voice beep to
+ * play no further notes after the "Stop" expression is reached.
+ * Note that there are fewer Notes expressions than Rhythms expressions.
+ * The three notes will be cycled through repeatedly until the voice is
+ * terminated by the "Stop" expression.
+ * 
+ * Sets of notes or rhythms can consist entirely
+ * of other sets.  In this example, the Rhythms statement could have more
+ * concisely have been written
+ * 	P4 = Rhythms("{4 8 8 4}x4 Stop");
+ */
+
+
+Player beep(1.5,100)
+{
+	P4 = Rhythms("{{4 8 8 4}x2}x2 Stop");
+	P5 = Pitches("as b3 c");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

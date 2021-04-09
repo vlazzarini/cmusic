@@ -1,0 +1,17 @@
+Player blat(0)
+{
+	Instance Function *f1;
+
+	P_start {
+		f1 = Read_func("ramp");
+		P4 = 1.0;
+	}
+
+	if (P6 < 24.0) {
+	    P5 = Func(f1, P6);
+	    P6 += 1.5;
+	    P2 = Abs_time();
+	    Wait_until(P2 + P4);
+	} else
+	    Kill(Self);
+}

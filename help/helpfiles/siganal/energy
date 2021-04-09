@@ -1,0 +1,14 @@
+energy - produce mean square energy of input
+
+energy [flag] < floatsams > output
+ flags:
+ -wN	 set window size to N seconds (default: 128S)
+ -sN	 skip output by window size.
+ -RN	 set sample rate to N
+Arguments may be expressions.  Use postop 'S' for samples.
+If output is a file/pipe, floatsams are written.
+If output is a terminal, sample #, time re. 48K, and value are given.
+
+The mean square is the energy level of the input.
+The -w flag puts out as many samples as are input.  The -sN flag
+puts out (input samples)/N samples.

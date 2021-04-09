@@ -1,0 +1,69 @@
+scorebugs - suggested debugging procedures for cmusic scores
+
+1) ANY diagnostic message is an indication that something is wrong, and
+that the score probably won't work.  Diagnostic messages can come from
+several sources, and the source is a clue to the problem: in cmusic,
+messages come from the macro preprocessor (indicating problems with the
+DEFINITIONS), or from ins, gen, or play routines (indicating what was
+happening when the problem occurred).
+
+2) Run just the macro preprocessor to observe how macros are expanded.
+The statement "cc -E score.sc | more" will do this.  This will cause
+all diagnostics except for those from the macro preprocessor to be
+eliminated.  Remember especially that expressions must not have
+imbedded blank spaces, i.e., that "(p4 + 1)sec" is wrong, but
+"(p4+1)sec" is OK.
+
+3) Remember that postoperators are similar, but not identical, to
+units.  Postoperators such as Hz, dB, K, MM, sec, and so on, are done
+LAST, after all other operations, even if the post operator is not
+written last in the expression.  Thus "440Hz" and "Hz440" mean the same
+thing!  A common bug is to attempt to get the ratio between, say, 2
+frequencies by saying 440Hz/220Hz - which translates into:
+((440/220)Hz)Hz.  The intended effect can be had by typing
+(440Hz)/(220Hz) instead.
+
+4) Use the "set verbose;" statement in your score file.  This will
+cause cmusic to list absolutely every statement as it is processed,
+with values of the expressions and error messages interspersed.  It is
+not always easy to see the diagnostics, but it is essential to watch
+for them.  Once an error occurs, cmusic will start printing 3 asterisks
+at the beginnings of some lines ("*** ") in verbose mode to indicate
+that something is amiss.  Even if the verbose mode is not used, cmusic
+will print error messages (only) on the terminal.
+
+5) It may be useful to run cmusic to test a score for errors before
+saving the samples.  This may be done by "throwing away" the samples
+with "cmusic score.sc >/dev/null".  When this is done, cmusic does
+everything normally, but the samples are discarded.  To alleviate the
+computational load on the computer during such a run, it is wise to set
+the sampling rate to some very small value (e.g., "set srate = 128;").
+Of course, if frequencies are present which exceed half the sampling
+rate, the waveform won't be correct, but many other problems can be
+detected in this way.  Some problems may require running at the normal
+sampling rate to diagnose.
+
+6) Use curly braces in scores to delete all but the portion to be tested.  
+They can be nested.
+
+7) Use the "show" unit generator to dump intermediate instrument
+signals onto your screen.  Thus it is possible to "probe" signals at
+various points in an instrument to make sure that they are what is
+expected.
+
+8) Run at a low sampling rate and actually observe the samples coming
+out of cmusic.  "cmusic score.sc" by itself will dump numbers on your
+screen (use control-s to suspend execution and control-q to resume).
+"cmusic score.sc | show" will show you a very primitive plot on your
+screen of the waveform.  (Remember to lower the sampling rate!)
+
+9) cmusic is similar, but not identical, to MUSIC V, another source of
+bugs. Instruments or scores copied from a MUSIC V context generally do
+not work.
+
+10) Finally, look carefully at each statement and convince yourself that
+you a) know what it should be doing, and b) know that it is doing what
+you think it should be doing.  This is not as hard as it sounds.  For
+example, if an instrument works properly on one note and not another,
+chances are it is defined correctly, but that the a note statement
+is wrong. 

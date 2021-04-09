@@ -1,0 +1,8 @@
+Player chord(0)
+{
+	P2 = Now;
+	P4 = 1.0;
+	P5 = Keys("    c d e f g a b c5 Stop");
+	P6 = Keys("K3s c d e f g a b c5 Stop");
+	Wait_until(Now + P4);
+}

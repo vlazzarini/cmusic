@@ -1,0 +1,40 @@
+main()
+{
+	Pmain();
+}
+
+M_start() {
+	trap_init();
+	mpu_init();
+	start_watch_pedal(0);
+}
+
+M_ter() {
+	stop_ptm();
+	printf("M_ter\n");
+}
+
+Player test(0)
+{
+	register long	now = Now;
+	int		ch;
+	Instance int	toggle;
+
+	printf("%d\n", now);
+
+	if (toggle) {
+		printf("v\n");
+		note_off(60, 0);
+		toggle--;
+		if (nb_acia_read(0, &ch) != 0) {
+			if (ch == '.')
+				Kill(Self);
+		}
+	} else {
+		printf("^\n");
+		note_on(60, 0);
+		toggle++;
+	}
+
+	Wait_until(now + 1000);
+}

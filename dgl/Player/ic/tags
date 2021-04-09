@@ -1,0 +1,85 @@
+Caller	Caller.c	/^Caller(x)$/
+Join	Join.c	/^Join(flag)$/
+Kill	Kill.c	/^Kill(x)$/
+Kill_test	Kill_test.c	/^Kill_test(predicate)$/
+M_start	tmPlayer.c	/^M_start()$/
+M_ter	tmPlayer.c	/^M_ter()$/
+Mmain	main.c	/^main()$/
+New_player	New_player.c	/^New_player(proc, beg, dur, stat)$/
+Pinit	Pinit.c	/^Pinit()$/
+Player_status	Player_status.c	/^Player_status(x)$/
+Pmain	Pmain.c	/^Pmain()$/
+Print_stat	Print_stat.c	/^Print_stat(msg)$/
+Psleep	Psleep.c	/^Psleep(interval)$/
+Rest	Rest.c	/^Rest(x)$/
+Resting	Resting.c	/^Resting(x)$/
+SWAP	prq.c	/^#define SWAP(p,q){register struct prq_node \*temp =/
+Set_beg_time	Set_beg_time.c	/^Set_beg_time(x, beg)$/
+Set_dur_time	Set_dur_time.c	/^Set_dur_time(x, dur)$/
+Set_p	Set_p.c	/^Set_p(vp, n, val)$/
+Set_pp	Set_pp.c	/^Set_pp(vp, n, val)$/
+Set_ps	Set_ps.c	/^Set_ps(vp, n, val)$/
+Silent	Silent.c	/^Silent(x)$/
+Start	Start.c	/^Start(x)$/
+Stop	Stop.c	/^Stop(x)$/
+Unrest	Unrest.c	/^Unrest(x)$/
+Unsilent	Unsilent.c	/^Unsilent(x)$/
+Unwait_for	Wait_for.c	/^Unwait_for(proc)$/
+Wait_for	Wait_for.c	/^Wait_for(proc, status)$/
+Wait_until	Wait_until.c	/^Wait_until(time)$/
+_$tes	test.c	/^_\$test(i, c)$/
+_test	test.c	/^\$_test(i, c)$/
+addr_hash	symtab.c	/^addr_hash(addr)$/
+append_Player	mk_Player.c	/^append_Player(list, p)$/
+calloc	calloc.c	/^calloc(num, size)$/
+catchalarm	Psleep.c	/^catchalarm() $/
+check_waits	check_waits.c	/^check_waits()$/
+ckmaxp	ckmaxp.c	/^ckmaxp(i, n)$/
+cueue_players	tmPlayer.c	/^cueue_players() $/
+delsym	symtab.c	/^delsym(sym, type)$/
+fetch	prq.c	/^Player \*fetch(p)		\/\* returns ptr to root of prq tr/
+free	malloc.c	/^free(ap)$/
+garbage	garbage.c	/^garbage(x)$/
+get_templ	get_templ.c	/^get_templ(proc)$/
+get_wait	sched.c	/^get_wait()$/
+hash	symtab.c	/^hash(sym)$/
+hlalloc	symtab.c	/^hlalloc(n) $/
+if	prq.c	/^	if (tp->prq_void)$/
+init_globs	globs.c	/^init_globs()$/
+init_malloc	malloc.c	/^init_malloc()$/
+init_prq	prq.c	/^init_prq()$/
+init_sched	sched.c	/^init_sched()$/
+init_symtab	symtab.c	/^init_symtab()$/
+init_ubrk	ubrk.c	/^init_ubrk()$/
+install	symtab.c	/^install(sym, type, val)$/
+lookup	symtab.c	/^lookup(sym, ss)$/
+make_prq	prq.c	/^prq make_prq()$/
+makhlist	symtab.c	/^makhlist() {$/
+malerr	malerr.c	/^malerr(s, x)$/
+malloc	malloc.c	/^char \*malloc(nbytes)$/
+merge	prq.c	/^static struct prq_node \*merge(p1,p2)$/
+mk_Player	mk_Player.c	/^mk_Player(list)$/
+morecore	malloc.c	/^static HEADER \*morecore(nu)$/
+new_obj	sched.c	/^Player \*new_obj(id)$/
+peekw	prq.c	/^Player \*peekw(p)$/
+pexprerr	pexprerr.c	/^pexprerr(routine, string, exstat)$/
+pr_symtab	symtab.c	/^pr_symtab(ss)$/
+pr_symval	symtab.c	/^pr_symval(ss, hl)$/
+prq_insert	prq.c	/^prq_insert(p, o, r)$/
+prq_void	prq.c	/^prq_void(tree, p)$/
+ptimer	ptimer.c	/^ptimer(x)$/
+ptree	prq.c	/^ptree(p)$/
+run_arbiter	run_arbiter.c	/^run_arbiter()$/
+run_ptm	ptm.c	/^run_ptm(unit, count, fp, arg)$/
+savestr	symtab.c	/^savestr(str)$/
+set_wait	sched.c	/^set_wait(instance, time)$/
+stat_malloc	malloc.c	/^stat_malloc()$/
+stat_symtab	symtab.c	/^stat_symtab()$/
+stat_ubrk	ubrk.c	/^stat_ubrk()$/
+stop_ptm	ptm.c	/^stop_ptm()$/
+test	test.c	/^test(_x)$/
+test_wait	sched.c	/^test_wait()$/
+ubrk	ubrk.c	/^ubrk(n)$/
+umk_Player	mk_Player.c	/^umk_Player(list, x)$/
+wf_clear	Wait_for.c	/^wf_clear(x)$/
+wu_clear	sched.c	/^wu_clear(x)$/

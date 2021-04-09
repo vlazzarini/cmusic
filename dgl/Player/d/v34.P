@@ -1,0 +1,15 @@
+
+typedef struct {
+	int foo; 
+	char x[32]; 
+} mumble;
+
+Player vx1(0)
+{
+	Instance mumble mbl;
+
+	mbl.foo = 3;
+	strcpy(mbl.x, "look ma, no hands!\n");
+	printf("mbl.foo=%d\n", mbl.foo);
+	printf("mbl.x=%s\n", mbl.x);
+}

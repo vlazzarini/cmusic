@@ -1,0 +1,51 @@
+convolvesf - convolve stdin with soundfile 
+
+convolve stdin with a soundfile for reverberation or special effects
+
+DESCRIPTION
+
+This program is identical to "convolve" except that where "convolve"
+expects a filterfile, "convolvesf" expects a soundfile. (Also,
+"convolve" eliminates the filter delay whereas "convolvesf"
+does not, but this is very minor.)  If the soundfile contains
+the impulse response of a room or of some resonator, then
+the effect is to provide the input signal with precisely the
+reverberation which would have resulted had the sound really
+been produced in that room or resonator.
+
+In the absence of a real room response (or even in the presence
+of one), it is quite easy to synthesize extremely good sounding
+artificial room responses using "cmusic".  The basic idea is just
+to take exponentially decaying white noise and add a single impulse
+to it at as the initial sample.  The following example score shows
+how this can be accomplished:
+
+#include <carl/cmusic.h>
+
+#define REV_AMP 1/13
+#define DURATION 1.9
+
+set srate = 16K;
+
+ins 0 rev;
+	osc b2 REV_AMP p5 f1 d;
+	ran b1 b2 8KHz d d d;
+	out b1;
+end;
+
+ins 0 imp;
+	osc b3 1 1Hz f2 d;
+	out b3;
+end;
+
+GEN4(f1) 0,1 -10 1,0;
+GEN4(f2) 0,1 0 1,1;
+
+play 0 rev DURATION P ;
+play 0 imp 1S ;
+ter;
+
+SEE ALSO
+
+convolve
+

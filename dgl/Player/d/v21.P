@@ -1,0 +1,78 @@
+/*
+ * The P fields of one Player can be examined by another Player by use of
+ * the procedures P(), Ps() and Pp().  In the example below, Player blop
+ * synchronizes iteself with Player bleep and plays an accompaniment.
+ * Player blop first picks up the post-operator, Pp5, from Player bleep
+ * with the statement:
+ * 	Pp(bleep, 5);
+ * Note that the second argument, the parameter number, is an integer.
+ * 
+ * Player blop then does a check to see if bleep is still running (they
+ * both start at time 0).  
+ * 	if (Player_status(bleep) == P_STOPPED)
+ * 		Stop(Self);
+ * If bleep has stopped itself, or been stopped by a "Stop" in a cyclic list, 
+ * bleep will also stop.  Other possible values that can be returned
+ * from Player_status() are P_RUNNING, P_READY, and P_KILLED.  When a Player
+ * is actually running, its status is P_RUNNING.  All other Players that
+ * can run have a status of P_READY.  P_STOPPED status means that the
+ * Player will not run again until someone calls Start() on it.  P_KILLED
+ * means it can not run again, and may be subject to garbage collection.
+ * 
+ * Player blop then copies the current parameters from bleep with statements
+ * such as:
+ * 	P4 = P(bleep, 4);
+ * 
+ * The last such parameter copy for Ps7 is complicated by the concatenation
+ * of the suffix "_obbligato" to the string returned from bleep's Ps7.
+ * 
+ * Note, there is a very important reason why, in Player blop, the declaration
+ * of func is an Instance declaration.  Were it simply auto,
+ * the Ps7 Instance variable would get the address of a variable on the stack.
+ * But the stack frame context will be different when the note list interpreter
+ * tries to print this out, resulting in garbage.
+ */
+
+typedef Player * Player_ptr;
+
+Player_ptr P_bleep;
+
+Player bleep(0)
+{
+	P_start {
+		P_bleep = Self;
+		Pp5 = "Hz";
+		Read_list("notefile","vln1rhy");
+		Read_list("notefile","vln1not");
+		Read_list("notefile","vln1num");
+		Read_list("notefile","vln1str");
+	}
+
+	P4 = Rhythms("@vln1rhy");
+	P5 = Pitches("@vln1not");
+	P6 = Exprs("@vln1num");
+	Ps7 = Strings("@vln1str");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player blop(0)
+{
+	Instance char func[32];
+	char *c, *ob = "_obbligato";
+
+	P_start {
+		Pp5 = Pp(P_bleep, 5);
+	}
+	if (Player_status(P_bleep) == P_STOPPED)
+		Stop(Self);
+	P4 = P(P_bleep, 4);
+	P5 = P(P_bleep, 5) * 2.0;
+	P6 = P(P_bleep, 6) * expr("-6dB");
+	c = Ps(P_bleep, 7);
+	strcpy(func, c);
+	strcat(func, ob);
+	Ps7 = func;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

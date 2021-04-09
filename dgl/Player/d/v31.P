@@ -1,0 +1,12 @@
+
+Player x(0)
+{
+	Instance char *y;
+	P_start {
+		P4 = 1;
+		y = Get_list("notefile", "vln1not");
+	}
+	P5 = Keys(y);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

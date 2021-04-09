@@ -1,0 +1,10 @@
+Player xxx()
+{
+	Player x;
+	Player *y;
+	Player z[];
+	register Player *a;
+	Instance Player *b;
+
+	a = b;
+}

@@ -1,0 +1,13 @@
+Player test(0)
+{
+	register long	now = Now;
+	int		ch;
+
+	printf("%d\n", now);
+
+	if (nb_acia_read(0, &ch) != 0) {
+		if (ch == '.')
+			Kill(Self);
+	}
+	Wait_until(now + 1000);
+}

@@ -1,0 +1,22 @@
+not - the cmusic note command
+
+note statements have the general form:
+
+    note T INS DUR PARAMETERS ;
+
+where:
+    T          is the action (beginning) time (in seconds),
+    INS        is the name of the instrument to be played,
+    DUR        is the duration of the note (in seconds), and
+    PARAMETERS are note parameters as required by the named instrument.
+
+Note parameters are traditionally numbered from the beginning of the
+note statement, therefore the action time is p2 and the duration is
+p4.  Except for p1 and p3 (the "note" and "INS" fields), all note
+parameters may be single-valued expressions made up of a variety of
+operands and operators (see "help cmusic/expr").
+
+NOTE:  If the action time is set to "p2", then the note will start at
+the most recently mentioned action time.  Starting a note at time
+"p2+p4" starts it immediately after the previous note is finished,
+etc.

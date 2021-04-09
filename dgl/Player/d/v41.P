@@ -1,0 +1,9 @@
+# define Next(x) Wait_until(P2 = Abs_time() + (x))
+
+Player octpc(0)
+{
+	P4 = 1.0;
+	/*	      b3   c4   c4  c4#   c4+1cent d4 */
+	P5 = Oct_pts("3.11 3.12 4.0 4.005 4.0001   4.01 Stop");
+	Next(P4);
+}

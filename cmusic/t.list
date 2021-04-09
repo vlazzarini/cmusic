@@ -1,0 +1,29 @@
+
+set  stereo ;
+
+
+set  funclength = 8K; {=8192} 
+
+ins  0   {=0} toot;
+ osc  b1  p5  p6  f1  d;
+ 
+
+ space  b1  1   {=1} d  d  d  d  d  d  d  d  d  d  d  d  -10   {=-10} 10   {=10} 0   {=0} 1   {=1} 1 ; {=1} 
+end;
+
+gen  p2   {=0} gen5  f1  1   {=1} 1   {=1} 0 ; {=0} 
+
+note  0   {=0} toot  1   {=1} 1   {=1} 440Hz ; {=225.279999} 
+
+sec ;
+Section @1.000
+:1(0.186819)
+
+ter  2 ; {=2} 
+Terminate @2.000
+:2(0.183942):3(0.002067)
+cmusic report: scorefile 't.sc'
+Sound duration = 3.00s (96000 samples)
+Realtime = 1s, Realtime ratio = 0.3
+Compute time = 0.33s, Compute ratio = 0.1
+Maxamp = 0.186819,  Maxecho, = 0.123932  Maxreverb = 0.079283

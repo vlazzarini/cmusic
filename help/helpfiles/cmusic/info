@@ -1,0 +1,22 @@
+info - general information about the cmusic program
+
+cmusic is the CARL sound synthesis program.  It produces digital audio
+waveforms from text descriptions called score files.
+
+It is documented in 3 ways:
+
+1) There is a tutorial introduction in the CARL Startup Kit called
+   "Introduction to Sound Synthesis Using Cmusic";
+
+2) There is a UNIX Programmer's Manual document which gives a terse
+   technical description available online via the "man cmusic" command;
+
+3) Important documentation is available via the help program under the 
+   supertopic "cmusic":
+
+   "help cmusic" lists subtopics available under supertopic "cmusic"
+   "help cmusic/ugs" lists documentation on unit generators,
+   "help cmusic/gens" lists documentation on function generator programs,
+   "help cmusic/commands" lists documentation on score commands,
+
+   etc.

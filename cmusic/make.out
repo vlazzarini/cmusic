@@ -1,0 +1,341 @@
+cc -O -Dcsound   -c cmusic.c -o cmusic.o
+In file included from m.globs.h:1,
+                 from cmusic.c:8:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from cmusic.c:9:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c mm.expr.c -o mm.expr.o
+cc -O -Dcsound   -c mm.field.c -o mm.field.o
+cc -O -Dcsound   -c mm.gen.c -o mm.gen.o
+cc -O -Dcsound   -c mm.ins.c -o mm.ins.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from mm.ins.c:2:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+mm.ins.c: In function `instrument':
+mm.ins.c:21: warning: passing arg 1 of `strcpy' makes pointer from integer without a cast
+mm.ins.c:36: warning: comparison between pointer and integer
+cc -O -Dcsound   -c mm.merge.c -o mm.merge.o
+mm.merge.c: In function `catch':
+mm.merge.c:177: warning: passing arg 2 of `signal' from incompatible pointer type
+cc -O -Dcsound   -c mm.play.c -o mm.play.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from mm.play.c:2:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c mm.print.c -o mm.print.o
+cc -O -Dcsound   -c mm.printout.c -o mm.printout.o
+cc -O -Dcsound   -c mm.sec.c -o mm.sec.o
+cc -O -Dcsound   -c mm.set.c -o mm.set.o
+cc -O -Dcsound   -c mm.sndout.c -o mm.sndout.o
+In file included from mm.sndout.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c mm.synth.c -o mm.synth.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from mm.synth.c:2:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c mm.ter.c -o mm.ter.o
+cc -O -Dcsound   -c mm.tersim.c -o mm.tersim.o
+cc -O -Dcsound   -c mm.var.c -o mm.var.o
+mm.var.c: In function `variable':
+mm.var.c:96: warning: passing arg 1 of `strcpy' makes pointer from integer without a cast
+mm.var.c:98: warning: passing arg 1 of `strcpy' makes pointer from integer without a cast
+cc -O -Dcsound   -c m.askname.c -o m.askname.o
+cc -O -Dcsound   -c m.getfield.c -o m.getfield.o
+m.getfield.c: In function `getfield':
+m.getfield.c:10: warning: assignment makes integer from pointer without a cast
+m.getfield.c:48: warning: assignment makes integer from pointer without a cast
+m.getfield.c:56: warning: comparison between pointer and integer
+cc -O -Dcsound   -c m.getp2.c -o m.getp2.o
+cc -O -Dcsound   -c m.getp4.c -o m.getp4.o
+cc -O -Dcsound   -c m.gettime.c -o m.gettime.o
+cc -O -Dcsound   -c m.sfield.c -o m.sfield.o
+m.sfield.c: In function `sfield':
+m.sfield.c:6: warning: comparison between pointer and integer
+m.sfield.c:10: warning: assignment makes integer from pointer without a cast
+m.sfield.c:12: warning: return makes integer from pointer without a cast
+cc -O -Dcsound   -c m.trans.c -o m.trans.o
+cc -O -Dcsound   -c ug.abs.c -o ug.abs.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.abs.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.adn.c -o ug.adn.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.adn.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.airabsorb.c -o ug.airabsorb.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.airabsorb.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.band.c -o ug.band.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.band.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.blp.c -o ug.blp.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.blp.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.delay.c -o ug.delay.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.delay.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.diff.c -o ug.diff.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.diff.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.div.c -o ug.div.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.div.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.expon.c -o ug.expon.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.expon.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.flt.c -o ug.flt.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.flt.c:5:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.fltdelay.c -o ug.fltdelay.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.fltdelay.c:9:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.freq.c -o ug.freq.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.freq.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.illus.c -o ug.illus.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.illus.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.integ.c -o ug.integ.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.integ.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.integer.c -o ug.integer.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.integer.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.inv.c -o ug.inv.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.inv.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.iosc.c -o ug.iosc.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.iosc.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.janus.c -o ug.janus.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.janus.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.logar.c -o ug.logar.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.logar.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.lookup.c -o ug.lookup.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.lookup.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.map.c -o ug.map.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.map.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.mult.c -o ug.mult.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.mult.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.neg.c -o ug.neg.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.neg.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.nres.c -o ug.nres.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.nres.c:7:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.osc.c -o ug.osc.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.osc.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.out.c -o ug.out.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.out.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.quant.c -o ug.quant.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.quant.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.rah.c -o ug.rah.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.rah.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.ran.c -o ug.ran.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.ran.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.sah.c -o ug.sah.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.sah.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.seg.c -o ug.seg.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.seg.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.shape.c -o ug.shape.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.shape.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.show.c -o ug.show.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.show.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.showpath.c -o ug.showpath.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.showpath.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.signum.c -o ug.signum.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.signum.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.smooth.c -o ug.smooth.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.smooth.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.sndfile.c -o ug.sndfile.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.sndfile.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.space.c -o ug.space.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.space.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.splice.c -o ug.splice.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.splice.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.sqroot.c -o ug.sqroot.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.sqroot.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.square.c -o ug.square.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.square.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.test.c -o ug.test.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.test.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.trans.c -o ug.trans.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.trans.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.version.c -o ug.version.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.version.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.white.c -o ug.white.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.white.c:3:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound   -c ug.zdelay.c -o ug.zdelay.o
+In file included from /usr/local/include/carl/sndio.h:2,
+                 from ug.defs.h:3,
+                 from ug.head.h:1,
+                 from ug.zdelay.c:4:
+/usr/local/include/carl/defaults.h:6: warning: missing white space after `#define SF4'
+cc -O -Dcsound cmusic.o mm.expr.o mm.field.o mm.gen.o mm.ins.o mm.merge.o mm.play.o mm.print.o mm.printout.o mm.sec.o mm.set.o mm.sndout.o mm.synth.o mm.ter.o mm.tersim.o mm.var.o m.askname.o m.getfield.o m.getp2.o m.getp4.o m.gettime.o m.sfield.o m.trans.o ug.abs.o ug.adn.o ug.airabsorb.o ug.band.o ug.blp.o ug.delay.o ug.diff.o ug.div.o ug.expon.o ug.flt.o ug.fltdelay.o ug.freq.o ug.illus.o ug.integ.o ug.integer.o ug.inv.o ug.iosc.o ug.janus.o ug.logar.o ug.lookup.o ug.map.o ug.mult.o ug.neg.o ug.nres.o ug.osc.o ug.out.o ug.quant.o ug.rah.o ug.ran.o ug.sah.o ug.seg.o ug.shape.o ug.show.o ug.showpath.o ug.signum.o ug.smooth.o ug.sndfile.o ug.space.o ug.splice.o ug.sqroot.o ug.square.o ug.test.o ug.trans.o ug.version.o ug.white.o  ug.zdelay.o /usr/local/lib/carl//lib/libcarl.a /usr/local/lib/carl//lib/libsf.a -lm -o cmusic
+m.askname.o: In function `askname':
+m.askname.o(.text+0x1c): the `gets' function is dangerous and should not be used.

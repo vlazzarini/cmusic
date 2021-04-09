@@ -1,0 +1,24 @@
+srconv - convert signal sampling rates by any positive rational number
+
+DESCRIPTION:
+    srconv  l m filterfile < inputdata > outputdata
+
+The sampling rate converter is for changing the sampling rate of a 
+digital signal. The output sampling rate is l/m times the input
+sampling rate, where l and m are arbitrary positive integers. It
+is desirable that l and m have no common factors, as this needlessly
+adds to the computational complexity. Also, it is better to pipe
+several stages of srconv together using small l and m rather than
+use a single stage having large l and m when l and m are composite
+numbers; for example, for l/m = 4/9, one can say
+
+    srconv 2 3 % < test.dat | srconv 2 3 % > out.dat 
+
+where % can be used to instruct srconv to use pre-designed default
+lowpass filters. The default filters generally have 0.1dB passband
+ripple, and -60dB stopband rejection.
+
+The program interactively requests parameters and filenames when
+arguments are missing from the command line.
+
+SEE ALSO: fir  (for designing lowpass filters)

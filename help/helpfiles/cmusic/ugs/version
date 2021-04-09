@@ -1,0 +1,31 @@
+version - creates new versions of disc files (digital recordings)
+
+version output[b] amplitude[bvpn] increment[bvpn] filename[s] channel[vpn] 
+ a[vpn] b[vpn] c[vpn] d[vpn] tau[vpn] Rorig[vpn] Forig[vpn] 
+  ipos[vpnd] fpos[vpnd] lasto[vpnd] ptr[vpnd] sum[vpnd] ;
+
+version is a unit generator which creates a new version of a sound
+which is stored on a soundfile.  The new version may have a new pitch
+or duration or both.  Thus a digitally recorded note from an acoustic
+instrument may be retuned to a new pitch, and/or lengthened or
+shortened.  The output is scaled by amplitude, allowing new amplitudes,
+amplitude modulation, or new envelopes to be superimposed. The
+increment value specifies the frequency to be generated (e.g.,
+"440Hz"), the Forig value specifies the frequency of the original file
+as an increment (e.g., "220Hz").  The original sampling rate is given
+by the Rorig argument.  As in the sndfile unit generator, the filename
+argument must be a string variable which has been defined with the name
+of the soundfile to be accessed, and the channel number selects which
+out of several possible channels on the file is to be used.  The a, b,
+c, and d values specify the sample numbers of the start of the note (on
+the file), the start of the (possibly repeated) steady state, the end
+of the (possibly repeated) steady state, and the end of the note,
+respectively.  The tau value specifies the number of samples to be used
+in a cross-faded transition between the end of one steady state and the
+beginning of the next, or between the first part of the note and the
+decay section (which starts at sample c).  A good value for tau will
+probably be the number of samples in a pitch period of the original
+sound.  The last 5 arguments (there are 15 in all) will normally be
+d's.  It is an error to try to play a new version of a note which has
+fewer samples in it than the decay portion of the original (d-c
+samples).

@@ -1,0 +1,18 @@
+/*
+ * Another circular list is the  Strings  statement shown below.
+ * Note that its output is directed into the string register of parameter 5,
+ * Ps5.  As with the other circular lists, the word  "Stop"  stops the voice
+ * wherever encountered.  If you accidently assign a string parameter
+ * to a floating point register, the C compiler will complain.
+ */
+
+
+Player blat(0)
+{
+	P_start {
+		P4 = 1;	/* note, this gets type-coerced into a float by c */
+	}
+	Ps5 = Strings("f1 amp1 vln33 Stop");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

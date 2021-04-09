@@ -1,0 +1,6 @@
+lookup - general nonlinear transfer function (waveshaper)
+
+lookup output[b] table[fvpn] input[bvpn] min[vpn] max[vpn] ;
+
+lookup is a table lookup generator which uses its input to address the
+table to find the output.  The input is clipped to min and max.

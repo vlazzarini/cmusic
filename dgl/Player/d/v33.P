@@ -1,0 +1,9 @@
+
+Player fx(0, 50)
+{
+	Instance int i;
+
+	P4 = ++i;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

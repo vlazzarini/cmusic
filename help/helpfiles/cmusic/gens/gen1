@@ -1,0 +1,15 @@
+gen1 - straight line segment function generator similar to GEN 1 in MUSIC V :
+
+	gen T gen1 F   t1 v1   t2 v2   . . .   tN vN ;
+
+Generates (closed) function F at time T which starts with value v1 at
+point t1 (the beginning of the function), continues in a straight line
+to value v2 at point t2, etc., until final value vN is reached at the
+end of the function.  Example:
+
+	gen 0 gen1 f2  0,0  1/3,1  2/3,1  1,0 ;
+
+This generates a trapedoidal function with default length; straight line from 
+0 to 1 for the first third of the function, level value of 1 for the middle 
+third, falling from 1 to 0 in the final third. Note the clarifying use of 
+commas, which act as field separators in cmusic (equivalent to blank spaces).

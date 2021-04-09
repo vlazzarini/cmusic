@@ -1,0 +1,43 @@
+reverb - similar to comb filter, but with feedforward path added
+
+DESCRIPTION:
+A simple, monophonic reverb program (very similar to a comb filter - see
+"help comb") which has gain g and delay d may be included in signal processing 
+pipes as:
+
+	reverb <g> <d>
+
+The gain must be less than 1.0, and the delay (in samples) must be less than
+100,000.  The time it takes for the tail of this (tape-loop-like) echo to
+die down by a factor of 60 dB is approximately
+
+	                      (60 * sampling rate)
+	T =                    ------------------   seconds
+	                         (d * 20*log(g) )
+    (logarithm to the base 10)
+
+The following signal processing pipe
+
+    sndin file1 | reverb .7 2143 | sndout
+
+is equivalent to the flow diagram:
+
+                                   |\                  ___
+                       (gain -.7)  |  \               /   \
+  sndin | ---:------------------->-|   >----------->-|  +  |--------> | sndout
+ (file1)     |                     |  /               \___/             (test)
+             |                     |/                   |
+            \|/                                         ^
+	    _|_       _____________________________     |
+	   /   \      |                           |     |
+	  |  +  |--->-|    delay (2143 samples)   |--->-|
+	   \___/      |___________________________|     |
+	     |                                          |
+	     ^                  /|                      |
+	     |________________/  |______________________|
+			      \  | (gain .7)
+				\| 
+
+
+
+SEE ALSO: comb

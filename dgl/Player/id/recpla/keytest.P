@@ -1,0 +1,166 @@
+/* %M%	%I%	(CARL)	%G%	%U% */
+
+# include <carl/sa_mpuvar.h>
+# include <sys/types.h>
+# include <carl/midi.h>
+# include <carl/dx7.h>
+# include "medit.h"
+
+typedef Player * Pptr;
+
+extern Pptr 	P[P_TRK];
+extern int	busy[P_TRK];
+extern int	key;
+extern int	keypressed;
+extern struct mpu_trk mpu_trk[P_TRK];
+extern int	cur_trk;
+extern int	printit;
+
+keydown()
+{
+	int	ch;
+
+	if (nb_acia_read(0, &ch) != 0) {
+		acia_write(0, ch);
+		key = ch;
+		return(keypressed = TRUE);
+	} else
+		return(FALSE);
+}
+
+Player keytest(0)
+{
+	extern int	porta;
+	Instance int tmpvar;
+
+	P_start {
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	switch (key) {
+		register int	i, j;
+		case '0':	/* set buffer */
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			tmpvar = key - '0';
+			break;
+		case 'P':	/* set/clear printit */
+			printit = tmpvar;
+			break;
+		case 'R':	/* mpu reset */
+			mpu_reset(0);
+			/* select playback track */
+			if (mpu_set_track(0, MPU_TR_COM) != 0)
+				exit(1);
+		case 'S':	/* stop all */
+			{
+			register int	i;
+			for (i = 0; i < P_TRK; i++)
+				Set_p(P[i], 1L, 0L);
+			break;
+			}
+		case '.':	/* quit */
+			Pexit();
+		case 'c':	/* continuous loop */
+			{
+			register int pq;
+			if ((pq = getpfree()) == -1) {
+				fprintf(0, "all busy\n");
+				break;
+			}
+			cur_trk = tmpvar;
+			/* P0 ==> track number */
+			Set_p(P[pq], 0L, cur_trk);
+			/* P1 ==> continuous/once-only */
+			Set_p(P[pq], 1L, 1);
+			Start(P[pq]);
+			printf("%d\n", pq);
+			break;
+			}
+		case 'd':	/* dump track */
+			cur_trk = tmpvar;
+			dump_trk(&mpu_trk[cur_trk]);
+			break;
+		case 'h':
+			help();
+			break;
+		case 'l':	/* list track */
+			cur_trk = tmpvar;
+			list_trk(&mpu_trk[cur_trk]);
+			break;
+		case 'p':
+			if (porta)
+				porta = 0;
+			else
+				porta = 1;
+			break;
+		case 'r':	/* record */
+			cur_trk = tmpvar;
+			mpu_trk[cur_trk].trk_cnt =
+			    mpu_record(0,
+				mpu_trk[cur_trk].trk_buf,
+				mpu_trk[cur_trk].trk_len);
+			break;
+		case 's':	/* start */
+			{
+			register int pq;
+			if ((pq = getpfree()) == -1) {
+				fprintf(0, "all busy\n");
+				break;
+			}
+			cur_trk = tmpvar;
+			/* P0 ==> track number */
+			Set_p(P[pq], 0L, cur_trk);
+			/* P1 ==> continuous/once-only */
+			Set_p(P[pq], 1L, 0);
+			/* P2 ==> which slot in busy[] to use */
+			Set_p(P[pq], 2L, pq);
+			Start(P[pq]);
+			printf("%d\n", pq);
+			break;
+		}
+		case 'x':	/* cancel track */
+			cur_trk = tmpvar;
+			Set_p(P[cur_trk], 1L, 0);
+			break;
+		default:
+			acia_write(0, '?');
+			break;
+	}
+}
+
+getpfree()
+{
+	register int	pfree;
+
+	for (pfree = 0; pfree < P_TRK; pfree++) {
+		if (!busy[pfree])
+			return(pfree);
+	}
+	return(-1);
+}
+
+help()
+{
+	printf(
+	    "0	set buffer n",
+	    "P	set/clear printit n",
+	    "R	mpu reset n",
+	    "S	stop all n",
+	    ".	quit n",
+	    "c	continuous loop n",
+	    "d	dump track n",
+	    "l	list track n",
+	    "r	record n",
+	    "s	start n",
+	    "x	cancel track n"
+	);
+}

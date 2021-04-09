@@ -1,0 +1,24 @@
+SOURCE FOR:
+	ieeelib
+
+MAKEFILE:
+	Makefile
+
+SPECIAL INCLUDE FILES NEEDED:
+
+SPECIAL LIBRARIES NEEDED:
+       In this release, libieee has been built with gfortran. You will need to 
+       	 have this installed in your system. 
+
+COMMENTS:
+	Users normally access routines in ieeelib by including "-lieee" in 
+	the cc command. You will also need -lgfortran (libgfortran.*) to link to
+        this code. 
+
+SPECIAL NOTES:
+	If you are installing this software on a machine that is not a vax
+	you will need to check the file i1mach.f.
+
+	For Sun3 users who do not have access to a Fortran compiler,
+	a copy of the libieee.a archive library is provided.
+

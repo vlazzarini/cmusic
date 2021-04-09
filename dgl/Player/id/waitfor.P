@@ -1,0 +1,26 @@
+int	key;
+
+keydown()
+{
+	if (nb_acia_read(0, &key) != 0) {
+		return(TRUE);
+	} else
+		return(FALSE);
+}
+
+Player test(0)
+{
+	register long	now = Now;
+	int		ch;
+
+	P_start {
+		printf("calling Wait_for\n");
+		Wait_for(keydown, CONTINUOUS);
+		Return;
+	}
+
+	printf("%d %c\n", now, key);
+
+	if (key == '.')
+		Kill(Self);
+}

@@ -1,0 +1,45 @@
+* P2 must always be supplied.
+* Commas and blanks in cyclic lists permitted.
+* V_start blocks.
+* Stop and Hold expressions, use of only begin time.
+* v06 Functions, function pointers.
+* Func_length().
+* v07 Read_gen() Rel_time() and Func() and Rel_func().
+* v08 Gen(), Hipn().
+* v09 Numbers().
+v10,v11 Tempo().
+* v12 Stochastic functions.
+* v13 Macros, 
+v13 Start() and Stop().
+* v14 Strings().
+v15 M_start() and M_ter().
+* v16 expr().
+* v17 Read_motive().
+v18 argc and argv[].
+v19 Superfluous.
+v20 argv to set begin and duration of a voice.
+v21 P(), Ps() and Pp().
+v22 Labels in compiled-in motives.
+v23 Motive().
+v24 Rest().
+v25 Phrasing control.
+v26 Redundant.
+v27 Octave stick.
+inherent variables
+instance variables
+p01 Superfluous.
+p02 Self, Start() and Stop().
+p03 Silent() and Hipn(0).
+p04 New_voice() and sequencing.
+p05 New_voice() on more than one voice.
+p06 Wait_until().
+p07,p08 Wait_for().
+p09 Beg_time() Dur_time().
+p10 Hold.
+p11 Stop().
+p12 Running voices from standard input.
+p13 PiN variables.
+v30 | measure signs
+make a version of Wait_for() that only runs between Players.
+P_to_I
+make M_start and M_ter be pointers to functions?

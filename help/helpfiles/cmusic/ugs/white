@@ -1,0 +1,5 @@
+white - white noise generator
+
+white output[b] amplitude[bvpn] ;
+
+white outputs random numbers in the range (-amplitude, +amplitude).

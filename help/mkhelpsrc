@@ -1,0 +1,13 @@
+#	gimme a cshell, please...
+if ( ${#argv} < 1 ) then
+	exit 1
+else
+	set srcdir = $argv[1]
+	set destdir = $argv[2]
+endif
+foreach n ( ` cat helpcsrc ` )
+echo $n > foo
+sed s_m4SRCDIR_${srcdir}_ foo > $destdir/${n:t}
+rm -f foo
+end
+echo sources - pointers to sources for CARL programs >! ${destdir}/.sources 

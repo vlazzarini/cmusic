@@ -1,0 +1,37 @@
+# define MalCpy(x)((char *)strcpy(malloc(strlen(x)+1), x))
+
+Player part()
+{
+	Instance char *r, *p;
+
+	P_start {
+		r = MalCpy("| T4/8 {8}x8 | {8}x4 {4}x2 |");
+		p = MalCpy("| K1s g g a b g b a r | g g a b g f Kill |");
+	}
+
+	P4= Rhythms(r);
+	P6= Pitches(p);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}
+
+Player agent(0)
+{
+	Player *np;
+	int i, parts;
+
+	if (Argc >= 2)
+		parts = atoi(Argv[1]);
+	else {
+		Pexit(1);
+	}
+
+	srandom(time(0));
+
+	for (i = 0; i < parts; i++) {
+		np = New_player(part, frand(0.0, 3.0), Forever, P_READY);
+		Set_p(np, 5, (double) i);
+	}
+
+	Kill(Self);
+}

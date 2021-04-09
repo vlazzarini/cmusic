@@ -1,0 +1,5 @@
+This is the May, 1986 version of libbicsf.  
+It includes crack() and argscan(), so most soundfile
+programs will only need to be compiled with "-libbicsf".
+
+

@@ -1,0 +1,16 @@
+Player blat(0, 100)
+{
+	Instance Function *f1;
+	float y;
+
+	P_start {
+		y = 0;
+		f1 = Read_func("ramp");
+		P4 = 1.0;
+	}
+	P5 = Pitches("as b3 c df5 e f fs ff5 bs6 a8");
+	y = Rel_time(Self);
+	P6 = Rel_func(f1, y);
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

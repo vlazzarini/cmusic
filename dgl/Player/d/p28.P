@@ -1,0 +1,19 @@
+/*
+ * An interpolation between motives is possible using the numeric
+ * format of pitches and rhythms.  In this example, the first rhythmic
+ * phrase, 16 4. 8, is gradually interpolated into: 8 4. 16,
+ * its retrograde.  The melodic phrase is likewise interpolated to
+ * its retrograde.
+ */
+
+#define interp(f, p, q) ((f)*(q)+(1.0-(f))*(p))
+
+Player phrase(0, 24)
+{
+	P6 = Rel_time(Self);
+	P4 = interp(P6, Rhythms("16 4. 8"), Rhythms("8 4. 16"));
+	P5 = interp(P6, Pitches("c3 ef3 c4"), Pitches("c4 ef3 c3"));
+	Pp5 = "Hz";
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

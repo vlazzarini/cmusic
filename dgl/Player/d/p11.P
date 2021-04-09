@@ -1,0 +1,8 @@
+Player crash(3)
+{
+	P4 = 1;
+	P2 = Now;
+	if (P2 > 13.0) 
+		Stop(Self);
+	Wait_until(Now + P4);
+}

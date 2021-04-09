@@ -1,0 +1,85 @@
+expr - possibilities for arithmetic expressions in cmusic
+
+Expressions may contain several types of operands and operators.  Some
+operands and operators are available only in cmusic (these are
+indicated in the description below).  The current list of possibilities
+is as follows:
+
+Expressions must not include blank spaces.
+
+OPERANDS:
+    pN or p[N]		refers to the most recent value of note parameter N.
+			In the subscript form, N may be any legal expression.
+			(cmusic only)
+
+    vN or v[N]		refers to the most recent value of static variable N.
+			In the subscript form, N may be any legal expression.
+			(cmusic only)
+
+    numbers		Numbers may have three bases; all are of type float
+			whether they include a decimal point or not.
+	decimal		Any string of digits, which either includes a decimal
+			point, or which does not include a decimal point.
+	hexadecimal	If a number does not include a decimal point and starts
+			with the characters 0x, then base 16 is interpreted.
+	octal		If a number does not include a decimal point and
+			starts with the digit 0, base 8 will be interpreted.
+
+OPERATORS:
+
+    PARENTHESES
+	Parentheses must balance, and may be used freely to establish
+    operator precedence.  Function arguments should be enclosed in
+    parentheses.
+
+    UNOPS 
+	The following are unary operators available in expressions in order
+    precedence, with the first set of operators done before anything in the
+    second set.  Unary operations are done before binary operations, and
+    binary operations are done before post operations.
+	{sin,cos,atan,ln,exp,floor,abs,sqrt,rand} 
+	    (These are the standard trigonometric functions sine, cosine, 
+	    and arctangent, from the UNIX math library, as well as the 
+	    natural logarithm, exponential, floor, absolute value, and 
+	    square root functions.  Rand is a function which returns a 
+	    random value between 0 and its (positive) argument.)
+
+	{-}
+	    (Unary minus, as in -3*p5)
+
+    BINOPS 
+	The precedence is as shown below: ^ and % are done before * and /,
+    and * and / are done before + and -.
+	{^,%}
+	    (3^.5 means 3 to the .5 power; 397%17 means 397 modulo 17)
+	{*,/}
+	    (5*79.2 means 5 times 79.2; 9/5 means 9 divided by 5 (float result))
+	{+,-}
+	    (3+3 means 3 plus 3, 3-8 means 3 minus 8)
+
+    POSTOPS 
+	Post operators are done last. They general modify the resulting value
+    of the expression which preceeds them.
+	{Hz,sec,dB,K,Deg,MM}
+	    Hz  - converts frequency to increment;
+		  example: 100Hz = 100 * funclength / srate
+		  (uses default funclength and prevailing srate)
+		  (cmusic only)
+	    sec - converts period (time in sec) to increment
+		  example: 2sec = funclength / (2 * srate)
+		  (uses default funclength and prevailing srate)
+		  (cmusic only)
+	    S   - converts samples to seconds at the current
+		  sampling rate;
+		  example: 100000S = 6.103516 at 16K sampling rate.
+		  (cmusic only)
+	    dB  - converts dB (logarithmic) to linear scale
+		  example: -6dB = 10^(-6/20) = 0.5 (approx.)
+	    K   - converts K to units
+		  example: 8K = 8 * 1024 = 8192
+	    Deg - converts degrees to radians
+		  example: 180Deg = (180 / 360) * TWOPI = 3.14159
+	    MM  - converts metronome marks to second per beat
+		  example: 120MM = 60/120 = .5 seconds per beat
+	    IS  - computes the sum of the first N inverse terms,
+		  i.e., 3invs = 1 + 1/2 + 1/3. 0IS = 0 by definition.

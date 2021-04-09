@@ -1,0 +1,81 @@
+wave - generates simple test tones on the standard output
+
+SYNOPSIS
+     wave [ -RN ] [ -fN ] [ -wC ] [ -aN ] [ -dN ] [ -cN ] > out-
+     put
+          flags: -RN -fN -wC -aN -dN -cN
+          where N is a number, C is a character
+          R = sampling rate (16384.0 Hz)
+          f = frequency  (440.0 Hz)
+          w = select waveform:     (s)
+               s = sine
+               r = ramp
+               q = square
+               t = triangle
+               p = pulse train
+               i = impulse response
+               d = dc, where -aN determines the offset
+               S = silence
+          a = amplitude (0dB) range: 0 to 1.0, or 0dB to -90dB
+          d = duration (1 sec)
+          flag options may be expressions
+          postoperators: s = time in samples, K = ``times 1024''
+
+DESCRIPTION
+     wave writes simple waveforms on stdout according to specifi-
+     cations supplied by the flags.  The output data stream nor-
+     mally consists of binary, floating-point sample numbers in
+     the range of -1.0 to +1.0.  If the output is connected to a
+     terminal, the samples are presented in human-readable form
+     instead of binary.
+
+     Waveforms available include: sine, square, triangle,
+     sawtooth, pulse train, dc offset, silence and impulse.  They
+     are selected with the -w flag.  For instance,
+
+     % wave -wr
+
+     selects a ramp waveform.
+
+     Amplitude is set with the -a flag.  Amplitudes can be
+     expressed either as a magnitude between 0 and 1.0, or in dB,
+     where 0dB is equivalent to a magnitude of 1.0. These two
+     examples are equivalent:
+
+     % wave -a.1
+
+     % wave -a-10dB
+
+     Note that in the illustration with dB, the second '-' is
+     taken to be a minus sign.
+
+     Similarly, frequency is set with -f followed by a number,
+     sampling rate is set with -R and a number, likewise for
+     duration.
+
+     By default, wave produces a sine wave at A440, sampling rate
+     16384.0 for one second, at full amplitude.  That is,
+
+     % wave -ws -R16384 -f440 -d1 -a1 > file
+
+     and
+
+     % wave > file
+
+     are equivalent.  However, if you just say wave all by
+     itself, and do not direct its output to a pipe or file, you
+     will be given a terse help message, explaning all the flags
+     and options.
+
+     The options to the flags may be arithmetic expressions.  (It
+     is advisable to put expressions inside double quotes, other-
+     wise the shell may think it is supposed to evaluate them).
+     Expression postoperators 's' and 'K' are available.  For
+     instance, -R48K sets the sampling rate to ``48*1024'' =
+     49152.  The -d flag interprets duration in seconds.  If
+     instead you want duration measured in samples, use the 's'
+     postoperator.  For instance, -d500s will set the duration to
+     be 500 samples long, regardless of the sampling rate.
+
+AUTHOR
+     Gareth Loy

@@ -1,0 +1,14 @@
+gen5 - Fourier synthesis generator
+
+	gen T gen5 F   h1,a1,p1  h2,a2,p2  . . .  hN,aN,pN;
+
+Each Fourier component of the (open) function is described by a triplet
+specifying a harmonic number, an amplitude, and a phase offset relative
+to sine phase.  As many components may be supplied as desired, but all
+three values must be supplied for each component. Phase angles are in
+radians (cf. "Deg" post operator in expressions); harmonic numbers need 
+not be integers.  Examples:
+
+    gen 0 gen5 f1 1,1,0;		(f1 is a sine wave)
+    gen 0 gen5 f2 1,1,0 3,1/3,0 5,1/5,0; (f2 is first 3 components square wave)
+    gen 0 gen5 f3 1,-.5,90Deg 0,.5,90Deg; (f3 is a raised cosine wave)

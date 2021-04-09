@@ -1,0 +1,32 @@
+airabsorb - a filter that simulates air absorption
+
+      airabsorb out[b] in[b] x[bvpn] y[bvpn]
+	  lx[d] ly[d] r[d] scale[d] c1[d] c2[d] xm1[d] xm2[d] ym1[d] ym2[d]
+
+A macro is defined in <carl/cmusic.h> to help with the inclusion of this
+unit generator in an instrument:
+
+    #define AIRABSORB(OUT,IN,X,Y) airabsorb OUT IN X Y d d d d d d d d d d
+
+Airabsorb is a relatively efficient and rarely useful filter that
+simulates the sound absorption characteristic of air.  Such absorptions
+are very small for sounds closer than about 50 meters, but they become
+significant for larger distances.  It calculates the distance from
+coordinate (0,0) to (x,y) and calculates a lowpass filter that it
+applies to the input signal, using the approximation formula:
+
+    absorption(freq) (in dB/meter) = freq/100000
+
+Thus a 1kHz signal at a distance of 100 meters suffers a 1dB
+attenuation, while a 10kHz signal at the same distance suffers a 10dB
+attenuation.  Airabsorb will typically be used as a prefilter for the
+space unit generator, thus:
+
+    .
+    .
+    .
+    osc b1 b2 b3 f1 d ; 	{main signal generator}
+    AIRABSORB(b1, b1, b4, b5) ; {b4 control x, b5 controls y}
+    SPACE(b1, 1) b4 b5 0 1 1 ;	{same x and y controls here}
+end ;
+

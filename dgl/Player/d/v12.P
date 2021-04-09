@@ -1,0 +1,37 @@
+/*
+ * Access to a library of stochastic procedures is also provided by ccmp.
+ * All the "stochastic cannons" described in the cannon(1) and libran(3C)
+ * manual pages are available.
+ * 
+ * In this example, we use two numbers statements to create the upper and
+ * lower bounds of a moving random selection range.  In this case the
+ * range remains constant, but the bounds go in the sequence [0,1], [1,2],
+ * [2,3], etc.  These boundary values are applied to the frand() uniform
+ * random number generator.  Thus, frand() will return random values in
+ * the range [0,1], then [1,2], etc.  This value is applied to P4, so the
+ * duration of each succeeding note will average 1 second longer (over
+ * many trials).
+ * 
+ * P5 is given successive random values as returned from the cauchy()
+ * distribution function.  All stochastic cannons require that the first
+ * argument specify a procedure that they are to use as a source of random
+ * values.  In this case, frand is chosen.  P6 gets values obtained from
+ * driving the gamma() distribution function with the 1/f noise generator,
+ * onefrand().  Finally, P7 gets a value of 1/f noise selected to lie in
+ * the range of values previously applied to P5 and P6.
+ */
+
+
+Player blat(0)
+{
+	double lower, upper;
+
+	upper = Exprs("1 2 3 4 5 6 7 8 9 10 Stop");
+	lower = Exprs("0 1 2 3 4 5 6 7 8 9");
+	P4 = frand(lower, upper);
+	P5 = cauchy(frand, 1.0, 1.0);
+	P6 = gamma(onefrand, 1.0, 0.0);
+	P7 = onefrand(P5,P6);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

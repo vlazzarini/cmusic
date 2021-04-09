@@ -1,0 +1,16 @@
+band - generates band of frequency components with spacing and amplitude control
+
+band output[b] amp[bvpn] afac[bvpn] inca[bvpn] incb[bvpn] ifac[bvpn] 
+ table[fvpn] sum[dpv] ;
+
+Outputs several waveforms at once at frequencies in band corresponding
+to inca through incb.  If ifac is positive, it is ADDED repeatedly to
+inca to get each new frequency; if it is negative, its absolute value
+is MULTIPLIED repeatedly to get new frequencies (-2 gives all octaves,
+for example).  The first frequency component has an amplitude specified
+by amp; afac is MULTIPLIED by amp for the second component, MULTIPLIED
+again for the amplitude of the third, etc.  The output has peak
+amplitude equal to the sum of the amplitudes of the components
+generated, which depends on the size of the band, their spacing, and
+afac. If afac = 1.0, then the output signal has amplitude N*amp, where
+N if the number of components generated.

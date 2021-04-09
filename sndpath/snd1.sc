@@ -1,0 +1,48 @@
+#define SndFileName "demo"
+#define SfBeg 0
+#define SfEnd 196864
+#define NoteDur 8
+#define DopDur 20
+#define QuadFunc "loop1.s"
+
+set quad;
+set srate = 24K;
+set funclength = 8K;
+
+var 0 s1 SndFileName;	/* can not use s1 for anything else! */
+var 0 s3 QuadFunc;
+
+ins 0 snd;
+	seg b2 1.0 f1 d 0;			/* doppler shift */
+	seg b3 1.0 f2 d 0;
+	sndfile b1 b3 b2 s1 1 p5 p6 d d;
+
+	seg b2 1 f3 d 0;	/* chan 1 */
+	mult b3 b2 b1;		/* in b3 */
+	seg b2 1 f4 d 0;	/* chan 2 */
+	mult b4 b2 b1;		/* in b4 */
+	seg b2 1 f5 d 0;	/* chan 3 */
+	mult b5 b2 b1;		/* in b5 */
+	seg b2 1 f6 d 0;	/* chan 4 */
+	mult b6 b2 b1;		/* in b6 */
+
+	out b3 b4 b5 b6;
+end;
+
+var 0 s2 "-d ";			/* dopplar function lasts DUR secs */
+gen 0 quad f1 s2 s3 DopDur;	/* note, s2 must end with a blank! */
+var 0 s2 "-a ";			/* global amp. function */
+gen 0 quad f2 s2 s3;
+gen 0 gen0 f2;			/* optional normalization to 1 */
+
+var 0 s2 "-1 ";			/* channel 1 */
+gen 0 quad f3 s2 s3;
+var 0 s2 "-2 ";			/* channel 2 */
+gen 0 quad f4 s2 s3;
+var 0 s2 "-3 ";			/* channel 3 */
+gen 0 quad f5 s2 s3;
+var 0 s2 "-4 ";			/* channel 4 */
+gen 0 quad f6 s2 s3;
+
+note 0 snd NoteDur SfBeg SfEnd;
+ter;

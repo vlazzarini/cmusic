@@ -1,0 +1,79 @@
+splice - sndfile u.g. with automatic startpoint calculation to avoid clicks
+
+splice output[b] amplitude[bvpn] increment[bvpn] filename[s] channel[vpn] 
+ startframe[bvpn] endframe[bvpn] pos[bvpnd] ptr[d] old[vpnd] older[vpnd]
+ oldest[vpnd] ;
+
+Reads in the specified channel of the soundfile named by the string
+variable, starting at a point which minimizes discontinuity with the
+three most recent values in old, older, and oldest.  startframe and
+endframe are used to specify lower and upper bounds on the allowable
+startpoint.  The specified increment is then used to move through
+the soundfile until the note is turned off or until the end of the
+file is reached, whichever comes first.  This unit generator works
+just like the sndfile u.g. except that: 1) startframe and endframe
+have different meanings, 2) there is no wrap-around at the end of
+the file, and 3) three extra dynamic variables are required.
+
+A typical usage of the splice u.g. is illustrated in the following score:
+
+	#define FSR 16K
+	var 0 v1 0 0 0 ;
+
+	ins 0 read;
+		splice b1 1 1 s1 1 p5 p6 d d v1 v2 v3;
+		out b1 ;
+	end;
+
+	var 0 s1 "soundfile1";
+	note 0 read .3 0 0;
+	var p2+p4 s1 "soundfile2";
+	note p2 read .7 .61*FSR p5+200;
+
+The var statement defines the three variables v1, v2, v3; these are
+essential if the splice u.g. is to function properly.  Furthermore,
+a separate set of variables is required for each channel.  Thus, if
+the above score were to work for stereo, it would have to be changed
+to read:
+
+	set stereo;
+	#define FSR 16K
+	var 0 v1 0 0 0 0 0 0 ;
+
+	ins 0 left;
+		splice b1 1 1 s1 1 p5 p6 d d v1 v2 v3;
+		out 0 b1;
+	end;
+
+	ins 0 right;
+		splice b2 1 1 s1 2 p5 p6 d d v4 v5 v6;
+		out b2 0;
+	end;
+
+	var 0 s1 "soundfile1";
+	note 0 left .3 0 0;		note 0 right .3 0 0;
+	var p2+p4 s1 "soundfile2";
+	note p2 left .7 .61*FSR p5+200;	note p2 right .7 .61*FSR p5+200;
+
+If endframe = startframe (or if endframe = -1), then the splice u.g. is
+equivalent to the sndfile u.g. with endframe = -1 (except for the lack
+of wrap-around).  If endframe > startframe, then the intervening frames
+are evaluated to determine the best startpoint.  If possible, it is
+suggested that endframe be chosen so that these intervening frames
+contain several complete cycles of the signal.  But remember that
+both startframe and endframe must be specified in terms of samples
+as opposed to seconds.
+
+The best startpoint is computed as follows:  1) a Taylor series expansion
+is used to compute the next two points succeeding oldest, older, and old,
+and 2) each successive pair of points between startframe and endframe is
+compared to these two computed points, and the pair which differs by the
+least is chosen as the startpoint.  It is important to note that the
+specified amplitude value is used both in computing old, older, and oldest,
+and in picking the new startpoint.  Thus, different amplitude values can be
+used in successive calls to splice, but only with care.
+
+This unit generator should be useful for butting together two soundfiles
+(e.g. when a long signal processing job has died and been restarted in the
+middle), and also for removing isolated clicks.
+

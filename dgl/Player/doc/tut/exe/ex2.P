@@ -1,0 +1,7 @@
+Player beep(1.5, 100)
+{
+	P4 = Rhythms("{{4 8 8 4}x2}x2 Kill");
+	P5 = Pitches("as b3 c");
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,30 @@
+chubby - Chebychev Polynomial function generator for cmusic
+
+     gen 0 chubby fN DC A1 A2 A3... AN
+
+     chubby is a gen function for cmusic(1carl). It is useful in
+     generating functions for "waveshaping", or nonlinear distor-
+     tion techniques.
+
+     The arguments specify the amplitude of each of the
+     partials of the Chebychev polynomial function according to:
+
+     Tn+1(x) = 2xTn(x) - Tn-1(x)
+
+     where Tn(0) = 0 Hz component, Tn(1) = fundamental, Tn(2) =
+     first harmonic, etc.  Here is an example that produces 50%
+     fundamental and 50% third harmonic:
+
+     gen 0 chubby f0 0 .5 0 .5;
+
+     For more information say
+
+	% man chubby
+
+Author: Gareth Loy
+
+Note:
+     Whether the function returned by chubby is normalized 
+     to the signed unit interval depends on the
+     sum of its arguments being 1.0.  It is customary to 
+     renormalize chubby functions with gen0.

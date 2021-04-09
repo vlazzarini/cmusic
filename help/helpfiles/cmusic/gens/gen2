@@ -1,0 +1,18 @@
+gen2 - Fourier synthesis function generator, similar to the MUSIC V GEN 2:
+
+	gen T gen2 F   a1 a2 ... aN    b0 b1 ... bM     N ;
+
+aK is the amplitude of harmonic K in sine phase, (the fundamental frequency, 
+corresponding to a full period of the function, corresponds to K = 1), and 
+bK is the amplitude of harmonic K in cosine phase.  Note that the first 
+cosine component is at 0 Hz ("D.C."). The shape of the final (open) function is 
+determined by the sum of all the components specified; the peak amplitude of of
+the final function is normalized to 1.0.  The use of gen2 is deprecated.
+Use gen5 whenever you wish to understand what you are doing.  Examples:
+
+gen 0 gen2 f1 1   1;			(f1 is a sine wave)
+gen 0 gen2 f2 0 1   0;			(f2 is a cosine wave)
+gen 0 gen2 f3[4096] 1 0 1/3 0 1/5   5;	(f3 has length 4096 and the shape of the
+					first five components of a square wave)
+gen 0 gen2 f4 1 0 1/3 0 1/5 .5 5;	(f4 is the same as in the previous 
+					 example with a .5 D.C. offset)

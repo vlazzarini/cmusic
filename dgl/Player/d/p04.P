@@ -1,0 +1,44 @@
+Player blat()
+{
+	P4 = Rhythms("4");
+	P5 = Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+typedef Player * Pptr;
+
+Player beep(0, 20)
+{
+	Instance int sequence;
+	Instance Pptr nv;
+
+	P_start {
+		Hipn(Self, 4);
+	}
+
+	P2 = Now;
+	P4 = Rhythms("4");
+	P5 = Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	switch (sequence) {
+		case 0:
+			if (P2 >= 5.0) {
+			    nv = New_player(blat, 0.0, 30.0, P_READY);
+			    sequence++;
+			}
+			break;
+		case 1:
+			if (P2 >= 10.0) {
+				Stop(nv);
+				sequence++;
+			}
+			break;
+		case 2:
+			if (P2 >= 15.0) {
+				Start(nv);
+				sequence++;
+			}
+			break;
+	}
+	Wait_until(P2 + P4);
+}

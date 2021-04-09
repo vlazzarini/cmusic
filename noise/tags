@@ -1,0 +1,10 @@
+Mnoise		noise.c	/^main(argc, argv)$/ ;" function 100 { }	{ brand frand irand onefrand randomhelp xrand }
+brand		brand.c	/^double brand(lb, ub, limit, seq)$/ ;" function 18 { Mnoise xrand }	{ frand }
+divisor		frand.c	10 ;" global 1 { frand }	{ }
+f1init		onefrand.c	/^f1init()$/ ;" function 4 { }	{ }
+frand		frand.c	/^double frand(lb, ub)$/ ;" function 7 { Mnoise brand irand xrand }	{ divisor }
+irand		irand.c	/^irand(lb, ub)$/ ;" function 13 { Mnoise }	{ frand }
+main		noise.c	/^main(argc, argv)$/ ;" function 100 { }	{ brand frand irand onefrand randomhelp xrand }
+onefrand		onefrand.c	/^double onefrand(lb, ub, seq)$/ ;" function 39 { Mnoise xrand }	{ }
+randomhelp		noise.c	/^randomhelp()$/ ;" function 21 { Mnoise }	{ }
+xrand		xrand.c	/^double xrand(lb, ub, rolloff, mix, seq)$/ ;" function 17 { Mnoise }	{ brand frand onefrand }

@@ -1,0 +1,17 @@
+int ntimes;
+
+M_start()
+{
+	Realtime = 0;
+	ntimes = promptl("ntimes", 1, 0);
+}
+
+Player memtest(0)
+{
+	fprintf(1, "memtest\n");
+
+	if (ntimes-- > 0)
+		Wait_until(Now + 1000);
+	else
+		Kill(Self);
+}

@@ -1,0 +1,25 @@
+#include <math.h>
+
+/*
+ * Player spaz can't seem to play with machine precision, but the
+ * result sounds more ``human''.  At least it manages to keep a constant
+ * pulse.  The method to achieve this degradation is to 
+ * compute the begin-time and duration precisely, then add dither.
+ * Thus, there is no accumulation of attack-time error, and the
+ * underlying rhythmic pulse is preserved.
+ */
+
+Player spaz(0.)
+{
+	Instance double utf_begin, utf_dur, deviation;
+
+	utf_begin += utf_dur;
+	P2 = utf_begin + deviation;
+	deviation = frand(-utf_dur*.25, utf_dur*.25);
+	utf_dur = Rhythms("{16}x60 Stop");
+	P4 = utf_dur + frand(-utf_dur*.25, utf_dur*.25);
+	P5 = Exprs("60, 62, 64");
+	P6 = 60;
+	P7 = 0;
+	Wait_until(P2 + P4);
+}

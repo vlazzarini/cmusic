@@ -1,0 +1,21 @@
+/*
+ * The expr() function is available to evaluate strings as expressions,
+ * as described in the help file for expr().  expr() is very similar to
+ * the expression evaluator used by cmusic(1CARL).  expr() is not a
+ * ccmp primitive, and is not capitalized.
+ * 
+ * Also, the fields in numbers statements are evaluated by expr().
+ * This is demonstrated below.
+ */
+
+Player blat(0)
+{
+	P_start {
+		P4 = 1;
+		P6 = expr("-12dB");
+	}
+
+	P5 = Exprs("sin(.707) {sin(1)+1}x2 {-6dB} 2^14 Stop");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

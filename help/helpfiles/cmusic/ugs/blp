@@ -1,0 +1,25 @@
+blp - bandlimited pulse generator
+
+blp output[b] amp[bvpn] incr1[bvpn] incr2[bvpn] n[bvpn] sum1[dpv] sum2[dpv] ;
+
+blp generates a bandlimited pulse wave which contains n equal-amplitude
+sinusoidal components starting at frequency f1 (specified by inc1) and 
+spaced upwards by frequency f2 (specified by inc2) according to the closed
+form formula:
+
+    n-1
+    ___
+    \   sin( A + kB ) = sin( A + (n-1)B/2 )sin( nB/2 )csc( B/2 ) 
+    /__
+
+    k=0
+
+where:	A = 2pi*f1*t, and
+	B = 2pi*f2*t .
+
+If f2 is equal to f1, then a harmonic spectrum will result, i.e., 
+the first n harmonics of f1 will be present, all at equal amplitude.  
+blp is useful to efficiently generate harmonic-rich waveforms that do not 
+produce foldover as long as the value of n is less than 1 + (R/2 - f1)/f2
+(where R is the sampling rate).
+

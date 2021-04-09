@@ -1,0 +1,20 @@
+Player blat()
+{
+	P4= Rhythms("4");
+	P5= Pitches("{as b3 c df5 e f fs ff5 bs6 a8}x2");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+typedef Player * Pptr;
+
+Player beep(0)
+{
+	Instance Pptr	nv[32];
+	int i;
+
+	for (i = 0; i < 32; i++)
+		nv[i] = New_player(blat, 5.0, 10.0, P_READY);
+
+	Stop(Self);
+}

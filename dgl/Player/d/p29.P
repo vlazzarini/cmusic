@@ -1,0 +1,33 @@
+int	I_ran;
+
+tester()
+{
+	int did_run = I_ran;
+
+	I_ran = 0;
+	if (did_run) 
+		return True;
+	else
+		return False;
+}
+
+Player blat(0,10)
+{
+	P_start {
+		Wait_for(tester, CONTINUOUS);
+	}
+	P2 = Now;
+	P4 = .5;
+	P5 = Player_stat & P_WAIT_FOR;
+	P6 = Player_stat & P_WAIT_UNTIL;
+	Wait_until(P2 + P4);
+}
+
+Player qop(5,10)
+{
+	P_start {
+		Silent(Self);
+	}
+	Wait_until(Now + 1.0);
+	I_ran = 1;
+}

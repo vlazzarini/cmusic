@@ -1,0 +1,10 @@
+gain - simple inline program to scale a digital signal
+
+DESCRIPTION:
+gain reads samples from stdin, scales them by the gain factor supplied
+as its argument, and writes the scaled values on stdout.  It is
+intended to be included in pipes with programs such as para, chan,
+sndin, cmusic, impulse, etc. The following example generates an impulse
+signal 50 samples long, consisting of .707, followed by 49 zero values:
+
+	impulse 50 | gain -3dB

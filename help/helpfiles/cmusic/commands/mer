@@ -1,0 +1,23 @@
+mer - the cmusic merge command
+
+The merge command may be used to accomodate scores which are not given
+in time order.  It causes cmusic to read in one or more merge sections,
+evaluating p2 and p4 fields as it goes.  Each section is separately
+sorted into time order, then the sections are merged into a single,
+sorted score.  Example:
+
+    merge;
+
+	    note, gen, pri, and var statements only {MERGE SECTION 1}
+
+	endsec;
+
+	    note, gen, pri, and var statements only {MERGE SECTION 2}
+
+	endsec;
+
+    endmerge;
+
+NOTE: "ins", "mer", "sec", "set" or "ter" statements are treated as
+errors within a merge; "com" statements are ignored.
+

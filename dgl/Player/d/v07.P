@@ -1,0 +1,51 @@
+/*
+ * A subroutine called Rel_time() exists.  As the Player goes from
+ * its first call to its last, the value of Rel_time() goes from 0 to 1,
+ * giving a running indication of where we are in the life of this Player.
+ * Thus, as Player blat goes from time 0 to time 100, Rel_time() goes from 0
+ * to near 1.0, that is to 1.0 - epsilon.
+ * (It never reaches 1.0 because that is when the Player ends.  For instance,
+ * if the duration is 1.0, and the number of notes played is 2,  the
+ * values of Rel_time() for the two notes will be 0.0, and 0.5).
+ * 
+ * In addition, there is a version of the Func() procedure, called
+ * Rel_func(), which scales the x axis of the function to be accessed to
+ * lie in the [0,1] interval.  Using Rel_time() to index a function with
+ * Rel_func() will cause the function to be perambulated exactly once
+ * during the life of the Player.  Thus, it represents a convenient way to
+ * control functions that are to be applied over a run of note statements,
+ * such as amplitude control, etc.
+ * 
+ * Rel_time() takes one argument, which is the Player to take the relative
+ * time of.  Saying Rel_time(Self) causes the current Player to be taken.
+ * Substituting any other Player name is possible.
+ *
+ * N.B., Rel_time() depends heavily on supplying both a begin time
+ * and duration
+ * to the Player.  When the duration is left out, it defaults to the largest
+ * positive floating point number (which, for your edification is
+ * 1.701411733192644270e38 on a VAX).  Progress of any piece, when
+ * measured against this number, will seem small, hence Rel_time() will
+ * always be near 0 unless specific begin and duration times are given.
+ * (Misc. note, there is no particular reason other than clarity
+ * why the value returned from Rel_time() is first
+ * assigned to variable y then given to Rel_func().)
+ */
+
+
+Player blat(0,100)
+{
+	Instance Function *f1;
+	float y = 0;
+
+	P_start {
+		f1 = Read_func(Argv[1]);
+		P4 = Rhythms("1");
+	}
+	P5 = Pitches("as b3 c df5 e f fs ff5 bs6 a8");
+	y = Rel_time(Self);
+	P6 = y;
+	P7 = Rel_func(f1, y);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

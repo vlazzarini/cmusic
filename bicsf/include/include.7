@@ -1,0 +1,215 @@
+.TH SFHEADER.H 7 BICSF "1st Edition" "Berkely/IRCAM/CARL Sound Filesystem"
+.SH NAME
+sfheader.h \- BICSF header file
+.SH SYNOPSIS
+# include <sfheader.h>
+.SH DESCRIPTION
+.I sfheader.h
+contains macros for standard operations on BICSF sound files.
+.SH SFCOMMENT
+.LP
+.I SFCOMMENT
+is used to store comment information in a header.
+.I sfcomm()
+returns a pointer to the (string) comment.
+.DS
+# define MAXCOMM 512
+# define MINCOMM 256
+# define sfcomm(x,n) (x)->comment[n]
+
+typedef struct sfcomment {
+	char 	comment[MAXCOMM];
+} SFCOMMENT;
+.DE
+.SH SFHEADER
+.I SFHEADER
+is the structure of the first 1024 bytes of a soundfile.
+.DS
+# define SIZEOF_HEADER 1024		/* First 1k reserved for header info */
+# define SF_MAGIC 107364    		/* Code indicating "IS_SOUNDFILE" */ 
+# define SF_SHORT sizeof(short)		/* 2 bytes on VAX */
+# define SF_FLOAT sizeof(float)		/* 4 bytes on VAX */
+# define SF_BUFSIZE	(16*1024)	/* Block size for soundfile reads */ 
+# define SF_MAXCHAN	4		/* Max nr chans for playable file */
+# define SFDIR	"SFDIR"		/* Name of env variable for getsfname() */
+
+typedef union sfheader {		
+	struct {		
+		int	  sf_magic;		/* Defined above. */
+		float	  sf_srate;		/* Sample rate */	
+		int	  sf_chans;		/* Number of channels */
+		int	  sf_packmode;	/* packmodes: SF_SHORT or SF_FLOAT */  
+		char	  sf_codes;		/* see sfcodes (below) */ 
+	} sfinfo;			
+	char	filler[SIZEOF_HEADER];	/* Remaining part of 1k header empty */
+} SFHEADER;
+.DE
+.LP
+These macros return useful information from an 
+.I SFHEADER
+structure.  
+.I x 
+is a pointer to an
+.I SFHEADER.
+.DS
+# define ismagic(x) ((x)->sfinfo.sf_magic == SF_MAGIC)
+# define sfchans(x) (x)->sfinfo.sf_chans
+# define sfmagic(x) (x)->sfinfo.sf_magic
+# define sfsrate(x) (x)->sfinfo.sf_srate
+# define sfclass(x) (x)->sfinfo.sf_packmode
+# define sfcodes(x) (x)->sfinfo.sf_codes	  
+.DE
+.SH "SIZEING A SOUNDFILE"
+.LP
+.I sfbsize() 
+returns the size in bytes of 
+the sound data portion of a soundfile.  
+.I sfst 
+is the address of a 
+.IR stat (2)
+structure.	
+To use 
+.I sfbsize() 
+you also need (in this order!):
+.DS
+# include <sys/types.h>
+# include <sys/stat.h>
+.DE
+See the man page for 
+.IR stat (2).
+.DS
+# define sfbsize(sfst) ((sfst)->st_size - sizeof(SFHEADER))
+.DE
+.LP
+.SH "SFCODE and Related Data Structures"
+Two routines in 
+.IR libbicsf.a (3bicsf)
+(source file libbicsf/sfcodes.c), 
+.I getsfcode() 
+and 
+.I putsfcode(), 
+are used to fetch or insert additional information into a header.
+See 
+.IR sfcodes (3bicsf).
+.DS
+# define SF_END 0   		/* Code meaning "no more information" */
+# define SF_MAXAMP 1		/* Code meaning "maxamp follows"  */ 
+# define SF_COMMENT 2		/* Code for "comment line" */
+				
+typedef struct sfcode {	
+	short	code;		/* Code for what information follows */ 
+	short	bsize;		/* Total nr bytes of added information */
+} SFCODE;			
+.DE
+.SH SFMAXAMP
+.I SFMAXAMP 
+stores (optional) maximum amplitude information in header.
+.DS
+typedef struct sfmaxamp {		
+	float	value[SF_MAXCHAN];	/* peak amp per channel */
+	long	samploc[SF_MAXCHAN];	/* location of maxamp sample */
+	long	timetag;  		/* date maxamp was updated */
+} SFMAXAMP;   				
+.DE
+.LP
+Definition of macros for getting 
+.I maxamp 
+information.
+.I sfm 
+is a pointer to 
+.I SFMAXAMP
+.I sfst 
+is the address of a 
+.IR stat (2)
+structure.
+.DS
+# define sfmaxamp(sfm,chan) (sfm)->value[chan]
+# define sfmaxamploc(sfm,chan) (sfm)->samploc[chan]
+# define sfmaxamptime(sfm) (sfm)->timetag
+# define ismaxampgood(sfm,sfst) (sfmaxamptime(sfm) + 2  >= (sfst)->st_mtime)
+.DE
+.SH "Macros for soundfile header I/O"
+.LP
+.I sflseek() 
+is used to reset the pointer for reads and writes:
+.I x 
+is the file descriptor,
+.I y 
+is the offset in bytes,
+.I z 
+is the starting location for the file pointer as in 
+.IR lseek (2).
+.DS
+sflseek(x, y, z)
+.DE
+.LP
+.I rheader() 
+and 
+.I wheader() 
+read/write a header from/to a soundfile.
+If a header read or write fails, they return 1.
+.I x 
+is file descriptor 
+.I y 
+is the address of (pointer to) an 
+.I SFHEADER 
+structure.
+.DS
+rheader(x, y)
+wheader(x, y)
+.DE
+.LP
+.SH "Macros for opening soundfiles"
+.I readopensf() 
+opens a soundfile for reading only.
+.I prog 
+is the name of the program calling 
+.I readopensf().
+.DS
+readopensf(name, fd, sfh, sfst, prog, result)
+.ta 2i
+char *name; \-name is a soundfile name
+int fd;	\-fd is file descriptor obtained from open()	
+SFHEADER sfh;	\-sfh is an SFHEADER struct
+struct stat sfst;	\-sfst is a stat struct
+char *prog;
+int result;	\-result is returned to calling program
+.DE
+.LP
+.I wropensf() 
+opens a new soundfile for writing.
+If the file already exists, it will be written over.
+.DS
+wropensf(name, sfd, sfh, prog, result)
+.ta 2i
+char *name; \-name is a soundfile name
+int sfd;	\-sfd is file descriptor obtained from open()	
+SFHEADER sfh;	\-sfh is an SFHEADER struct
+char *prog;
+int result;	\-result is returned to calling program
+.DE
+Use this version for compiling MTU software.
+.DS
+rwopensf(name, fd, sfh, sfst, prog, result, code)
+.DE
+.LP
+Use this for opening soundfiles for reading and writing.
+.DS
+rdwropensf(name, fd, sfh, sfst, prog, result)
+.DE
+.SH "Misc. routines"
+.DS
+SFCODE		*getsfcode();
+.DE
+.I getsfcode()
+is used to see what fields are given values in an
+.I SFHEADER
+structure.
+.DS
+char		*getsfname();
+.DE
+Returns string form of the soundfile.
+.DS
+SFMAXAMP	*getsfmaxamp();
+.DE
+Returns the maxamp of the sound file (or NULL if no maxamp).

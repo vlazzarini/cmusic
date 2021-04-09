@@ -1,0 +1,68 @@
+.TH LIBBICSF 3 BICSF "1st Edition" "Berkeley/IRCAM/CARL Sound Filesystem"
+.SH NAME
+libbicsf \- subroutine library for BICSF Sound Filesystem programs
+.SH SYNOPSIS
+cc your_prog \-lbicsf
+.SH DESCRIPTION
+.B libbicsf
+contains subroutines used by soundfile programs.  The principle
+functions kept in 
+.B libbicsf
+are:
+.nf
+
+crack()		\-scans command line arguments.  See man crack(3).	 
+argscan() 	\-scans command line arguments.  See man argscan(3).
+getsfname()	\-returns full pathname to a soundfile.  See man getsfname(3).
+getmaxamp()	\-finds maximum amplitude of a soundfile.  See man getmaxamp(3).
+getsfcode()	\-searches for specified soundfile header code.   man sfcodes(3)
+putsfcode()	\-puts coded information into soundfile header.   man sfcodes(3)
+sfexpr()	\-expression evaluator for use by crack() or argscan()
+.SH "SOURCE FILES"
+Sources may be in one of several places depending upon local conventions.
+At CARL, this path is 
+.I /carl/src/carl/src/bicsf/libbicsf.  
+Elsewhere, a good place to put it (or find it)
+is 
+.I /`hostname`/src/import/carl/src/bicsf/libbicsf,
+where 
+.I `hostname`
+is the name of your machine.
+.SH "INCLUDE FILES"
+The location of include files 
+.I crack.h
+and
+.I argscan.h
+may vary with local conventions.  
+At CARL, they are in \fI/usr/include/carl\fP.
+They are also in the distribution arena: \fI/carl/src/carl/include/carl\fP.
+Elsewhere, a good place to find them (or put them) is \fI/usr/include/local\fP,
+or \fI/`hostname`/include.  Refer to the manual page for
+.IR cc (1)
+for information on the \-I flag, which eases the problem of finding include files.
+.SH LIBRARY
+These routines are archived in 
+.I libbicsf.a.  
+This library may be in one of several
+places, depending upon local conventions.
+At CARL, this path is 
+.I /carl/lib/libbicsf.a.  
+Elsewhere, a good place to put
+it (or find it) is 
+.I /`hostname`/lib/libbicsf.a.
+.PP
+It can also be put in 
+.I /usr/local/lib/libbicsf.a, 
+but as this area is sometimes deleted
+across upgrades of UNIX, it is preferable to make a symbolic link,
+\fI/usr/local/lib \-> /`hostname`/lib.\fP
+In this way, the loader,
+.IR ld (1)
+can still find local libraries, allowing the convention
+.RS .5i
+% cc file.c \-lbicsf
+.RE
+Otherwise, a full path to the file could be given:
+.RS .5i
+% cc file.c /`hostname`/lib/libbicsf.a
+.RE

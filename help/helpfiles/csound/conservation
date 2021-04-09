@@ -1,0 +1,108 @@
+reapsf - conservation of sound file disk space
+
+OVERVIEW
+
+In an attempt to minimize the deleterious effects of long lived but
+little referenced sound files, a system of automatic recycling of file
+space has been instituted on the sound file system.
+
+There are three storage classes of sound files, designated Keep, Hold,
+and Scratch.
+
+Scratch files have a guaranteed lifetime of one calendar day.
+
+Hold files have a guaranteed lifetime of seven (7) days.
+
+Keep files are not subject to automatic deletion, but they still may be
+dumped to magtape and purged if circumstances warrant.
+
+Depending on the weight of space usage, Scratch and Hold files may last
+considerably longer than their minima.  It is anticipated that Hold
+files will be fairly long lived.
+
+New sound files always start out life as Scratch files, and must be
+promoted to Hold or Keep status.  Once you audition a file and decide
+you like it, you then put it on Hold status.  Hold status is the
+correct storage class for working sound files that you deem desirable
+to keep around for a while.  Keep status is reserved for finished
+pieces, some demos, and other files that have received official
+blessing to have such status (Holy water is sprinkled and incense is
+burned...).  If you think you will need a file in perpetuity, the
+correct thing to do is to dump a copy of it to magtape with dumpsf.
+
+The automatic mechanism for reclaiming space from Scratch and Hold
+files is to delete the oldest Scratch files first, then when all the
+Scratch files that can be deleted are gone, the same procedure is done
+on Hold files.  Age of a file is determined by the last time the file
+was referenced.  Thus, Scratch files may only be reclaimed 24 hours
+after the time they were referenced last.  Hold files will last 7 days
+after their last reference.
+
+MAKING SAVE, HOLD AND KEEP FILES
+
+When a file is created by record, cpsf, catsf or sndout, its class is
+set to Scratch.
+
+The classification of files may be set by the three new commands:
+	scratchsf filename*
+	holdsf filename*
+	keepsf filename*
+where filename* means any number of sound file names.  For example,
+the sequence:
+	wave | sndout test
+	holdsf test
+will preserve test for a minimum of 7 days.
+
+Renaming a file with mvsf, keeps its former classification.  Likewise, 
+restoring a file from magtape via restorsf carries over its old classification.
+
+To observe the classification of a file, use the 
+	% lsf -l file 
+or
+	% lsf -f file 
+
+RECLAIMING FILE SPACE
+
+The manual method of reclaiming space described here is interim.
+It will be augmented by an automatic system when it is known to work
+reliably.
+
+A program called reapsf exists which looks like this:
+
+	usage: reapsf flags filesys
+	 flags:
+	 -SN delete scratch files as needed to reclaim N cylinders
+	 -HN delete hold files as needed to reclaim N cylinders
+
+Thus, the command:
+
+	% reapsf -S10 /snd
+
+will attempt reclaim 10 cylinders from Scratch file space.
+It is, of course, possible that there are not 10 reclaimable cylinders,
+or that there are more.  In the former case, you are justified in going
+after hold files:
+
+	% reapsf -H10 /snd
+
+In the latter case, politeness dictates that you will leave any unneeded
+files around, reclaiming only as much as is needed.
+
+NOTE: It is possible, and even encouraged, for anyone to run reapsf at
+any time, requesting as much space as they legitimately need to do
+their work.  After exausting Scratch space, Hold space may be
+reclaimed.  Reapsf will not delete files that have not exceeded the
+thresholds.
+
+IMPORTANT NOTICE:
+
+As a special dispensation, it is possible  for
+everyone to give their files Keep status via keepsf.  This will
+continue as long as it is not abused.
+Keep status is to be used only for finished
+pieces, some demos, and other files for which you can justify needing
+instantaneous access for a period of longer than 7 days.  You may have
+to justify your use of this status, especially if the last referenced
+time of a Keep file of yours shows it has been neglected for more than
+two weeks.  Improper use of Keep status will be rewarded by being
+slowly boiled in rancid Yak fat (don't make me do it!).

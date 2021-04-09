@@ -1,0 +1,19 @@
+
+/*
+ * Motives may have '|' vertical bars which stand for "bar lines."  This
+ * is strictly a convenience for formatting lists of parameters.  
+ * A bar line may take an optional label which is concatenated to the '|'.
+ * In the example below, "label" and "xyzzy" are bar line labels.  These
+ * can be used to encode "rehearsal numbers" in the score.
+ */
+
+Player x(0)
+{
+	P_start {
+	    P4 = 1;
+	    Motive("n: | c0 g c1 g c2 |label g c3 g c4 g |xyzy c5 g | Stop");
+	}
+	P5 = Keys("@n");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

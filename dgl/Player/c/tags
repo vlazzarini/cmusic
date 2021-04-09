@@ -1,0 +1,191 @@
+Abs_time		Abs_time.c	/^P_TYPE Abs_time()$/ ;" function 12 { test }	{ Now }
+Alias		Alias.c	/^Alias(cp, name)$/ ;" function 25 { }	{ NULL Pexit get_templ install }
+Argc		globs.c	13 ;" global 1 { cpy_args init_globs parse_flags }	{ }
+Argv		globs.c	14 ;" global 1 { cpy_args init_globs parse_flags }	{ }
+Beg_time		Beg_time.c	/^P_TYPE Beg_time(x)$/ ;" function 18 { }	{ NULL Player_stat }
+Caller		Caller.c	/^Caller(x)$/ ;" function 18 { }	{ NULL Player_stat }
+CoerceToPname		globs.c	15 ;" global 1 { SubstitutePname read_stdin }	{ }
+Direction		Direction.c	/^Direction(x, increment)$/ ;" function 24 { }	{ Motive NULL Player_stat lookup }
+Dur_time		Dur_time.c	/^P_TYPE Dur_time(x)$/ ;" function 18 { }	{ NULL Player_stat }
+End_time		End_time.c	/^P_TYPE End_time(x)$/ ;" function 18 { }	{ NULL Player_stat }
+Expr		Expr.c	/^double Expr(str) $/ ;" function 24 { }	{ NULL pexprerr }
+Exprs		Exprs.c	/^double Exprs(nl)$/ ;" function 56 { }	{ Player_stat Self _motive clist_direct clr_ac getid nextnot pexprerr }
+Field_width		globs.c	16 ;" global 1 { run_arbiter }	{ }
+Find_measure		Find_measure.c	/^Find_measure(nl, id)$/ ;" function 36 { }	{ Player_stat _motive clr_ac getid mmark nextnot rebuild_list return_on_meas_id }
+Func		Func.c	/^double Func(f, x)$/ ;" function 51 { Rel_func }	{ NULL Player_stat }
+Func_length		Func_length.c	/^long Func_length(f)$/ ;" function 11 { Tempo Tmap }	{ NULL }
+Gen		Gen.c	/^Function *Gen(cmd)$/ ;" function 32 { }	{ NULL malerr }
+Get_keysig		Get_keysig.c	/^struct sig_key *Get_keysig(nl)$/ ;" function 21 { }	{ getid }
+Get_list		Get_list.c	/^Get_list(file, label)$/ ;" function 20 { Read_list }	{ NULL Pexit read_notes }
+Get_metronome		Get_metronome.c	/^double Get_metronome(nl)$/ ;" function 17 { }	{ getid }
+Get_paddr		Get_paddr.c	/^Get_paddr(strname))()$/ ;" function 27 { }	{ NULL lookup }
+Get_pname		Get_pname.c	/^Get_pname(P)$/ ;" function 16 { }	{ NULL P get_templ }
+Get_sig_key		Get_sig_key.c	/^Get_sig_key(nl)$/ ;" function 10 { }	{ getid }
+Get_timesig		Get_timesig.c	/^struct sig_time *Get_timesig(nl)$/ ;" function 20 { }	{ getid }
+HUGE		Rel_time.c	/^#	define HUGE 0x37777777$/ ;" macro 1 { Pmain Rel_time Tempo Wait_for Wait_until }	{ }
+Hipn		Hipn.c	/^Hipn(x, n)$/ ;" function 37 { add_player }	{ NULL Player_stat }
+Index		Index.c	/^Index(nl, offset, whence)$/ ;" function 53 { }	{ _motive clr_ac getid nextnot rebuild_list }
+Instances		Instances.c	/^Instances(proc)$/ ;" function 26 { }	{ NULL get_templ }
+Join		Join.c	/^Join(flag)$/ ;" function 18 { }	{ Self }
+Key		Key.c	/^double Key(str)$/ ;" function 20 { }	{ NULL Player_stat pc_oct }
+Keys		Keys.c	/^double Keys(nl)$/ ;" function 72 { }	{ Player_stat Self _motive clist_direct clr_ac getid nextnot pc_oct }
+Kill		Kill.c	/^Kill(x)$/ ;" function 39 { Unwait_for poll_waits read_stdin run_arbiter wf_clear }	{ NULL Now garbage set_wait }
+Kill_test		Kill_test.c	/^void Kill_test(predicate)$/ ;" function 18 { }	{ Self }
+M_start		tmPlayer.c	/^M_start()$/ ;" function 3 { Pmain }	{ }
+M_ter		tmPlayer.c	/^M_ter()$/ ;" function 3 { Pmain }	{ }
+Motive		Motive.c	/^Motive(c)$/ ;" function 19 { Direction }	{ _motive newid }
+MtmPlayer		tmPlayer.c	/^main(argc, argv)$/ ;" function 6 { }	{ Pexit Pmain }
+NULL		Kill.c	/^#define NULL 0$/ ;" macro 1 { Alias Beg_time Caller Direction Dur_time End_time Expr Func Func_length Gen Get_list Get_paddr Get_pname Hipn Instances Key Kill New_player Oct_pt Octave P Pitch Player_status Pmain Pp Ps Read_lists Rel_func Rel_time Rest Resting Send Set_beg_time Set_dur_time Set_p Set_pi Set_pp Set_ps Setup_p Setup_pp (etc) }	{ }
+New_player		New_player.c	/^Player * New_player(proc, beg, dur, stat)$/ ;" function 58 { Pmain Wait_for add_player }	{ NULL Now Pexit Self _Pdebug get_templ mk_Player set_wait }
+Now		globs.c	6 ;" global 1 { Abs_time Kill New_player Start Wait_for Wait_until check_waits init_globs poll_waits read_stdin run_arbiter }	{ }
+Oct_pt		Oct_pt.c	/^double Oct_pt(str) $/ ;" function 38 { Oct_pts }	{ NULL Player_stat Scale }
+Oct_pts		Oct_pts.c	/^double Oct_pts(nl)$/ ;" function 63 { }	{ Oct_pt Player_stat Self _motive clist_direct clr_ac getid nextnot }
+Octave		Octave.c	/^double Octave(str)$/ ;" function 23 { }	{ NULL Player_stat pc_oct }
+P		P.c	/^P_TYPE P(vp, n)$/ ;" function 24 { Get_pname }	{ NULL Player_stat ckmaxp }
+PC_poll_waits		poll_waits.c	/^PC_poll_waits(c)$/ ;" function 13 { Pmain }	{ NULL PI_poll_waits Pexit install poll_waits }
+PC_read_stdin		read_stdin.c	/^PC_read_stdin(c)$/ ;" function 13 { Pmain }	{ NULL PI_read_stdin Pexit install read_stdin }
+PC_test		test.c	/^PC_test(c)$/ ;" function 13 { cueue_players }	{ NULL PI_test Pexit install test }
+PI_poll_waits		poll_waits.c	/^PI_poll_waits(i, c)$/ ;" function 12 { PC_poll_waits }	{ }
+PI_read_stdin		read_stdin.c	/^PI_read_stdin(i, c)$/ ;" function 12 { PC_read_stdin }	{ }
+PI_test		test.c	/^PI_test(i, c)$/ ;" function 12 { PC_test PP_test }	{ }
+PP_poll_waits		poll_waits.c	/^PP_poll_waits(c)$/ ;" function 3 { }	{ }
+PP_read_stdin		read_stdin.c	/^PP_read_stdin(c)$/ ;" function 3 { }	{ }
+PP_test		test.c	/^PP_test(c)$/ ;" function 11 { cueue_players }	{ PI_test mk_Player set_wait }
+P_DEBUG		New_player.c	/^# define P_DEBUG$/ ;" macro 1 { }	{ }
+P_FLOAT		poll_waits.c	/^# define P_FLOAT$/ ;" macro 1 { }	{ }
+Pclock		globs.c	7 ;" global 1 { Pmain poll_waits }	{ }
+Peekcl		Peekcl.c	/^char *Peekcl(nl)$/ ;" function 16 { }	{ _motive getid }
+Pexit		Pexit.c	/^Pexit(x)$/ ;" function 14 { Alias Get_list MtmPlayer New_player PC_poll_waits PC_read_stdin PC_test Pmain Read_lists Wait_for _motive add_player buildnotes get_ac interplist malerr newid notlnk parse_flags pexprerr set_ac set_keysig set_timesig test }	{ }
+Pitch		Pitch.c	/^double Pitch(str)$/ ;" function 23 { }	{ NULL Player_stat Scale pc_oct }
+Pitches		Pitches.c	/^double Pitches(nl)$/ ;" function 70 { }	{ Player_stat Scale Self _motive clist_direct clr_ac getid nextnot pc_oct }
+Player_stat		Oct_pt.c	9 ;" global 1 { Beg_time Caller Direction Dur_time End_time Exprs Find_measure Func Hipn Key Keys Oct_pt Oct_pts Octave P Pitch Pitches Pp Print_stat Ps Rel_func Rel_time Rest Rhythm Rhythms Send Set_beg_time Set_dur_time Set_p Set_pi Set_pp Set_ps Silent Start Stop Strings Unrest Unsilent buildnotes ckmaxp (etc) }	{ }
+Player_status		Player_status.c	/^Player_status(x)$/ ;" function 16 { }	{ NULL }
+Pmain		Pmain.c	/^void Pmain(ac, av)$/ ;" function 64 { MtmPlayer }	{ HUGE M_start M_ter NULL New_player PC_poll_waits PC_read_stdin Pclock Pexit _Pdebug cpy_args cueue_players parse_flags read_stdin run_arbiter stat_symtab }
+Pp		Pp.c	/^Pp(vp, n)$/ ;" function 22 { }	{ NULL Player_stat ckmaxp }
+Precision		globs.c	16 ;" global 1 { run_arbiter }	{ }
+Print_stat		Print_stat.c	/^Print_stat(fd, msg)$/ ;" function 57 { }	{ Player_stat }
+Ps		Ps.c	/^char * Ps(vp, n)$/ ;" function 23 { }	{ NULL Player_stat ckmaxp }
+Psleep		Psleep.c	/^Psleep(interval)$/ ;" function 29 { run_arbiter }	{ catchalarm jbuf }
+Read_func		Read_func.c	/^Function *Read_func(name, type)$/ ;" function 19 { }	{ }
+Read_list		Read_list.c	/^Read_list(file, label)$/ ;" function 17 { }	{ Get_list buildnotes newid nextnot }
+Read_lists		Read_lists.c	/^Read_lists(file)$/ ;" function 28 { }	{ NULL Pexit buildnotes get_clist newid nextnot }
+Realtime		globs.c	11 ;" global 1 { init_globs run_arbiter }	{ }
+Rel_func		Rel_func.c	/^double Rel_func(f, x)$/ ;" function 21 { }	{ Func NULL Player_stat }
+Rel_time		Rel_time.c	/^P_TYPE Rel_time(x)$/ ;" function 35 { }	{ HUGE NULL Player_stat }
+Rest		Rest.c	/^Rest(x)$/ ;" function 25 { }	{ NULL Player_stat }
+Resting		Resting.c	/^Resting(x)$/ ;" function 25 { }	{ NULL }
+Rhythm		Rhythm.c	/^double Rhythm(str) $/ ;" function 35 { Rhythms set_metronome }	{ Player_stat do_rhy }
+Rhythms		Rhythms.c	/^double Rhythms(nl)$/ ;" function 55 { }	{ Player_stat Rhythm Self _motive clist_direct clr_ac getid nextnot }
+Scale		globs.c	17 ;" global 20 { Oct_pt Pitch Pitches }	{ }
+Self		globs.c	9 ;" global 1 { Exprs Join Keys Kill_test New_player Oct_pts Pitches Rhythms Send Strings Unwait_for Wait_for Wait_until init_globs poll_waits read_stdin run_arbiter }	{ }
+Send		Send.c	/^Send(inst, time)$/ ;" function 18 { }	{ NULL Player_stat Self }
+Set_beg_time		Set_beg_time.c	/^void Set_beg_time(x, beg)$/ ;" function 18 { }	{ NULL Player_stat }
+Set_dur_time		Set_dur_time.c	/^Set_dur_time(x, dur)$/ ;" function 18 { }	{ NULL Player_stat }
+Set_p		Set_p.c	/^Set_p(vp, n, val)$/ ;" function 25 { }	{ NULL Player_stat ckmaxp resize_p }
+Set_pi		Set_pi.c	/^Set_pi(vp, n, val)$/ ;" function 25 { }	{ NULL Player_stat ckmaxp resize_p }
+Set_pp		Set_pp.c	/^Set_pp(vp, n, val)$/ ;" function 24 { }	{ NULL Player_stat ckmaxp resize_p }
+Set_ps		Set_ps.c	/^Set_ps(vp, n, val)$/ ;" function 25 { }	{ NULL Player_stat ckmaxp resize_p }
+Setup_p		Setup_p.c	/^Setup_p(x, plen)$/ ;" function 18 { }	{ NULL hi_p_ck }
+Setup_pp		Setup_pp.c	/^Setup_pp(x, plen)$/ ;" function 17 { }	{ NULL hi_p_ck }
+Setup_ps		Setup_ps.c	/^Setup_ps(x, plen)$/ ;" function 17 { }	{ NULL hi_p_ck }
+Silent		Silent.c	/^Silent(x)$/ ;" function 24 { }	{ NULL Player_stat }
+Start		Start.c	/^Start(x)$/ ;" function 27 { }	{ NULL Now Player_stat set_wait }
+Stop		Stop.c	/^Stop(x)$/ ;" function 26 { }	{ NULL Player_stat }
+Strings		Strings.c	/^char * Strings(nl)$/ ;" function 60 { test }	{ NULL Player_stat Self _motive clr_ac getid nextnot }
+SubstitutePname		SubPname.c	/^SubstitutePname(name)$/ ;" function 28 { }	{ CoerceToPname NULL }
+Tempo		Tempo.c	/^double Tempo(tempofun, abstart, absdur, abs_total_/ ;" function 56 { }	{ Func_length HUGE }
+Tmap		Tmap.c	/^double Tmap(tempofun, time, abs_total_dur)$/ ;" function 42 { }	{ Func_length }
+Unrest		Unrest.c	/^Unrest(x)$/ ;" function 21 { }	{ NULL Player_stat }
+Unsilent		Unsilent.c	/^Unsilent(x)$/ ;" function 22 { }	{ NULL Player_stat }
+Unwait_for		Wait_for.c	/^Unwait_for(proc)$/ ;" function 33 { }	{ Kill NULL Self poll wlist }
+Unwait_until		Unwait_until.c	/^void Unwait_until(x)$/ ;" function 13 { }	{ wu_clear }
+Wait_for		Wait_for.c	/^void Wait_for(proc, status)$/ ;" function 57 { }	{ HUGE NULL New_player Now Pexit Self malerr poll poll_waits wlist }
+Wait_until		Wait_until.c	/^Wait_until(time)$/ ;" function 52 { poll_waits read_stdin test }	{ HUGE Now Self _Pdebug set_wait }
+_Pdebug		New_player.c	9 ;" global 1 { New_player Pmain Wait_until add_player buildnotes get_wait getid init_globs init_symtab install interplist lookup newid parse_flags run_arbiter set_wait strsav wu_clear }	{ }
+_motive		cyclist.c	/^void _motive(h, nl)$/ ;" function 15 { Exprs Find_measure Index Keys Motive Oct_pts Peekcl Pitches Rhythms Strings }	{ NULL Pexit buildnotes }
+add_player		add_player.c	/^add_player(ps, cnt)$/ ;" function 47 { read_stdin }	{ Hipn NULL New_player Pexit _Pdebug lookup malerr pexprerr }
+addr_hash		symtab.c	/^addr_hash(addr)$/ ;" function 9 { delsym install lookup }	{ }
+append_Player		mk_Player.c	/^append_Player(ctempl, p)$/ ;" function 19 { mk_Player }	{ NULL }
+backward		cyclist.c	/^backward(h)$/ ;" function 37 { nextnot }	{ NULL rebuild_list return_on_meas_id }
+buf		read_stdin.c	57 ;" global 1 { get_clist get_note_stmt read_notes strsav }	{ }
+buildnotes		cyclist.c	/^buildnotes(h, nl)$/ ;" function 88 { Read_list Read_lists _motive }	{ NULL Pexit Player_stat _Pdebug install malerr newnod notlnk rebuild_list }
+catchalarm		Psleep.c	/^catchalarm() $/ ;" function 4 { Psleep }	{ jbuf }
+check_waits		check_waits.c	/^check_waits()$/ ;" function 23 { poll_waits }	{ NULL Now set_wait wlist }
+ckmaxp		ckmaxp.c	/^ckmaxp(i, n)$/ ;" function 13 { P Pp Ps Set_p Set_pi Set_pp Set_ps }	{ NULL Player_stat }
+clist_direct		clist_direct.c	/^clist_direct(h)$/ ;" function 23 { Exprs Keys Oct_pts Pitches Rhythms }	{ set_keysig set_metronome set_timesig }
+clr_ac		keysig.c	/^clr_ac(k)$/ ;" function 11 { Exprs Find_measure Index Keys Oct_pts Pitches Rhythms Strings }	{ NULL }
+cmusout		cmusout.c	/^cmusout(x, fwdth, prec)$/ ;" function 46 { }	{ NULL }
+cpy_args		cpy_args.c	/^cpy_args(ac, av)$/ ;" function 6 { Pmain }	{ Argc Argv }
+cueue_players		tmPlayer.c	/^cueue_players() $/ ;" function 10 { Pmain }	{ PC_test PP_test }
+delsym		symtab.c	/^delsym(sym, type)$/ ;" function 28 { }	{ NULL addr_hash hash lookup }
+do_rhy		do_rhy.c	/^double do_rhy(str)$/ ;" function 58 { Rhythm }	{ NULL Player_stat getdots getrhy isrhy }
+foreward		cyclist.c	/^foreward(h)$/ ;" function 37 { nextnot }	{ NULL rebuild_list return_on_meas_id }
+garbage		garbage.c	/^garbage(x)$/ ;" function 10 { Kill }	{ umk_Player wf_clear wu_clear }
+get_ac		keysig.c	/^get_ac(pc, k)$/ ;" function 16 { pc_oct }	{ NULL Pexit }
+get_clist		Read_lists.c	/^get_clist(fp)$/ ;" function 21 { Read_lists }	{ NULL buf strsav }
+get_note_stmt		read_stdin.c	/^get_note_stmt()$/ ;" function 28 { read_stdin }	{ NULL buf }
+get_templ		get_templ.c	/^get_templ(proc)$/ ;" function 16 { Alias Get_pname Instances New_player }	{ NULL lookup }
+get_wait		sched.c	/^get_wait()$/ ;" function 109 { run_arbiter }	{ NULL Player_stat _Pdebug p_sched tlist }
+getdots		do_rhy.c	/^getdots(x)$/ ;" function 42 { do_rhy }	{ NULL }
+getid		cyclist.c	/^getid(x)$/ ;" function 14 { Exprs Find_measure Get_keysig Get_metronome Get_sig_key Get_timesig Index Keys Oct_pts Peekcl Pitches Rhythms Strings }	{ NULL _Pdebug lookup newid }
+getlesser		cyclist.c	/^getlesser(n, l)$/ ;" function 9 { }	{ }
+getrhy		do_rhy.c	/^getrhy(x)$/ ;" function 60 { do_rhy }	{ }
+hash		symtab.c	/^hash(sym)$/ ;" function 16 { delsym install lookup }	{ NULL }
+hi_p_ck		hi_p_ck.c	/^hi_p_ck(x, plen)$/ ;" function 16 { Setup_p Setup_pp Setup_ps }	{ }
+hlalloc		symtab.c	/^hlalloc(n) $/ ;" function 11 { install }	{ NULL }
+in_install		symtab.c	103 ;" global 1 { install lookup }	{ }
+init_globs		globs.c	/^init_globs () {$/ ;" function 18 { }	{ Argc Argv NULL Now Player_stat Realtime Self _Pdebug nlist return_on_meas_id }
+init_symtab		symtab.c	/^init_symtab()$/ ;" function 25 { }	{ NULL _Pdebug symtab }
+initnot		cyclist.c	/^initnot(h)$/ ;" function 11 { }	{ NULL Player_stat }
+install		symtab.c	/^install(sym, type, val)$/ ;" function 106 { Alias PC_poll_waits PC_read_stdin PC_test buildnotes newid }	{ NULL _Pdebug addr_hash hash hlalloc in_install lookup malerr savestr symtab }
+interplist		interplist.c	/^interplist(h, label)$/ ;" function 71 { notlnk }	{ NULL Pexit _Pdebug malerr newnod noteLabToHed }
+isrhy		do_rhy.c	/^isrhy(x)$/ ;" function 40 { do_rhy }	{ }
+jbuf		Psleep.c	8 ;" global 1 { Psleep catchalarm }	{ }
+lookup		symtab.c	/^lookup(sym, ss)$/ ;" function 71 { Direction Get_paddr add_player delsym get_templ getid install noteLabToHed noteLabToStr }	{ NULL _Pdebug addr_hash hash in_install makhlist }
+main		tmPlayer.c	/^main(argc, argv)$/ ;" function 6 { }	{ Pexit Pmain }
+makhlist		symtab.c	/^makhlist() {$/ ;" function 10 { lookup }	{ NULL }
+malerr		malerr.c	/^malerr(s, x)$/ ;" function 8 { Gen Wait_for add_player buildnotes install interplist mk_Player newid newnod notlnk set_keysig set_timesig set_wait strsav }	{ Pexit }
+mk_Player		mk_Player.c	/^mk_Player(ctempl)$/ ;" function 19 { New_player PP_test }	{ NULL append_Player malerr }
+mmark		Find_measure.c	/^static mmark(h, id)$/ ;" function 15 { Find_measure }	{ NULL }
+newid		cyclist.c	/^struct headcl_hcl *newid(x)$/ ;" function 17 { Motive Read_list Read_lists getid }	{ NULL Pexit _Pdebug install malerr }
+newnod		cyclist.c	/^newnod(h)$/ ;" function 19 { buildnotes interplist notlnk }	{ NULL malerr }
+nextnot		cyclist.c	/^nextnot(h)$/ ;" function 24 { Exprs Find_measure Index Keys Oct_pts Pitches Read_list Read_lists Rhythms Strings }	{ NULL Player_stat backward foreward }
+nlist		globs.c	44 ;" global 1 { init_globs }	{ }
+noteLabToHed		interplist.c	/^noteLabToHed(label)$/ ;" function 9 { interplist }	{ NULL lookup }
+noteLabToStr		interplist.c	/^noteLabToStr(label)$/ ;" function 9 { }	{ NULL lookup }
+notlnk		cyclist.c	/^notlnk(h, str, andflag)$/ ;" function 100 { buildnotes }	{ NULL Pexit interplist malerr newnod }
+p_sched		sched.c	/^p_sched()$/ ;" function 17 { get_wait }	{ NULL tlist }
+p_void		sched.c	103 ;" global 1 { wu_clear }	{ }
+parse_flags		parse_flags.c	/^parse_flags(ac, av)$/ ;" function 22 { Pmain }	{ Argc Argv NULL Pexit _Pdebug }
+pc_oct		pc_oct.c	/^pc_oct(str, oct, ac_list, pc_doct, pc_dset) $/ ;" function 89 { Key Keys Octave Pitch Pitches }	{ Player_stat get_ac set_ac }
+pcl		cyclist.c	/^static pcl(h)$/ ;" function 19 { }	{ NULL }
+pcls		cyclist.c	/^static pcls(h)$/ ;" function 22 { }	{ NULL }
+pexprerr		pexprerr.c	/^pexprerr(routine, string, exstat)$/ ;" function 10 { Expr Exprs add_player set_metronome }	{ Pexit Player_stat }
+pn		read_stdin.c	9 ;" global 1 { read_stdin scanargs }	{ }
+poll		Wait_for.c	5 ;" global 1 { Unwait_for Wait_for wf_clear }	{ }
+poll_waits		poll_waits.c	/^poll_waits(_x)$/ ;" function 12 { PC_poll_waits Wait_for }	{ Kill Now Pclock Self Wait_until check_waits }
+pr_symtab		symtab.c	/^pr_symtab(ss)$/ ;" function 25 { }	{ NULL pr_symval }
+pr_symval		symtab.c	/^pr_symval(ss, hl)$/ ;" function 22 { pr_symtab }	{ }
+read_notes		read_notes.c	/^char *read_notes(label, fp)$/ ;" function 50 { Get_list }	{ NULL buf strsav }
+read_stdin		read_stdin.c	/^read_stdin(_x)$/ ;" function 43 { PC_read_stdin Pmain }	{ CoerceToPname Kill NULL Now Self Wait_until add_player get_note_stmt pn scanargs }
+rebuild_list		cyclist.c	/^rebuild_list(h)$/ ;" function 11 { Find_measure Index backward buildnotes foreward }	{ NULL Player_stat }
+resize_p		resize_p.c	/^resize_p(i, n)$/ ;" function 9 { Set_p Set_pi Set_pp Set_ps }	{ }
+return_on_meas_id		globs.c	41 ;" global 1 { Find_measure backward foreward init_globs }	{ }
+run_arbiter		run_arbiter.c	/^run_arbiter()$/ ;" function 74 { Pmain }	{ Field_width Kill NULL Now Player_stat Precision Psleep Realtime Self _Pdebug get_wait }
+savestr		symtab.c	/^savestr(str)$/ ;" function 13 { install }	{ NULL }
+scan_rem		scanargs.c	29 ;" global 1 { scanargs }	{ }
+scanargs		scanargs.c	/^scanargs(args, pn, nargs, sb)$/ ;" function 41 { read_stdin }	{ NULL pn scan_rem }
+set_ac		keysig.c	/^set_ac(pc, ac, k)$/ ;" function 20 { pc_oct }	{ NULL Pexit }
+set_keysig		keysig.c	/^set_keysig(keyspec, k)$/ ;" function 49 { clist_direct }	{ NULL Pexit Player_stat malerr }
+set_metronome		metronome.c	/^set_metronome(h, c)$/ ;" function 26 { clist_direct }	{ NULL Player_stat Rhythm pexprerr }
+set_timesig		timesig.c	/^set_timesig(h, c)$/ ;" function 33 { clist_direct }	{ NULL Pexit Player_stat malerr }
+set_wait		sched.c	/^void set_wait(instance, time, source)$/ ;" function 79 { Kill New_player PP_test Start Wait_until check_waits }	{ NULL _Pdebug malerr tlist }
+stat_symtab		symtab.c	/^stat_symtab()$/ ;" function 9 { Pmain }	{ symtab }
+strsav		read_notes.c	/^strsav(buf, c)$/ ;" function 24 { get_clist read_notes }	{ NULL _Pdebug buf malerr }
+symtab		symtab.c	23 ;" global 7 { init_symtab install stat_symtab }	{ }
+test		test.c	/^test(_x)$/ ;" function 9 { PC_test }	{ Abs_time Pexit Player_stat Strings Wait_until }
+tlist		globs.c	45 ;" global 1 { get_wait p_sched set_wait wu_clear }	{ }
+umk_Player		mk_Player.c	/^umk_Player(x)$/ ;" function 22 { garbage }	{ NULL }
+wf_clear		Wait_for.c	/^wf_clear(x)$/ ;" function 23 { garbage }	{ Kill NULL poll wlist }
+wlist		globs.c	40 ;" global 1 { Unwait_for Wait_for check_waits wf_clear }	{ }
+wu_clear		sched.c	/^wu_clear(x)$/ ;" function 20 { Unwait_until garbage }	{ NULL _Pdebug p_void tlist }

@@ -1,0 +1,11 @@
+offset - simple inline program to add an offset to a digital signal
+
+DESCRIPTION:
+offset reads samples from stdin, adds a constant value supplied
+as its argument, and writes the resulting values on stdout.  It is
+intended to be included in pipes with programs such as para, chan,
+sndin, cmusic, impulse, etc. The following example generates an 
+signal 50 samples long, consisting of 2.0, followed by 49 values
+equal to 1.0:
+
+	impulse 50 | offset 1.0

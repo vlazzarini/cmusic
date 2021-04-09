@@ -1,0 +1,25 @@
+find_sources - how to access sources of CARL programs
+
+The command
+	
+	% help sources
+
+lists all the CARL programs for which sources can be found by the help program. 
+
+To locate the source for a particular program, for instance, comb, say
+
+	% help sources/comb
+
+which prints the complete path to the program.
+
+For the savants who are into clever hacks (and who are using the cshell) 
+it is possible to say
+
+	% vi `help sources/comb`
+
+and have the vi editor started up on the file that help identifies
+as the source.
+
+The sources database covers all programs currently distributed by CARL.
+Only programs are listed, not subroutines.  The root
+directories for the various CARL libraries are mentioned as well.

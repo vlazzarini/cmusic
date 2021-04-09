@@ -1,0 +1,16 @@
+Player blat(0, 20)
+{
+	Instance Function *f1;
+	P_start {
+		f1 = Gen("gen1 -L20 0 1 4 2 9 10 19 20");
+		Pp5 = "Hz";
+		Ps6 = "F1";
+		Hipn(Self, 7);
+	}
+	P4 = Rhythms("4 4 4 4 4. 3/8 2. 3/4 1 4/4 2..");
+	P5 = Pitches("a r a r a b c d e f g");
+	P7 = Rel_func(f1, Rel_time(Self));
+	P20 = 1.0;
+	P2 = Abs_time();
+	Wait_until(P2 + P4);
+}

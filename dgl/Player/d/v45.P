@@ -1,0 +1,13 @@
+char *c = "|m1 c d e f |m2 g a b c+";
+Player meas(0.)
+{
+	if (!Find_measure(c, "m1"))
+		fprintf(stderr, "no m1\n");
+	Ps4 = Strings(c);
+	if (!Find_measure(c, "m2"))
+		fprintf(stderr, "no m2\n");
+	Ps5 = Strings(c);
+	if (!Find_measure(c, "m3"))
+		fprintf(stderr, "no m3 (as expected)\n");	/* should fail */
+	Ps6 = Strings(c);
+}

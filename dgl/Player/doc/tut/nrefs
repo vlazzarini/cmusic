@@ -1,0 +1,21 @@
+%A Brian W. Kernighan
+%A Dennis M. Ritchie
+%L KERN78
+%T The C programming language
+%I Prentice-Hall
+%C Englewood Cliffs, New Jersey
+%D 1978
+
+%A Gareth Loy
+%L LOY85
+%T Player - Extensions to the C programming language for parallel processing run-time music synthesis control
+%J Internal publication of the Center for Music Experiment
+%D 1985
+
+%A F. R. Moore
+%A D. G. Loy
+%A M. Dolson
+%L MOOR85
+%T CARL startup kit
+%J Internal publication of the Center for Music Experiment
+%D 1985

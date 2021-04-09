@@ -1,0 +1,25 @@
+cspline - smooth curve interpolater for cmusic
+
+     gen 0 cspline fN x0 y0 x1 y1... xN yN;
+
+     cspline is an implementation of a "gen" function call for
+     cmusic(carl). It takes pairs of numbers as abcissas and ordinates
+     of a function to be smoothed by a cubic spline function.  It
+     produces a smoothed function that includes the input values.  It
+     is similar to cmusic's gen4 smooth function generator, except that
+     whereas for gen4 you must supply transition parameters to create a
+     smooth function, cspline accomplishes this for you automatically.
+
+     Here is a sample statement in a cmusic score:
+
+     gen 0 cspline f1 0 0 .1 .1 .2 1 .3 0;
+
+     Note: it is possible that cspline will produce y values that will
+     exceed those supplied.  It is a good idea to normalize functions
+     produced with cspline by running them through gen0.
+
+     For more information say
+
+	% man cspline
+
+Author: Gareth Loy

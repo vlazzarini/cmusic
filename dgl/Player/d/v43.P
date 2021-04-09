@@ -1,0 +1,12 @@
+
+Player blat(0)
+{
+	P_start {
+		Field_width = 10;
+		Precision = 6;
+	}
+	P4 = Rhythms("1.5/1 1/1. 4.5 4.5. 4.5.. 4 4. 3/8 2.. 1 4/4 Stop");
+	P5 = Pitches("a b c d e f");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

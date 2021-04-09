@@ -1,0 +1,14 @@
+delay - delays a signal
+
+delay output[b] input[bvpn] gain[bvpn] table[fvpn] length[vpn] pos[dpv] ;
+
+delay output is equal to its input delayed by length and scaled by
+gain.  The table should be a function (or a function index) whose
+length is at least equal to the length argument.  An all- zero function
+of length 39 milliseconds could be made with the command "gen 0 gen3
+f2[39ms] 0 0;", for example.  Care should be exercised with this unit
+generator, since the function may not contain two things at the same
+time.  Therefore, instruments containing delays are not reentrant (they
+can play only one note at a time).  Also, it will usually be necessary
+to re-clear the delay table before each note begins (a macro to do this
+might read:"#define Dnote(Time,Func)gen Time gen3 func 0 0; note Time").

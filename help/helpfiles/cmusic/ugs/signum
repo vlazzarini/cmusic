@@ -1,0 +1,6 @@
+signum - a signum unit generator
+
+signum output[b] input[bvpn] ;
+
+If the input is greater than or equal to zero, the output is set to 1.0,
+otherwise the output is set to -1.0.

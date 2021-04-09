@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+#include <carl/Player.h>
+
+Find_measure(nl, id)
+	register char *nl;	/* pointer to string in cyclic list format */
+	register char *id;	/* string id of rehearsal mark */
+{
+	extern int return_on_meas_id;
+	int incr;
+	register struct headcl_hcl *h = getid(nl);
+	register char *c;
+
+	_motive(h, nl);
+
+	c = h->hcl_np->cl_meas_id;
+	if (c != NULL && !strcmp(id, c))/* are we sitting on it? */
+		return(1);
+	else {				/* no, so go fishing for it */
+		incr = h->hcl_incr;	/* save list's increment */
+		h->hcl_incr = 1;	/* stick in ours */
+		return_on_meas_id = 1;
+		do {
+			if (nextnot(h) != 0)
+				clr_ac(&h->hcl_aclist);
+			c = h->hcl_np->cl_meas_id;
+		} while (!(c != NULL && !strcmp(c, id)));
+		return_on_meas_id = 0;
+		h->hcl_incr = incr;	/* put it back */
+		return(1);
+	}
+}

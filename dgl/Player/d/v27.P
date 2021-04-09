@@ -1,0 +1,7 @@
+Player octest(0)
+{
+	P4 = 1;
+	P5 = Pitches("c d e c5 d e a4 cn Stop");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

@@ -1,0 +1,13 @@
+SOURCE FOR:
+    joslib
+MAKEFILE:
+    makejoslib
+SPECIAL INCLUDE FILES NEEDED:
+SPECIAL LIBRARIES NEEDED:
+COMMENTS:
+Users normally access routines in joslib by including "-ljos" in the cc command.
+
+Two executable files also live in this directory: one called "makejoslib"
+which compiles all .c files in this directory and replaces them in the
+library, and "addjoslib", which adds routine X to joslib when used as
+"addjoslib X". (addjoslib assumes the file is actually called X.c).

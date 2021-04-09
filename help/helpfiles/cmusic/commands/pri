@@ -1,0 +1,12 @@
+pri - the cmusic print command
+
+This command has the general form:
+
+    print T parameters ;
+
+It causes the values of the parameters to be printed out on stderr at
+time T.  A parameter beginning with a percent sign is interpreted as a
+string and that string (without the %) is printed out literally.
+Example:
+
+    print 2.55 %time= p2 ;

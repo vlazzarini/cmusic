@@ -1,0 +1,11 @@
+
+Need to go from a Player (*x)() to the class list entry.
+Need to go from a Player char * name to the class list entry.
+
+Need to go from an event to an instance entry.
+
+For notes, go from string address to a (possibly) already parsed
+	finite-state atomaton.  However, if a static string is
+	supplied, it will be the same address for all instances of
+	that player.  In this case, we might want to key on the
+	value of Self as well as the string address to disambiguate.

@@ -1,0 +1,13 @@
+flt - general second order digital filter (poles and zeros)
+
+flt output[b] input[bvpn] gain[bvpn] 
+ a0[bvpn] a1[bvpn] a2[bvpn] b1[bvpn] b2[bvpn] 
+  t1[dpv] t2[dpv] t3[dpv] t4[dpv] ;
+
+	General second-order filter:
+
+y[i] = gain * (a0*x[i] + a1*x[i-1] + a2*x[i-2] + b1*y[i-1] + b2*y[i-2])
+
+(y[i] is the current output, y[i-1] is the previous output, x[i-1] is
+the previous input, etc.) The filter requires 5 coefficients, as shown,
+and 4 temporary locations (t1 through t4), which are normally d's.

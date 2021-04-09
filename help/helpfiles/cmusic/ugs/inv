@@ -1,0 +1,5 @@
+inv - outputs one minus the input signal
+
+inv output[b] input[bvpn] ;
+
+The output is equal to 1.0 minus the input.

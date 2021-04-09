@@ -1,0 +1,30 @@
+gen4 - exponential curve segment generator:
+
+	gen T gen4 F   t1 v1 x1   t2 v2 x2   . . .   tN vN ;
+
+The t values specify positions along the horizontal axis on an
+arbitrary scale (as in gen 1), the v values specify values of the
+(closed) function at these points, and the x values specify transitions
+from one point to another.  x = 0 will yield a straight line, x < 0
+will yield an exponential transition, and x > 0 will yield a
+logarithmic transition.  If segment[J,i] is the i-th function value in
+the transition from v[J] to v[J+1], then its shape is determined by the
+formula:
+
+ segment[J,i] = v[J] + (v[J+1] - v[J])*(1 - exp(i*x[J]/(N-1)))/(1 - exp(x[J]))
+
+for 0 <= i < N, where N is the number of function points between t[J] and
+the next horizontal value. No x value is given after the final point.  Examples:
+
+    gen 0 gen4 f2  0,0,0  1/3,1,0  2/3,1,0  1,0 ; (straight line transitions)
+    gen 0 gen4 f2  0,0,-1  1/3,1,0  2/3,1,-1  1,0 ; (exponential transitions)
+    gen 0 gen4 f2  0,0,-5  1/3,1,0  2/3,1,-5  1,0 ; (similar to last example
+				but with quicker exponential transitions)
+
+The x value specifies the number of exponential time constants between
+the endpoints of a transition.  A small negative value specifies a
+curve not very different from a straight line, but which gets near the
+second value more quickly.  A large negative value is more curved, and
+approaches the second value more quickly.  The latter kind of shape is
+very useful for specifying very sharp attacks while avoiding clicks,
+for example.

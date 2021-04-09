@@ -1,0 +1,39 @@
+/*
+ * The motive statement simply defines a list.  It does not care what kind
+ * of list.  It does not traverse it
+ * the way notes (etc) statements do.  Thus, in the example below, x, y and
+ * z are defined as lists of (in this case) notes without being used 
+ * immediately.  (These motive statements could also have been put in a 
+ * M_start() block.)
+ * 
+ * The procedure transpose() is an example of pitch transposition.  The
+ * variable level is the number of half steps to transpose the note by.
+ * N.B., the value passed to the level argument in transpose
+ * level must be a floating point number.  It is in this case 
+ * 7.0, corresponding to a transposition up by the interval of a fifth.
+ */
+
+double transpose(note, level)
+	double note, level;
+{
+	return(note*pow(2.0, level/12.0));
+	
+}
+
+Player bloop(0)
+{
+	P_start {
+		Pp5 = "Hz";
+		P4 = 1;
+		Motive("x: c {d e}x2 c");
+		Motive("y:,a,{b,@x}x2,a");
+		Motive("z:, a, {b, @y}x2, a");
+	}
+
+	P5 = Pitches("@x");
+	P6 = Pitches("@y");
+	P7 = Pitches("@x @y Stop");
+	P8 = transpose(P7, 7.0);
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

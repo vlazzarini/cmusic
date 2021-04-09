@@ -1,0 +1,9 @@
+Player scrape(0, HUGE)
+{
+	P5 = Pitches("c b a Hold");
+	P4 = Rhythms("1 1. 4 4. 4.. 4... 13/9 5 12 Stop");
+	Ps6 = Strings("{one two three}x2 Hold");
+	P7 = Exprs("1 2 3 Hold");
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

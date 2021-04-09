@@ -1,0 +1,25 @@
+tester()
+{
+	if (Now > 20.0) 
+		return(True);
+	return(False);
+}
+
+Player blat(0,30)
+{
+	P_start {
+		Wait_for(tester, ONCE);
+		Rest(Self);
+		Return;
+	}
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}
+
+Player qop(0,30)
+{
+	P4 = 1;
+	P2 = Now;
+	Wait_until(P2 + P4);
+}

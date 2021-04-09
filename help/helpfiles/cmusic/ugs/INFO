@@ -1,0 +1,22 @@
+info - general information about unit generator descriptions
+
+DESCRIPTION:
+
+A list of unit generators currently available in cmusic follows.  Each
+unit generator argument is described with an arbitrary name for its
+function (such as "input" or "output"), and a list enclosed in square
+brakets which indicates the allowable argument types:
+
+    b = io block,
+    p = note parameter,
+    f = function,
+    v = static variable,
+    n = number (e.g., a constant or constant expression),
+    d = dynamic variable.
+
+In most cases, if an argument MAY be a "d", then it SHOULD be a "d".
+An asterisk after the final right bracket indicates that the argument list
+may continue indefinitely.
+
+The code for the unit generators is in the distribution source area
+in files with names like: ug.*.c and ug.*.h

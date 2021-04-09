@@ -1,0 +1,13 @@
+Player peek(0)
+{
+	char *rhys = "1,2,4,8,B,Stop";
+
+	P_start {
+		P4 = 1.0;
+	}
+	Ps5 = Strings(rhys);
+	Ps6 = Peekcl(rhys);
+	if (*Ps6 == 'B')
+		printf("got a B\n");
+	Wait_until(Now + P4);
+}
